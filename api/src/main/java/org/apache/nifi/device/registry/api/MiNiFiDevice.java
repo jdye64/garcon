@@ -1,6 +1,4 @@
-package org.apache.nifi.device.registry.core;
-
-import java.util.Map;
+package org.apache.nifi.device.registry.api;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -22,9 +20,6 @@ import java.util.Map;
  */
 
 
-public class NiFiDevice
+public class MiNiFiDevice
     extends Device {
-
-    private String templateMD5;
-    private Map<String, String> nifiProperties;
 }

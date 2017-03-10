@@ -49,7 +49,7 @@ public class NiFiDeviceRegistry
         environment.lifecycle().manage(new Site2SiteManagedProxy());
 
         //Register your Web Resources like below.
-        final DeviceResource dummyResource = new DeviceResource();
+        final DeviceResource dummyResource = new DeviceResource(configuration);
         environment.jersey().register(dummyResource);
     }
 

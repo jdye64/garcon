@@ -1,4 +1,4 @@
-package org.apache.nifi.device.registry.core;
+package org.apache.nifi.device.registry.api;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more

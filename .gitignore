@@ -1,5 +1,7 @@
 .idea
 nifi-device-registry.iml
 .idea/vcs.xml
-
 target
+*.iml
+api/api.iml
+web/.DS_Store

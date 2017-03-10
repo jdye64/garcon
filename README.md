@@ -1,4 +1,4 @@
-# nifi-device-registry
+# NiFi Device Registry
 
 ## Building and Running Device Registry
 Device Registry is built using the popular Dropwizard Java microframework and the standard gamut of Java development tools EX: Maven. To build the application
