@@ -24,12 +24,10 @@ import io.dropwizard.lifecycle.Managed;
 public class Site2SiteManagedProxy
     implements Managed{
 
-    @Override
     public void start() throws Exception {
         //Invoked when the Jetty web server has started. Start up your managed instance here.
     }
 
-    @Override
     public void stop() throws Exception {
         //Stop your managed instance. Called when Jetty is shut down.
     }

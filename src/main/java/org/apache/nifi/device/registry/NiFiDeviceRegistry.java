@@ -19,14 +19,11 @@
 package org.apache.nifi.device.registry;
 
 import org.apache.nifi.device.registry.cli.DummyCommand;
-import org.apache.nifi.device.registry.jdbi.DummyDAO;
 import org.apache.nifi.device.registry.managed.Site2SiteManagedProxy;
 import org.apache.nifi.device.registry.resource.DeviceResource;
-import org.skife.jdbi.v2.DBI;
 
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
-import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -44,9 +41,9 @@ public class NiFiDeviceRegistry
     @Override
     public void run(NiFiDeviceRegistryConfiguration configuration, Environment environment) throws Exception {
 
-        final DBIFactory factory = new DBIFactory();
-        final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "mysql");
-        final DummyDAO dao = jdbi.onDemand(DummyDAO.class);
+//        final DBIFactory factory = new DBIFactory();
+//        final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "mysql");
+//        final DummyDAO dao = jdbi.onDemand(DummyDAO.class);
 
         //Add managed instances.
         environment.lifecycle().manage(new Site2SiteManagedProxy());
