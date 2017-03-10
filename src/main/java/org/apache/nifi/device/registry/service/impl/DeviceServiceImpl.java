@@ -1,15 +1,6 @@
-package org.apache.nifi.device.registry.resource;
+package org.apache.nifi.device.registry.service.impl;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
-import org.apache.nifi.device.registry.NiFiDeviceRegistryConfiguration;
 import org.apache.nifi.device.registry.service.DeviceService;
-import org.apache.nifi.device.registry.service.impl.DeviceServiceImpl;
-
-import com.codahale.metrics.annotation.Timed;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -30,21 +21,7 @@ import com.codahale.metrics.annotation.Timed;
  * Created on 3/10/17.
  */
 
-@Path("/device")
-@Produces(MediaType.APPLICATION_JSON)
-public class DeviceResource {
 
-    private NiFiDeviceRegistryConfiguration configuration;
-    private DeviceService deviceService = null;
-
-    public DeviceResource(NiFiDeviceRegistryConfiguration conf) {
-        this.configuration = conf;
-        this.deviceService = new DeviceServiceImpl();
-    }
-
-    @GET
-    @Timed
-    public String[] getSearchCache() {
-        return new String[]{"dummy", "resource"};
-    }
+public class DeviceServiceImpl
+    implements DeviceService {
 }
