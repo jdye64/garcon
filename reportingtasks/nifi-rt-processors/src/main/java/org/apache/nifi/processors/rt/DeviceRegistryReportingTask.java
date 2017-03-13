@@ -135,19 +135,15 @@ public class DeviceRegistryReportingTask
         try {
 
             ip = InetAddress.getLocalHost();
-            logger.info("Current IP address : " + ip.getHostAddress());
 
             NetworkInterface network = NetworkInterface.getByInetAddress(ip);
 
             byte[] mac = network.getHardwareAddress();
 
-            logger.info("Current MAC address : ");
-
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < mac.length; i++) {
-                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? ":" : ""));
             }
-            logger.info(sb.toString());
 
             //Set the values to the device object.
             device.setPrimaryNICMac(sb.toString());
