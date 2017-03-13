@@ -16,10 +16,9 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.nifi.annotation.documentation.CapabilityDescription;
 import org.apache.nifi.annotation.documentation.Tags;
-import org.apache.nifi.annotation.lifecycle.OnScheduled;
 import org.apache.nifi.components.PropertyDescriptor;
-import org.apache.nifi.controller.ConfigurationContext;
 import org.apache.nifi.device.registry.api.NiFiDevice;
+import org.apache.nifi.processor.util.StandardValidators;
 import org.apache.nifi.reporting.AbstractReportingTask;
 import org.apache.nifi.reporting.ReportingContext;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -53,25 +52,23 @@ public class DeviceRegistryReportingTask
     private static final Logger logger = LoggerFactory.getLogger(DeviceRegistryReportingTask.class);
     private final ObjectMapper mapper = new ObjectMapper();
 
-    static final PropertyDescriptor DEVICE_REGISTRY_HOST = new PropertyDescriptor.Builder()
-            .name("Hostname or IP address of the NiFi Device Registry")
+    private static final PropertyDescriptor DEVICE_REGISTRY_HOST = new PropertyDescriptor.Builder()
+            .name("Host")
             .description("NiFi Device Registry service that the metrics will be transported to")
             .required(true)
             .expressionLanguageSupported(true)
             .defaultValue("localhost")
+            .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
             .build();
 
-    static final PropertyDescriptor DEVICE_REGISTRY_PORT = new PropertyDescriptor.Builder()
-            .name("NiFi Device Registry Port")
+    private static final PropertyDescriptor DEVICE_REGISTRY_PORT = new PropertyDescriptor.Builder()
+            .name("Port")
             .description("Port the target NiFi Device Registry is running on")
             .required(true)
             .expressionLanguageSupported(true)
             .defaultValue("8888")
+            .addValidator(StandardValidators.NON_EMPTY_VALIDATOR)
             .build();
-
-    // Support for default constructor
-    public DeviceRegistryReportingTask() {
-    }
 
     @Override
     protected List<PropertyDescriptor> getSupportedPropertyDescriptors() {
@@ -80,12 +77,6 @@ public class DeviceRegistryReportingTask
         properties.add(DEVICE_REGISTRY_PORT);
         return properties;
     }
-
-    @OnScheduled
-    public void setup(final ConfigurationContext context) {
-        logger.info("Setting up DeviceRegistryReportingTask");
-    }
-
 
     public void onTrigger(ReportingContext reportingContext) {
         logger.info("Running DeviceRegistryReportingTask");
@@ -100,11 +91,6 @@ public class DeviceRegistryReportingTask
 
         report(host, port, device);
     }
-
-    public void onPropertyModified(PropertyDescriptor propertyDescriptor, String s, String s1) {
-        logger.info("Property has been modified!");
-    }
-
 
     private boolean report(String host, String port, NiFiDevice device) {
 
