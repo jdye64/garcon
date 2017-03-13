@@ -34,4 +34,84 @@ public abstract class Device {
     private String processMemUsage;
     private String totalDiskSpace;
     private String freeDiskSpace;
+
+    public String getInternalIPAddress() {
+        return internalIPAddress;
+    }
+
+    public void setInternalIPAddress(String internalIPAddress) {
+        this.internalIPAddress = internalIPAddress;
+    }
+
+    public String getExternalIPAddress() {
+        return externalIPAddress;
+    }
+
+    public void setExternalIPAddress(String externalIPAddress) {
+        this.externalIPAddress = externalIPAddress;
+    }
+
+    public String getPrimaryNICMac() {
+        return primaryNICMac;
+    }
+
+    public void setPrimaryNICMac(String primaryNICMac) {
+        this.primaryNICMac = primaryNICMac;
+    }
+
+    public String getCpuTime() {
+        return cpuTime;
+    }
+
+    public void setCpuTime(String cpuTime) {
+        this.cpuTime = cpuTime;
+    }
+
+    public String getUsedMem() {
+        return usedMem;
+    }
+
+    public void setUsedMem(String usedMem) {
+        this.usedMem = usedMem;
+    }
+
+    public String getFreeMem() {
+        return freeMem;
+    }
+
+    public void setFreeMem(String freeMem) {
+        this.freeMem = freeMem;
+    }
+
+    public String getTotalMem() {
+        return totalMem;
+    }
+
+    public void setTotalMem(String totalMem) {
+        this.totalMem = totalMem;
+    }
+
+    public String getProcessMemUsage() {
+        return processMemUsage;
+    }
+
+    public void setProcessMemUsage(String processMemUsage) {
+        this.processMemUsage = processMemUsage;
+    }
+
+    public String getTotalDiskSpace() {
+        return totalDiskSpace;
+    }
+
+    public void setTotalDiskSpace(String totalDiskSpace) {
+        this.totalDiskSpace = totalDiskSpace;
+    }
+
+    public String getFreeDiskSpace() {
+        return freeDiskSpace;
+    }
+
+    public void setFreeDiskSpace(String freeDiskSpace) {
+        this.freeDiskSpace = freeDiskSpace;
+    }
 }

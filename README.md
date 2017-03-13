@@ -8,7 +8,7 @@ Dropwizard is really neat in that it produces a single jar with a standard java 
 like to run the microservice. For example the standard way this application will be ran is as a "server". This means that Dropwizard will start up a Jetty
 server and serve both the UI and the REST API components of the application from the single jar. To command to run in this mode is.
 
-```java -jar ./target/nifi-device-registry-1.2.0-SNAPSHOT.jar server DeviceRegistry.yml```
+```java -jar ./web/target/nifi-device-registry-1.2.0-SNAPSHOT.jar server ./web/DeviceRegistry.yml```
 
 The "DeviceRegistry.yml" file is a single location where you can adjust the configurations for the Device Registry application.
 
@@ -21,4 +21,4 @@ The Device Registry UI is a single page HTML5 application that is meant to allow
 the entire organization. Often there are several thousand instances of Apache NiFi, MiNifi, and MiNiFi-C++ running so this allows the user a convenient
 single location to better understand the state of NiFi as well as basic informaiton about the devices NiFi is running on.
 
-The UI can be accessed at: ```http://IP_OF_SERVER:8080/assets/index.html```
+The UI can be accessed at: ```http://IP_OF_SERVER:8888/assets/index.html```

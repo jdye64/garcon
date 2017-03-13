@@ -27,4 +27,37 @@ public class NiFiDevice
 
     private String templateMD5;
     private Map<String, String> nifiProperties;
+
+    public String getTemplateMD5() {
+        return templateMD5;
+    }
+
+    public void setTemplateMD5(String templateMD5) {
+        this.templateMD5 = templateMD5;
+    }
+
+    public String toString() {
+        StringBuffer buf = new StringBuffer();
+        buf.append("Template MD5: ");
+        buf.append(getTemplateMD5());
+        buf.append("\nInternal IP Address: ");
+        buf.append(getInternalIPAddress());
+        buf.append("\nExternal IP Address: ");
+        buf.append(getExternalIPAddress());
+        buf.append("\nMAC Address: ");
+        buf.append(getPrimaryNICMac());
+        buf.append("\nCPU Time: ");
+        buf.append(getCpuTime());
+        buf.append("\nFree Disk Space: ");
+        buf.append(getFreeDiskSpace());
+        buf.append("\nFree Memory: ");
+        buf.append(getFreeMem());
+        buf.append("\nNiFi Memory Usage: ");
+        buf.append(getProcessMemUsage());
+        buf.append("\nTotal Disk Space: ");
+        buf.append(getTotalDiskSpace());
+        buf.append("\nTotal Memory: ");
+        buf.append(getTotalMem());
+        return buf.toString();
+    }
 }

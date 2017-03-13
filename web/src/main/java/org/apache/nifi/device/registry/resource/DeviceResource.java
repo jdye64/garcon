@@ -1,13 +1,18 @@
 package org.apache.nifi.device.registry.resource;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.nifi.device.registry.NiFiDeviceRegistryConfiguration;
+import org.apache.nifi.device.registry.api.NiFiDevice;
 import org.apache.nifi.device.registry.service.DeviceService;
 import org.apache.nifi.device.registry.service.impl.DeviceServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.codahale.metrics.annotation.Timed;
 
@@ -34,12 +39,22 @@ import com.codahale.metrics.annotation.Timed;
 @Produces(MediaType.APPLICATION_JSON)
 public class DeviceResource {
 
+    private static final Logger logger = LoggerFactory.getLogger(DeviceResource.class);
+
     private NiFiDeviceRegistryConfiguration configuration;
     private DeviceService deviceService = null;
 
     public DeviceResource(NiFiDeviceRegistryConfiguration conf) {
         this.configuration = conf;
         this.deviceService = new DeviceServiceImpl();
+    }
+
+    @POST
+    @Timed
+    public Response announceAvailability(NiFiDevice device) {
+        logger.info("MiNiFiDevice available message received!!!");
+        logger.info("Message: " + device.toString());
+        return Response.ok().build();
     }
 
     @GET

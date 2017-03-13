@@ -1,8 +1,12 @@
 applicationName: Apache NiFi Device Registry
 
 server:
-  type: simple
-  applicationContextPath: /
+  applicationConnectors:
+  - type: http
+    port: 8888
+  adminConnectors:
+  - type: http
+    port: 8889
 
 database:
   # the name of your JDBC driver
