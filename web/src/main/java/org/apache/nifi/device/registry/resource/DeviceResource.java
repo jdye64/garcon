@@ -5,6 +5,7 @@ import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -15,6 +16,8 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.nifi.device.registry.NiFiDeviceRegistryConfiguration;
 import org.apache.nifi.device.registry.api.NiFiDevice;
+import org.apache.nifi.device.registry.dao.DeviceDAO;
+import org.apache.nifi.device.registry.dao.impl.DeviceDAOImpl;
 import org.apache.nifi.device.registry.service.DeviceService;
 import org.apache.nifi.device.registry.service.impl.DeviceServiceImpl;
 import org.slf4j.Logger;
@@ -50,6 +53,7 @@ public class DeviceResource {
 
     private NiFiDeviceRegistryConfiguration configuration;
     private DeviceService deviceService = null;
+    private DeviceDAO deviceDAO = null;
 
     private javax.jms.Session jmsSession = null;
     private Destination destination = null;
@@ -59,12 +63,22 @@ public class DeviceResource {
     public DeviceResource(NiFiDeviceRegistryConfiguration conf) {
         this.configuration = conf;
         this.deviceService = new DeviceServiceImpl();
+        this.deviceDAO = new DeviceDAOImpl();
+    }
+
+    @GET
+    @Timed
+    public Response getRegisteredDevices() {
+        logger.info("Retrieving registered devices");
+        return Response.ok(deviceDAO.findAll()).build();
     }
 
     @POST
     @Timed
     public Response announceAvailability(NiFiDevice device) {
         logger.info("Message: " + device.toString());
+
+        deviceDAO.insert(device);
 
         if (this.producer == null) {
             try {
@@ -88,35 +102,6 @@ public class DeviceResource {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-
-//        if (this.session == null) {
-//            URI uri = URI.create("ws://localhost:8888/registry/ws");
-//
-//            WebSocketClient client = new WebSocketClient();
-//            try
-//            {
-//                client.start();
-//                // The socket that receives events
-//                EventSocket socket = new EventSocket();
-//                // Attempt Connect
-//                Future<Session> fut = client.connect(socket,uri);
-//                // Wait for Connect
-//                this.session = fut.get();
-//            }
-//            catch (Throwable t)
-//            {
-//                t.printStackTrace(System.err);
-//            }
-//        }
-
-//        // Send a message
-//        try {
-//            ObjectMapper mapper = new ObjectMapper();
-//           this.session.getRemote().sendString(mapper.writeValueAsString(device));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         return Response.ok().build();
     }

@@ -1,7 +1,5 @@
 package org.apache.nifi.device.registry.api;
 
-import java.util.Map;
-
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,34 +16,46 @@ import java.util.Map;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * <p>
- * Created on 3/10/17.
+ * Created on 3/17/17.
  */
 
 
-public class NiFiDevice
-        extends Device {
+public class DiskReport {
 
-    private String templateMD5;
-    private Map<String, String> nifiProperties;
+    private String path;
+    private long totalBytes;
+    private long availableBytes;
+    private long usedBytes;
 
-    public String getTemplateMD5() {
-        return templateMD5;
+    public String getPath() {
+        return path;
     }
 
-    public void setTemplateMD5(String templateMD5) {
-        this.templateMD5 = templateMD5;
+    public void setPath(String path) {
+        this.path = path;
     }
 
-    public String toString() {
-        StringBuffer buf = new StringBuffer();
-        buf.append("Template MD5: ");
-        buf.append(getTemplateMD5());
-        buf.append("\nInternal IP Address: ");
-        buf.append(getInternalIPAddress());
-        buf.append("\nExternal IP Address: ");
-        buf.append(getExternalIPAddress());
-        buf.append("\nMAC Address: ");
-        buf.append(getPrimaryNICMac());
-        return buf.toString();
+    public long getTotalBytes() {
+        return totalBytes;
+    }
+
+    public void setTotalBytes(long totalBytes) {
+        this.totalBytes = totalBytes;
+    }
+
+    public long getAvailableBytes() {
+        return availableBytes;
+    }
+
+    public void setAvailableBytes(long availableBytes) {
+        this.availableBytes = availableBytes;
+    }
+
+    public long getUsedBytes() {
+        return usedBytes;
+    }
+
+    public void setUsedBytes(long usedBytes) {
+        this.usedBytes = usedBytes;
     }
 }

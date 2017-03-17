@@ -19,7 +19,7 @@ import javax.websocket.server.ServerEndpoint;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.nifi.device.registry.dao.WebsocketClientSessionDAO;
-import org.apache.nifi.device.registry.dao.WebsocketClientSessionDAOImpl;
+import org.apache.nifi.device.registry.dao.impl.WebsocketClientSessionDAOImpl;
 
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Metered;
@@ -71,6 +71,7 @@ public class NiFiDeviceWebSocketNotifier {
 
     @OnClose
     public void myOnClose(final Session session, CloseReason cr) {
+        websocketSessions.removeWebsocketClientSession(session);
     }
 
 
@@ -100,7 +101,6 @@ public class NiFiDeviceWebSocketNotifier {
         }
 
         public void run() {
-            System.out.println("Inside the run method of the thread.");
             try {
                 connection.start();
                 TextMessage msg = (TextMessage) consumer.receive();
@@ -113,9 +113,6 @@ public class NiFiDeviceWebSocketNotifier {
                         e.printStackTrace();
                     }
                 }
-
-                System.out.println(msg);
-                System.out.println("Received: " + msg.getText());
 
             } catch (JMSException e) {
                 e.printStackTrace();

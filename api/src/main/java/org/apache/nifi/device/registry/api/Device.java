@@ -1,5 +1,9 @@
 package org.apache.nifi.device.registry.api;
 
+import java.util.Map;
+
+import org.apache.nifi.util.NiFiProperties;
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -25,15 +29,29 @@ public abstract class Device {
     private String internalIPAddress;
     private String externalIPAddress;
     private String primaryNICMac;
+    private String hostname;
 
     // Common Hardware based monitoring
-    private String cpuTime;
-    private String usedMem;
-    private String freeMem;
-    private String totalMem;
-    private String processMemUsage;
-    private String totalDiskSpace;
-    private String freeDiskSpace;
+    private int availableProcessors;
+    private long jvmFreeMemory;
+    private long jvmTotalMemory;
+    private long jvmMaxMemory;
+
+    private Map<String, DiskReport> provRepoDiskReport;
+    private Map<String, DiskReport> contentRepoDiskReport;
+    private DiskReport flowfileRepoDiskReport;
+    private DiskReport dbDiskReport;
+    private DiskReport rootDiskReport;
+
+    private NiFiProperties niFiProperties;
+
+    public NiFiProperties getNiFiProperties() {
+        return niFiProperties;
+    }
+
+    public void setNiFiProperties(NiFiProperties niFiProperties) {
+        this.niFiProperties = niFiProperties;
+    }
 
     public String getInternalIPAddress() {
         return internalIPAddress;
@@ -59,59 +77,83 @@ public abstract class Device {
         this.primaryNICMac = primaryNICMac;
     }
 
-    public String getCpuTime() {
-        return cpuTime;
+    public String getHostname() {
+        return hostname;
     }
 
-    public void setCpuTime(String cpuTime) {
-        this.cpuTime = cpuTime;
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
     }
 
-    public String getUsedMem() {
-        return usedMem;
+    public int getAvailableProcessors() {
+        return availableProcessors;
     }
 
-    public void setUsedMem(String usedMem) {
-        this.usedMem = usedMem;
+    public void setAvailableProcessors(int availableProcessors) {
+        this.availableProcessors = availableProcessors;
     }
 
-    public String getFreeMem() {
-        return freeMem;
+    public long getJvmFreeMemory() {
+        return jvmFreeMemory;
     }
 
-    public void setFreeMem(String freeMem) {
-        this.freeMem = freeMem;
+    public void setJvmFreeMemory(long jvmFreeMemory) {
+        this.jvmFreeMemory = jvmFreeMemory;
     }
 
-    public String getTotalMem() {
-        return totalMem;
+    public long getJvmTotalMemory() {
+        return jvmTotalMemory;
     }
 
-    public void setTotalMem(String totalMem) {
-        this.totalMem = totalMem;
+    public void setJvmTotalMemory(long jvmTotalMemory) {
+        this.jvmTotalMemory = jvmTotalMemory;
     }
 
-    public String getProcessMemUsage() {
-        return processMemUsage;
+    public long getJvmMaxMemory() {
+        return jvmMaxMemory;
     }
 
-    public void setProcessMemUsage(String processMemUsage) {
-        this.processMemUsage = processMemUsage;
+    public void setJvmMaxMemory(long jvmMaxMemory) {
+        this.jvmMaxMemory = jvmMaxMemory;
     }
 
-    public String getTotalDiskSpace() {
-        return totalDiskSpace;
+    public Map<String, DiskReport> getContentRepoDiskReport() {
+        return contentRepoDiskReport;
     }
 
-    public void setTotalDiskSpace(String totalDiskSpace) {
-        this.totalDiskSpace = totalDiskSpace;
+    public void setContentRepoDiskReport(Map<String, DiskReport> contentRepoDiskReport) {
+        this.contentRepoDiskReport = contentRepoDiskReport;
     }
 
-    public String getFreeDiskSpace() {
-        return freeDiskSpace;
+    public DiskReport getFlowfileRepoDiskReport() {
+        return flowfileRepoDiskReport;
     }
 
-    public void setFreeDiskSpace(String freeDiskSpace) {
-        this.freeDiskSpace = freeDiskSpace;
+    public void setFlowfileRepoDiskReport(DiskReport flowfileRepoDiskReport) {
+        this.flowfileRepoDiskReport = flowfileRepoDiskReport;
+    }
+
+    public DiskReport getDbDiskReport() {
+        return dbDiskReport;
+    }
+
+    public void setDbDiskReport(DiskReport dbDiskReport) {
+        this.dbDiskReport = dbDiskReport;
+    }
+
+    public DiskReport getRootDiskReport() {
+        return rootDiskReport;
+    }
+
+    public void setRootDiskReport(DiskReport rootDiskReport) {
+        this.rootDiskReport = rootDiskReport;
+    }
+
+    public Map<String, DiskReport> getProvRepoDiskReport() {
+        return provRepoDiskReport;
+    }
+
+    public void setProvRepoDiskReport(Map<String, DiskReport> provRepoDiskReport) {
+        this.provRepoDiskReport = provRepoDiskReport;
     }
 }

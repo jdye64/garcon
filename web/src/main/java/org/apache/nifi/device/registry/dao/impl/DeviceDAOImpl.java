@@ -1,6 +1,10 @@
-package org.apache.nifi.device.registry.api;
+package org.apache.nifi.device.registry.dao.impl;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.nifi.device.registry.api.Device;
+import org.apache.nifi.device.registry.dao.DeviceDAO;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -18,34 +22,27 @@ import java.util.Map;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * <p>
- * Created on 3/10/17.
+ * Created on 3/16/17.
  */
 
 
-public class NiFiDevice
-        extends Device {
+public class DeviceDAOImpl
+    implements DeviceDAO {
 
-    private String templateMD5;
-    private Map<String, String> nifiProperties;
+    List<Device> db = new ArrayList<Device>();
 
-    public String getTemplateMD5() {
-        return templateMD5;
+    public Device insert(Device device) {
+        for (Device d : db) {
+            if (d.getPrimaryNICMac().equalsIgnoreCase(device.getPrimaryNICMac())) {
+                //Device already exists in db.
+                return device;
+            }
+        }
+        db.add(device);
+        return device;
     }
 
-    public void setTemplateMD5(String templateMD5) {
-        this.templateMD5 = templateMD5;
-    }
-
-    public String toString() {
-        StringBuffer buf = new StringBuffer();
-        buf.append("Template MD5: ");
-        buf.append(getTemplateMD5());
-        buf.append("\nInternal IP Address: ");
-        buf.append(getInternalIPAddress());
-        buf.append("\nExternal IP Address: ");
-        buf.append(getExternalIPAddress());
-        buf.append("\nMAC Address: ");
-        buf.append(getPrimaryNICMac());
-        return buf.toString();
+    public List<Device> findAll() {
+        return db;
     }
 }

@@ -1,6 +1,4 @@
-package org.apache.nifi.device.registry.api;
-
-import java.util.Map;
+package org.apache.nifi.device.registry.dao.impl;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -18,34 +16,31 @@ import java.util.Map;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * <p>
- * Created on 3/10/17.
+ * Created on 3/15/17.
  */
 
 
-public class NiFiDevice
-        extends Device {
+import java.util.ArrayList;
+import java.util.List;
 
-    private String templateMD5;
-    private Map<String, String> nifiProperties;
+import javax.websocket.Session;
 
-    public String getTemplateMD5() {
-        return templateMD5;
+import org.apache.nifi.device.registry.dao.WebsocketClientSessionDAO;
+
+public class WebsocketClientSessionDAOImpl
+        implements WebsocketClientSessionDAO {
+
+    private List<Session> sessions = new ArrayList<Session>();
+
+    public void addWebsocketClientSession(Session session) {
+        sessions.add(session);
     }
 
-    public void setTemplateMD5(String templateMD5) {
-        this.templateMD5 = templateMD5;
+    public void removeWebsocketClientSession(Session session) {
+        sessions.remove(session);
     }
 
-    public String toString() {
-        StringBuffer buf = new StringBuffer();
-        buf.append("Template MD5: ");
-        buf.append(getTemplateMD5());
-        buf.append("\nInternal IP Address: ");
-        buf.append(getInternalIPAddress());
-        buf.append("\nExternal IP Address: ");
-        buf.append(getExternalIPAddress());
-        buf.append("\nMAC Address: ");
-        buf.append(getPrimaryNICMac());
-        return buf.toString();
+    public List<Session> getActiveSessions() {
+        return sessions;
     }
 }
