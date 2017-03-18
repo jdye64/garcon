@@ -2,6 +2,7 @@ package org.apache.nifi.processors.rt;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -104,8 +105,6 @@ public class DeviceRegistryReportingTask
         device = populateMemoryInfo(device);
         device = populateDiskSpaceInfo(reportingContext, device);
 
-        device.setTemplateMD5("MD5 String ....");
-
         report(host, port, device);
     }
 
@@ -123,22 +122,17 @@ public class DeviceRegistryReportingTask
 
             HttpResponse response = httpClient.execute(postRequest);
 
-            if (response.getStatusLine().getStatusCode() != 201) {
-                throw new RuntimeException("Failed : HTTP error code : "
-                        + response.getStatusLine().getStatusCode());
-            }
-
             BufferedReader br = new BufferedReader(
                     new InputStreamReader((response.getEntity().getContent())));
 
             String output;
-            System.out.println("Output from Server .... \n");
             while ((output = br.readLine()) != null) {
-                System.out.println(output);
+                logger.info("NiFi Device Registry Response: {}", output);
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            logger.error("Error POSTing JSON to NiFi Device Registry", ex);
             return false;
         }
 
@@ -168,6 +162,7 @@ public class DeviceRegistryReportingTask
             device.setExternalIPAddress(ip.getHostAddress());   //TODO: This should not be this way
 
             String hostname = InetAddress.getLocalHost().getHostName();
+            logger.info("First attempt at getting hostname: " + hostname);
             if (!StringUtils.isEmpty(hostname)) {
                 device.setHostname(hostname);
             } else {
@@ -187,6 +182,7 @@ public class DeviceRegistryReportingTask
 
                 } catch (Exception ex) {
                     ex.printStackTrace();
+                    logger.error("Error attempting to resolve hostname", ex);
                 }
             }
 
@@ -211,7 +207,24 @@ public class DeviceRegistryReportingTask
 
         try {
             NiFiProperties properties = NiFiPropertiesLoader.loadDefaultWithKeyFromBootstrap();
-            device.setNiFiProperties(properties);
+            //device.setNiFiProperties(properties);
+
+//            Path nifiFlowConfFile = properties.getFlowConfigurationFile();
+//
+//            Path templatePath = properties.getTemplateDirectory();
+//            logger.info("TemplatePath: " + templatePath.toString());
+//            String templateFilePath = templatePath.toString() + File.separator + "flow.xml.gz";
+//            logger.info("TemplateFilePath: " + templateFilePath);
+
+            try {
+                FileInputStream fis = new FileInputStream(properties.getFlowConfigurationFile());
+                String md5 = org.apache.commons.codec.digest.DigestUtils.md5Hex(fis);
+                fis.close();
+                device.setTemplateMD5(md5);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                logger.error("Error creating MD5 Hash for NiFi Template", ex);
+            }
 
             //Set the disk report
             device.setRootDiskReport(createDiskReportForPath(Paths.get("/")));
