@@ -149,6 +149,13 @@ public class DeviceRegistryReportingTask
 
             NetworkInterface network = NetworkInterface.getByInetAddress(ip);
 
+            //Check this isn't null
+            if (network == null) {
+                //Hail mary to try and get eth0
+                getLogger().warn("Hardcoded getting network interface by ETH0 which could be the incorrect interface but others were null");
+                network = NetworkInterface.getByName("eth0");
+            }
+
             byte[] mac = network.getHardwareAddress();
 
             StringBuilder sb = new StringBuilder();
@@ -162,7 +169,7 @@ public class DeviceRegistryReportingTask
             device.setExternalIPAddress(ip.getHostAddress());   //TODO: This should not be this way
 
             String hostname = InetAddress.getLocalHost().getHostName();
-            logger.info("First attempt at getting hostname: " + hostname);
+            logger.error("First attempt at getting hostname: " + hostname);
             if (!StringUtils.isEmpty(hostname)) {
                 device.setHostname(hostname);
             } else {
@@ -188,8 +195,10 @@ public class DeviceRegistryReportingTask
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
+            logger.error("Unknown host exception getting hostname", e);
         } catch (SocketException e){
             e.printStackTrace();
+            logger.error("socket exception getting hostname", e);
         }
 
         return device;
@@ -256,6 +265,7 @@ public class DeviceRegistryReportingTask
 
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error("Error encountered in populateDiskInfo function", e);
         }
 
         return device;

@@ -23,6 +23,7 @@ import org.apache.nifi.device.registry.managed.ActiveMQManager;
 import org.apache.nifi.device.registry.managed.Site2SiteManagedProxy;
 import org.apache.nifi.device.registry.resource.DeviceResource;
 import org.apache.nifi.device.registry.resource.NiFiDeviceWebSocketNotifier;
+import org.apache.nifi.device.registry.resource.WorkflowConnectionReportingTaskResource;
 
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
@@ -62,6 +63,8 @@ public class NiFiDeviceRegistry
         //Register your Web Resources like below.
         final DeviceResource dummyResource = new DeviceResource(configuration);
         environment.jersey().register(dummyResource);
+        final WorkflowConnectionReportingTaskResource connectionReportingTaskResource = new WorkflowConnectionReportingTaskResource(configuration);
+        environment.jersey().register(connectionReportingTaskResource);
     }
 
     public static void main(String[] args) throws Exception {
