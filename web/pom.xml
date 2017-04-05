@@ -73,6 +73,12 @@
             <artifactId>nifi-utils</artifactId>
             <version>${nifi.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-site-to-site-client</artifactId>
+            <version>${nifi.version}</version>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>

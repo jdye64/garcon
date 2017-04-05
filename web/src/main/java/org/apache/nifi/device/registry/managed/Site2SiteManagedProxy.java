@@ -19,13 +19,29 @@ package org.apache.nifi.device.registry.managed;
  * Created on 3/10/17.
  */
 
+import org.apache.nifi.device.registry.NiFiDeviceRegistryConfiguration;
+import org.apache.nifi.remote.client.SiteToSiteClient;
+import org.apache.nifi.remote.client.SiteToSiteClientConfig;
+
 import io.dropwizard.lifecycle.Managed;
 
 public class Site2SiteManagedProxy
     implements Managed{
 
+    private NiFiDeviceRegistryConfiguration configuration = null;
+
+    public Site2SiteManagedProxy(NiFiDeviceRegistryConfiguration conf) {
+        this.configuration = conf;
+    }
+
     public void start() throws Exception {
-        //Invoked when the Jetty web server has started. Start up your managed instance here.
+
+
+
+        SiteToSiteClientConfig config = new SiteToSiteClient.Builder()
+                .url("http://nifi.dev:9191/nifi")
+                .portName("Data For Spark")
+                .buildConfig();
     }
 
     public void stop() throws Exception {

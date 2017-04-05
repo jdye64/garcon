@@ -1,4 +1,4 @@
-package org.apache.nifi.device.registry.resource;
+package org.apache.nifi.device.registry.resource.operations;
 
 import java.util.List;
 

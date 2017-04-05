@@ -23,7 +23,8 @@ import org.apache.nifi.device.registry.managed.ActiveMQManager;
 import org.apache.nifi.device.registry.managed.Site2SiteManagedProxy;
 import org.apache.nifi.device.registry.resource.DeviceResource;
 import org.apache.nifi.device.registry.resource.NiFiDeviceWebSocketNotifier;
-import org.apache.nifi.device.registry.resource.WorkflowConnectionReportingTaskResource;
+import org.apache.nifi.device.registry.resource.operations.WorkflowConnectionReportingTaskResource;
+import org.apache.nifi.device.registry.resource.operations.ProcessorsResource;
 
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
@@ -55,16 +56,17 @@ public class NiFiDeviceRegistry
 //        final DummyDAO dao = jdbi.onDemand(DummyDAO.class);
 
         //Add managed instances.
-        environment.lifecycle().manage(new Site2SiteManagedProxy());
+        environment.lifecycle().manage(new Site2SiteManagedProxy(configuration));
 
         final ActiveMQManager activeMQManager = new ActiveMQManager(configuration);
         environment.lifecycle().manage(activeMQManager);
 
         //Register your Web Resources like below.
-        final DeviceResource dummyResource = new DeviceResource(configuration);
-        environment.jersey().register(dummyResource);
-        final WorkflowConnectionReportingTaskResource connectionReportingTaskResource = new WorkflowConnectionReportingTaskResource(configuration);
-        environment.jersey().register(connectionReportingTaskResource);
+        environment.jersey().register(new DeviceResource(configuration));
+
+        //Operational resources
+        environment.jersey().register(new WorkflowConnectionReportingTaskResource(configuration));
+        environment.jersey().register(new ProcessorsResource(configuration));
     }
 
     public static void main(String[] args) throws Exception {
