@@ -111,7 +111,7 @@ public class DeviceRegistryReportingTask
     private boolean report(String host, String port, NiFiDevice device) {
 
         try {
-            String url = "http://" + host + ":" + port + "/device";
+            String url = "http://" + host + ":" + port + "/api/v1/device";
 
             HttpClient httpClient = HttpClientBuilder.create().build();
             HttpPost postRequest = new HttpPost(url);

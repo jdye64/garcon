@@ -26,8 +26,6 @@
     <packaging>jar</packaging>
 
     <dependencies>
-
-
         <dependency>
             <groupId>org.apache.nifi</groupId>
             <artifactId>nifi-device-registry-api</artifactId>
