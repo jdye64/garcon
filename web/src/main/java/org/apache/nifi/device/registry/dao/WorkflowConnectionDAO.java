@@ -28,5 +28,7 @@ public interface WorkflowConnectionDAO {
 
     List<ConnectionStatus> getLatestPressuredConnectionForDevice(long deviceId);
 
+    ConnectionStatus getPressuredConnectionDetails(long deviceId, String connectionId);
+
     void insertPressuredConnectionForDevice(List<ConnectionStatus> pressuredConnections, long deviceId);
 }

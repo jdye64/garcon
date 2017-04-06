@@ -79,7 +79,7 @@
             var obj = data[i];
             console.log("Device: " + obj);
             $("#contentBody")
-                .append("<tr><td align='center'>" + obj.primaryNICMac + "</td>"
+                .append("<tr><td align='center'><a href='operations/index.html'>" + obj.primaryNICMac + "</a></td>"
                 + "<td align='center'>" + obj.externalIPAddress + "</td>"
                 + "<td align='center'>" + obj.hostname + "</td>"
                 + "<td align='center'>" + obj.availableProcessors + "</td>"

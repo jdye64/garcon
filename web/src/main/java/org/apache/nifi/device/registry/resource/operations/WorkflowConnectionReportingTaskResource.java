@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -19,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.codahale.metrics.annotation.Timed;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -50,8 +50,6 @@ public class WorkflowConnectionReportingTaskResource {
     private WorkflowConnectionService conService = null;
     private WorkflowConnectionDAO conDao = null;
 
-    private ObjectMapper mapper = new ObjectMapper();
-
     public WorkflowConnectionReportingTaskResource(NiFiDeviceRegistryConfiguration conf) {
         this.configuration = conf;
         this.conService = new WorkflowConnectionServiceImpl();
@@ -63,6 +61,14 @@ public class WorkflowConnectionReportingTaskResource {
     public Response getRegisteredDevices() {
         logger.info("Retrieving pressured connections");
         return Response.ok(conDao.getLatestPressuredConnectionForDevice(1l)).build();
+    }
+
+    @GET
+    @Timed
+    @Path("/{id}")
+    public Response getDetailedConnectionStatusForConnectionById(@PathParam("id") String connectionId) {
+        logger.info("Retrieving detailed information for backpressured connection with ID: {}", new Object[]{connectionId});
+        return Response.ok(conDao.getPressuredConnectionDetails(1l, connectionId)).build();
     }
 
     @POST

@@ -1,0 +1,65 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Apache NiFi Device Registry - Connections</title>
+    <meta name="description" content="Apache NiFi Device Registry">
+    <meta name="author" content="Jeremy Dyer">
+
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <![endif]-->
+
+</head>
+
+<body style="height:100%; width:100%;">
+
+<div id="content" style="height:100%; width:100%;">
+    <table border="1" style="height:100%; width:100%;">
+        <thead>
+        <tr>
+            <th>MAC</th>
+            <th>IP</th>
+            <th>Hostname</th>
+            <th># Processors</th>
+            <th>Free Memory</th>
+            <th>Total Memory</th>
+            <th>Free Disk</th>
+            <th>Total Disk</th>
+            <th>Template Version (MD5)</th>
+        </tr>
+        </thead>
+        <tbody id="contentBody">
+
+        </tbody>
+    </table>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $.get("/connection", function(data) {
+        console.log(JSON.stringify(data));
+        for(var i = 0; i < data.length; i++) {
+            var obj = data[i];
+            console.log("Device: " + obj);
+            $("#contentBody")
+                .append("<tr><td align='center'>" + obj.primaryNICMac + "</td>"
+                + "<td align='center'>" + obj.externalIPAddress + "</td>"
+                + "<td align='center'>" + obj.hostname + "</td>"
+                + "<td align='center'>" + obj.availableProcessors + "</td>"
+                + "<td align='center'>" + formatBytes(obj.jvmFreeMemory, 1) + "</td>"
+                + "<td align='center'>" + formatBytes(obj.jvmTotalMemory, 1) + "</td>"
+                + "<td align='center'>" + formatBytes(obj.rootDiskReport.availableBytes, 1) + "</td>"
+                + "<td align='center'>" + formatBytes(obj.rootDiskReport.totalBytes, 1) + "</td>"
+                + "<td align='center'>" + obj.templateMD5 + "</td>"
+                + "</tr>");
+        }
+
+    }, "json");
+</script>
+
+</body>
+</html>

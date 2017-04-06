@@ -51,4 +51,21 @@ public class WorkflowConnectionDAOImpl
         pressuredHistory.add(pressuredConnections);
         db.put(deviceId, pressuredHistory);
     }
+
+    public ConnectionStatus getPressuredConnectionDetails(long deviceId, String connectionId) {
+        List<List<ConnectionStatus>> pressuredHistory = db.get(deviceId);
+        if (pressuredHistory != null) {
+            //Find the pressured connection and returned the ConnectionStatus
+            for (List<ConnectionStatus> csl : pressuredHistory) {
+                for (ConnectionStatus cs : csl) {
+                    if (cs.getId().equalsIgnoreCase(connectionId)) {
+                        return cs;
+                    }
+                }
+            }
+        } else {
+            return null;
+        }
+        return null;
+    }
 }
