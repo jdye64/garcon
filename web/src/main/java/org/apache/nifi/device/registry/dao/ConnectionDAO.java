@@ -1,6 +1,8 @@
-package org.apache.nifi.device.registry.service.impl;
+package org.apache.nifi.device.registry.dao;
 
-import org.apache.nifi.device.registry.service.WorkflowConnectionService;
+import java.util.List;
+
+import org.apache.nifi.controller.status.ConnectionStatus;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -22,6 +24,17 @@ import org.apache.nifi.device.registry.service.WorkflowConnectionService;
  */
 
 
-public class WorkflowConnectionServiceImpl
-    implements WorkflowConnectionService {
+public interface ConnectionDAO {
+
+    long getPressuredConnectionsCountForDevice(String deviceId);
+
+    long getPressuredConnectionBytesForDevice(String deviceId);
+
+    long getPressuedConenctionsObjectCountForDevice(String deviceId);
+
+    List<ConnectionStatus> getLatestPressuredConnectionForDevice(String deviceId);
+
+    ConnectionStatus getPressuredConnectionDetails(String deviceId, String connectionId);
+
+    void insertPressuredConnectionForDevice(List<ConnectionStatus> pressuredConnections, String deviceId);
 }

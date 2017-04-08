@@ -23,7 +23,8 @@ import org.apache.nifi.device.registry.managed.ActiveMQManager;
 import org.apache.nifi.device.registry.managed.Site2SiteManagedProxy;
 import org.apache.nifi.device.registry.resource.DeviceResource;
 import org.apache.nifi.device.registry.resource.NiFiDeviceWebSocketNotifier;
-import org.apache.nifi.device.registry.resource.operations.WorkflowConnectionReportingTaskResource;
+import org.apache.nifi.device.registry.resource.hud.HUDResource;
+import org.apache.nifi.device.registry.resource.operations.ConnectionsResource;
 import org.apache.nifi.device.registry.resource.operations.ProcessorsResource;
 
 import io.dropwizard.Application;
@@ -65,8 +66,9 @@ public class NiFiDeviceRegistry
         environment.jersey().register(new DeviceResource(configuration));
 
         //Operational resources
-        environment.jersey().register(new WorkflowConnectionReportingTaskResource(configuration));
+        environment.jersey().register(new ConnectionsResource(configuration));
         environment.jersey().register(new ProcessorsResource(configuration));
+        environment.jersey().register(new HUDResource(configuration));
     }
 
     public static void main(String[] args) throws Exception {

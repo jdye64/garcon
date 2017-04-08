@@ -27,7 +27,7 @@
     var connectionId = parameters[0].split("=");
     connectionId = unescape(connectionId[1]);
 
-    var conString = "/connection/" + connectionId;
+    var conString = "/api/v18/connection/" + connectionId;
 
     $.get(conString, function(data) {
         console.log(JSON.stringify(data));

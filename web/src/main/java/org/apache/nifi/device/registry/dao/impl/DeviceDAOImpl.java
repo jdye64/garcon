@@ -29,6 +29,17 @@ import org.apache.nifi.device.registry.dao.DeviceDAO;
 public class DeviceDAOImpl
     implements DeviceDAO {
 
+    private static DeviceDAOImpl instance = null;
+    protected DeviceDAOImpl() {
+        // Exists only to defeat instantiation.
+    }
+    public static DeviceDAOImpl getInstance() {
+        if(instance == null) {
+            instance = new DeviceDAOImpl();
+        }
+        return instance;
+    }
+
     List<Device> db = new ArrayList<Device>();
 
     public Device insert(Device device) {
@@ -44,5 +55,9 @@ public class DeviceDAOImpl
 
     public List<Device> findAll() {
         return db;
+    }
+
+    public int getTotalNumDevice() {
+        return db.size();
     }
 }

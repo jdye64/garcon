@@ -39,7 +39,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
 
-    $.get("/connection", function(data) {
+    $.get("/api/v1/connection", function(data) {
         console.log(JSON.stringify(data));
         for(var i = 0; i < data.length; i++) {
             var obj = data[i];

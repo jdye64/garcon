@@ -45,4 +45,14 @@ public interface ProcessorsDAO {
     List<ProcessorStatus> getProcessorStatusesForDevice(long deviceId);
 
     void insertDProcessorStatusesForDevice(long deviceId, List<ProcessorStatus> invalidProcessors);
+
+    int getTotalNumberOfProcessors(Long deviceId);
+
+    int getNumberOfRunningProcessors(Long deviceId);
+
+    int getNumberOfDisabledProcessors(Long deviceId);
+
+    int getNumberOfStoppedProcessors(Long deviceId);
+
+    int getNumberOfInvalidProcessors(Long deviceId);
 }

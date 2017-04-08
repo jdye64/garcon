@@ -9,3 +9,10 @@ web/.DS_Store
 .DS_Store
 
 activemq-data
+
+# Ignore HTML testing components for time being
+web/src/main/resources/html5up-dimension.zip
+web/src/main/resources/html5up-identity.zip
+web/src/main/resources/assets/angular-seed
+web/src/main/resources/assets/html
+

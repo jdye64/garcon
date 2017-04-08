@@ -45,7 +45,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Created on 3/10/17.
  */
 
-@Path("/device")
+@Path("/api/v1/device")
 @Produces(MediaType.APPLICATION_JSON)
 public class DeviceResource {
 
@@ -63,7 +63,7 @@ public class DeviceResource {
     public DeviceResource(NiFiDeviceRegistryConfiguration conf) {
         this.configuration = conf;
         this.deviceService = new DeviceServiceImpl();
-        this.deviceDAO = new DeviceDAOImpl();
+        this.deviceDAO = DeviceDAOImpl.getInstance();
     }
 
     @GET

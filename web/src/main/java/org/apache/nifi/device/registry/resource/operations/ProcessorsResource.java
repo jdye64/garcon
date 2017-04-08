@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -13,6 +14,8 @@ import org.apache.nifi.controller.status.ProcessorStatus;
 import org.apache.nifi.device.registry.NiFiDeviceRegistryConfiguration;
 import org.apache.nifi.device.registry.dao.ProcessorsDAO;
 import org.apache.nifi.device.registry.dao.impl.ProcessorsDAOImpl;
+import org.apache.nifi.device.registry.dto.DeviceProcessorsHUD;
+import org.apache.nifi.device.registry.dto.ProcessorsHUD;
 import org.apache.nifi.device.registry.service.ProcessorsService;
 import org.apache.nifi.device.registry.service.impl.ProcessorsServiceImpl;
 import org.slf4j.Logger;
@@ -39,7 +42,7 @@ import com.codahale.metrics.annotation.Timed;
  * Created on 4/5/17.
  */
 
-@Path("/processors")
+@Path("/api/v1/processors")
 @Produces(MediaType.APPLICATION_JSON)
 public class ProcessorsResource {
 
@@ -52,7 +55,36 @@ public class ProcessorsResource {
     public ProcessorsResource(NiFiDeviceRegistryConfiguration conf) {
         this.configuration = conf;
         this.processorsService = new ProcessorsServiceImpl();
-        this.processorsDAO = new ProcessorsDAOImpl();
+        this.processorsDAO = ProcessorsDAOImpl.getInstance();
+    }
+
+    @GET
+    @Timed
+    @Path("/hud")
+    public Response getProcessorsHUD() {
+        logger.info("Retrieving Processors HUD");
+        ProcessorsHUD hud = new ProcessorsHUD();
+        hud.setTotalNumProcessors(processorsDAO.getTotalNumberOfProcessors(null));
+        hud.setNumDisabledProcessors(processorsDAO.getNumberOfDisabledProcessors(null));
+        hud.setNumInvalidProcessors(processorsDAO.getNumberOfInvalidProcessors(null));
+        hud.setNumRunningProcessors(processorsDAO.getNumberOfRunningProcessors(null));
+        hud.setNumStoppedProcessors(processorsDAO.getNumberOfStoppedProcessors(null));
+        return Response.ok(hud).build();
+    }
+
+    @GET
+    @Timed
+    @Path("{deviceId}/hud")
+    public Response getProcessorsHUDForDevice(@PathParam("deviceId") Long deviceId) {
+        logger.info("Retrieving Processors HUD");
+        DeviceProcessorsHUD hud = new DeviceProcessorsHUD();
+        hud.setDeviceId(deviceId);
+        hud.setTotalNumProcessors(processorsDAO.getTotalNumberOfProcessors(deviceId));
+        hud.setNumDisabledProcessors(processorsDAO.getNumberOfDisabledProcessors(deviceId));
+        hud.setNumInvalidProcessors(processorsDAO.getNumberOfInvalidProcessors(deviceId));
+        hud.setNumRunningProcessors(processorsDAO.getNumberOfRunningProcessors(deviceId));
+        hud.setNumStoppedProcessors(processorsDAO.getNumberOfStoppedProcessors(deviceId));
+        return Response.ok(hud).build();
     }
 
     @GET

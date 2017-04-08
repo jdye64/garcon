@@ -47,7 +47,7 @@ import com.codahale.metrics.annotation.Timed;
 @Metered
 @Timed
 @ExceptionMetered
-@ServerEndpoint("/registry/ws")
+@ServerEndpoint("/api/v1/registry/ws")
 public class NiFiDeviceWebSocketNotifier {
 
     private final WebsocketClientSessionDAO websocketSessions = new WebsocketClientSessionDAOImpl();

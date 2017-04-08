@@ -1,4 +1,4 @@
-package org.apache.nifi.device.registry.service;
+package org.apache.nifi.device.registry.dto;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,9 +16,28 @@ package org.apache.nifi.device.registry.service;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * <p>
- * Created on 3/30/17.
+ * Created on 4/6/17.
  */
 
 
-public interface WorkflowConnectionService {
+public class HUD {
+
+    private int totalNumDevices;
+    private int totalNumProcessors;
+
+    public int getTotalNumDevices() {
+        return totalNumDevices;
+    }
+
+    public void setTotalNumDevices(int totalNumDevices) {
+        this.totalNumDevices = totalNumDevices;
+    }
+
+    public int getTotalNumProcessors() {
+        return totalNumProcessors;
+    }
+
+    public void setTotalNumProcessors(int totalNumProcessors) {
+        this.totalNumProcessors = totalNumProcessors;
+    }
 }

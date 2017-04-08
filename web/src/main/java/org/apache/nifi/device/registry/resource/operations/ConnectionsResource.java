@@ -12,10 +12,11 @@ import javax.ws.rs.core.Response;
 
 import org.apache.nifi.controller.status.ConnectionStatus;
 import org.apache.nifi.device.registry.NiFiDeviceRegistryConfiguration;
-import org.apache.nifi.device.registry.dao.WorkflowConnectionDAO;
-import org.apache.nifi.device.registry.dao.impl.WorkflowConnectionDAOImpl;
-import org.apache.nifi.device.registry.service.WorkflowConnectionService;
-import org.apache.nifi.device.registry.service.impl.WorkflowConnectionServiceImpl;
+import org.apache.nifi.device.registry.dao.ConnectionDAO;
+import org.apache.nifi.device.registry.dao.impl.ConnectionDAOImpl;
+import org.apache.nifi.device.registry.dto.ConnectionsHUD;
+import org.apache.nifi.device.registry.service.ConnectionService;
+import org.apache.nifi.device.registry.service.impl.ConnectionServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,27 +41,27 @@ import com.codahale.metrics.annotation.Timed;
  * Created on 3/30/17.
  */
 
-@Path("/connection")
+@Path("/api/v1/connection")
 @Produces(MediaType.APPLICATION_JSON)
-public class WorkflowConnectionReportingTaskResource {
+public class ConnectionsResource {
 
-    private static final Logger logger = LoggerFactory.getLogger(WorkflowConnectionReportingTaskResource.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConnectionsResource.class);
 
     private NiFiDeviceRegistryConfiguration configuration;
-    private WorkflowConnectionService conService = null;
-    private WorkflowConnectionDAO conDao = null;
+    private ConnectionService connectionService = null;
+    private ConnectionDAO conDao = null;
 
-    public WorkflowConnectionReportingTaskResource(NiFiDeviceRegistryConfiguration conf) {
+    public ConnectionsResource(NiFiDeviceRegistryConfiguration conf) {
         this.configuration = conf;
-        this.conService = new WorkflowConnectionServiceImpl();
-        this.conDao = new WorkflowConnectionDAOImpl();
+        this.connectionService = ConnectionServiceImpl.getInstance();
+        this.conDao = ConnectionDAOImpl.getInstance();
     }
 
     @GET
     @Timed
     public Response getRegisteredDevices() {
         logger.info("Retrieving pressured connections");
-        return Response.ok(conDao.getLatestPressuredConnectionForDevice(1l)).build();
+        return Response.ok(conDao.getLatestPressuredConnectionForDevice("1")).build();
     }
 
     @GET
@@ -68,7 +69,16 @@ public class WorkflowConnectionReportingTaskResource {
     @Path("/{id}")
     public Response getDetailedConnectionStatusForConnectionById(@PathParam("id") String connectionId) {
         logger.info("Retrieving detailed information for backpressured connection with ID: {}", new Object[]{connectionId});
-        return Response.ok(conDao.getPressuredConnectionDetails(1l, connectionId)).build();
+        return Response.ok(conDao.getPressuredConnectionDetails("1", connectionId)).build();
+    }
+
+    @GET
+    @Timed
+    @Path("/hud")
+    public Response getConnectionsHUD() {
+        logger.info("Retrieving registry connection HUD");
+        ConnectionsHUD hud = connectionService.generateConnectionsHUD(null);
+        return Response.ok(hud).build();
     }
 
     @POST
@@ -76,7 +86,7 @@ public class WorkflowConnectionReportingTaskResource {
     @Path("/pressured")
     public Response addPressuredConnections(List<ConnectionStatus> pressuredConnections) {
         logger.info("Pressured Connects: " + pressuredConnections);
-        conDao.insertPressuredConnectionForDevice(pressuredConnections, 1l);
+        conDao.insertPressuredConnectionForDevice(pressuredConnections, "1");
         return Response.ok().build();
     }
 }

@@ -2,8 +2,6 @@ package org.apache.nifi.processors.rt;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
@@ -14,13 +12,9 @@ import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -32,13 +26,13 @@ import org.apache.nifi.components.PropertyDescriptor;
 import org.apache.nifi.device.registry.api.DiskReport;
 import org.apache.nifi.device.registry.api.NiFiDevice;
 import org.apache.nifi.processor.util.StandardValidators;
-import org.apache.nifi.properties.NiFiPropertiesLoader;
 import org.apache.nifi.reporting.AbstractReportingTask;
 import org.apache.nifi.reporting.ReportingContext;
-import org.apache.nifi.util.NiFiProperties;
-import org.codehaus.jackson.map.ObjectMapper;
+import org.apache.nifi.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -215,7 +209,7 @@ public class DeviceRegistryReportingTask
     private NiFiDevice populateDiskSpaceInfo(ReportingContext reportingContext, NiFiDevice device) {
 
         try {
-            NiFiProperties properties = NiFiPropertiesLoader.loadDefaultWithKeyFromBootstrap();
+            //NiFiProperties properties = NiFiPropertiesLoader.loadDefaultWithKeyFromBootstrap();
             //device.setNiFiProperties(properties);
 
 //            Path nifiFlowConfFile = properties.getFlowConfigurationFile();
@@ -225,45 +219,45 @@ public class DeviceRegistryReportingTask
 //            String templateFilePath = templatePath.toString() + File.separator + "flow.xml.gz";
 //            logger.info("TemplateFilePath: " + templateFilePath);
 
-            try {
-                FileInputStream fis = new FileInputStream(properties.getFlowConfigurationFile());
-                String md5 = org.apache.commons.codec.digest.DigestUtils.md5Hex(fis);
-                fis.close();
-                device.setTemplateMD5(md5);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                logger.error("Error creating MD5 Hash for NiFi Template", ex);
-            }
+//            try {
+//                FileInputStream fis = new FileInputStream(properties.getFlowConfigurationFile());
+//                String md5 = org.apache.commons.codec.digest.DigestUtils.md5Hex(fis);
+//                fis.close();
+//                device.setTemplateMD5(md5);
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//                logger.error("Error creating MD5 Hash for NiFi Template", ex);
+//            }
 
             //Set the disk report
             device.setRootDiskReport(createDiskReportForPath(Paths.get("/")));
-            device.setDbDiskReport(createDiskReportForPath(properties.getDatabaseRepositoryPath()));
-            device.setFlowfileRepoDiskReport(createDiskReportForPath(properties.getFlowFileRepositoryPath()));
+            //device.setDbDiskReport(createDiskReportForPath(properties.getDatabaseRepositoryPath()));
+            //device.setFlowfileRepoDiskReport(createDiskReportForPath(properties.getFlowFileRepositoryPath()));
 
-            Map<String, Path> contentPaths = properties.getContentRepositoryPaths();
-            Map<String, DiskReport> contentDiskReports = new HashMap<>();
-            Iterator<String> itr = contentPaths.keySet().iterator();
+            //Map<String, Path> contentPaths = properties.getContentRepositoryPaths();
+//            Map<String, DiskReport> contentDiskReports = new HashMap<>();
+//            Iterator<String> itr = contentPaths.keySet().iterator();
+//
+//            while (itr.hasNext()) {
+//                String key = itr.next();
+//                Path path = contentPaths.get(key);
+//                contentDiskReports.put(key, createDiskReportForPath(path));
+//            }
+//            device.setContentRepoDiskReport(contentDiskReports);
+//
+//            Map<String, Path> provPaths = properties.getProvenanceRepositoryPaths();
+//            Map<String, DiskReport> provDiskReports = new HashMap<>();
+//            itr = provDiskReports.keySet().iterator();
+//
+//            while (itr.hasNext()) {
+//                String key = itr.next();
+//                Path path = provPaths.get(key);
+//                provDiskReports.put(key, createDiskReportForPath(path));
+//            }
+//            device.setProvRepoDiskReport(provDiskReports);
 
-            while (itr.hasNext()) {
-                String key = itr.next();
-                Path path = contentPaths.get(key);
-                contentDiskReports.put(key, createDiskReportForPath(path));
-            }
-            device.setContentRepoDiskReport(contentDiskReports);
 
-            Map<String, Path> provPaths = properties.getProvenanceRepositoryPaths();
-            Map<String, DiskReport> provDiskReports = new HashMap<>();
-            itr = provDiskReports.keySet().iterator();
-
-            while (itr.hasNext()) {
-                String key = itr.next();
-                Path path = provPaths.get(key);
-                provDiskReports.put(key, createDiskReportForPath(path));
-            }
-            device.setProvRepoDiskReport(provDiskReports);
-
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             logger.error("Error encountered in populateDiskInfo function", e);
         }

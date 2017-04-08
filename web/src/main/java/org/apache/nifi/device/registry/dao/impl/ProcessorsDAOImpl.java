@@ -2,6 +2,7 @@ package org.apache.nifi.device.registry.dao.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,17 @@ import org.apache.nifi.device.registry.dao.ProcessorsDAO;
 
 public class ProcessorsDAOImpl
     implements ProcessorsDAO {
+
+    private static ProcessorsDAOImpl instance = null;
+    protected ProcessorsDAOImpl() {
+        // Exists only to defeat instantiation.
+    }
+    public static ProcessorsDAOImpl getInstance() {
+        if(instance == null) {
+            instance = new ProcessorsDAOImpl();
+        }
+        return instance;
+    }
 
     Map<Long, List<List<ProcessorStatus>>> db_stopped = new HashMap<Long, List<List<ProcessorStatus>>>();
     Map<Long, List<List<ProcessorStatus>>> db_invalid = new HashMap<Long, List<List<ProcessorStatus>>>();
@@ -130,5 +142,46 @@ public class ProcessorsDAOImpl
         }
         stoppedHistory.add(invalidProcessors);
         db_statuses.put(deviceId, stoppedHistory);
+    }
+
+    public int getTotalNumberOfProcessors(Long deviceId) {
+        return countDBSizeForDevice(db_statuses, deviceId);
+    }
+
+    public int getNumberOfRunningProcessors(Long deviceId) {
+        return countDBSizeForDevice(db_running, deviceId);
+    }
+
+    public int getNumberOfDisabledProcessors(Long deviceId) {
+        return countDBSizeForDevice(db_disabled, deviceId);
+    }
+
+    public int getNumberOfStoppedProcessors(Long deviceId) {
+        return countDBSizeForDevice(db_stopped, deviceId);
+    }
+
+    public int getNumberOfInvalidProcessors(Long deviceId) {
+        return countDBSizeForDevice(db_invalid, deviceId);
+    }
+
+
+    private int countDBSizeForDevice(Map<Long, List<List<ProcessorStatus>>> db, Long deviceId) {
+        int count = 0;
+        if (deviceId != null) {
+            List<List<ProcessorStatus>> facts = db.get(deviceId);
+            for (List<ProcessorStatus> ps : facts) {
+                count += ps.size();
+            }
+        } else {
+            Iterator<Long> itr = db.keySet().iterator();
+            while (itr.hasNext()) {
+                Long key = itr.next();
+                List<List<ProcessorStatus>> facts = db.get(key);
+                for (List<ProcessorStatus> ps : facts) {
+                    count += ps.size();
+                }
+            }
+        }
+        return count;
     }
 }

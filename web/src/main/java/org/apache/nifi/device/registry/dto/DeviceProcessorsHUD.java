@@ -1,8 +1,4 @@
-package org.apache.nifi.device.registry.dao;
-
-import java.util.List;
-
-import org.apache.nifi.controller.status.ConnectionStatus;
+package org.apache.nifi.device.registry.dto;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -20,15 +16,20 @@ import org.apache.nifi.controller.status.ConnectionStatus;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * <p>
- * Created on 3/30/17.
+ * Created on 4/6/17.
  */
 
 
-public interface WorkflowConnectionDAO {
+public class DeviceProcessorsHUD
+    extends ProcessorsHUD {
 
-    List<ConnectionStatus> getLatestPressuredConnectionForDevice(long deviceId);
+    private Long deviceId;
 
-    ConnectionStatus getPressuredConnectionDetails(long deviceId, String connectionId);
+    public Long getDeviceId() {
+        return deviceId;
+    }
 
-    void insertPressuredConnectionForDevice(List<ConnectionStatus> pressuredConnections, long deviceId);
+    public void setDeviceId(Long deviceId) {
+        this.deviceId = deviceId;
+    }
 }
