@@ -34,6 +34,10 @@ function getAllDevices() {
 	}, "json");
 }
 
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 function getPressuredConnections() {
 	console.log("Retrieving the pressured connections");
 	$.get("/api/v1/connection", function(data) {
@@ -57,7 +61,11 @@ function getProcessorsHUD() {
 	console.log("Retrieving the HUD for all processors");
 	$.get("/api/v1/processors/hud", function(data) {
 	    console.log(JSON.stringify(data));
-	    $("#totalNumProcessors").append(data.totalNumProcessors);
+	    $("#totalNumProcessors").append(numberWithCommas(data["totalNumProcessors"]));
+	    $("#numStoppedProcessors").append(numberWithCommas(data["numStoppedProcessors"]));
+		$("#numInvalidProcessors").append(numberWithCommas(data["numInvalidProcessors"]));
+		$("#numDisabledProcessors").append(numberWithCommas(data["numDisabledProcessors"]));
+		$("#numRunningProcessors").append(numberWithCommas(data["numRunningProcessors"]));
 	}, "json");
 }
 
@@ -68,22 +76,14 @@ function getConnectionsHUD() {
 	console.log("Retrieving connections HUD");
 	$.get("/api/v1/connection/hud", function(data) {
 	    console.log(JSON.stringify(data));
-	    for(var i = 0; i < data.length; i++) {
-	        var obj = data[i];
-	        console.log("Pressured Connection: " + obj);
-	        $("#pressuredConnectionBody")
-	            .append("<tr><td align='center'>" + obj.id + "</td>"
-	            + "<td align='center'>" + obj.backPressureObjectThreshold + "</td>"
-	            + "<td align='center'>" + obj.backPressureDataSizeThreshold + "</td>"
-	            + "<td align='center'>" + obj.queuedCount + "</td>"
-	            + "<td align='center'>" + obj.queuedBytes + "</td>"
-	            + "</tr>");
-	    }
-
+	    $("#backPressuredConnections").append(data["backPressuredConnections"] + "/" + data["totalConnections"]);
+	    $("#backPressuredBytes").append(formatBytes(data["backPressuredBytes"], 1));
+	    $("#backPressuredObjects").append(numberWithCommas(data["backPressuredObjects"]));
 	}, "json");
 }
 
 //onload invocations.
 getAllDevices();
+getProcessorsHUD();
 getPressuredConnections();
 getConnectionsHUD();

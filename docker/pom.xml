@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor
+license agreements. See the NOTICE file distributed with this work for additional
+information regarding copyright ownership. The ASF licenses this file to
+You under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of
+the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required
+by applicable law or agreed to in writing, software distributed under the
+License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+OF ANY KIND, either express or implied. See the License for the specific
+language governing permissions and limitations under the License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>nifi-device-registry</artifactId>
+        <groupId>org.apache.nifi</groupId>
+        <version>1.2.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <properties>
+        <nifi.device.registry.version>1.2.0-SNAPSHOT</nifi.device.registry.version>
+    </properties>
+
+    <artifactId>nifi-device-registry-docker</artifactId>
+    <packaging>pom</packaging>
+
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>0.4.13</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>tag-image</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>tag</goal>
+                                </goals>
+                                <configuration>
+                                    <image>nifideviceregistry:${nifi.device.registry.version}</image>
+                                    <newName>jdye64/nifideviceregistry:${nifi.device.registry.version}</newName>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <imageName>nifideviceregistry</imageName>
+                            <dockerDirectory>${project.basedir}/dockermaven</dockerDirectory>
+                            <imageTags>
+                                <imageTag>${nifi.device.registry.version}</imageTag>
+                            </imageTags>
+                            <buildArgs>
+                                <NIFI_DEVICE_REGISTRY_VERSION>${nifi.device.registry.version}</NIFI_DEVICE_REGISTRY_VERSION>
+                                <NIFI_DEVICE_REGISTRY_BINARY>nifi-device-registry-web-${nifi.device.registry.version}.jar</NIFI_DEVICE_REGISTRY_BINARY>
+                                <NIFI_DEVICE_REGISTRY_YAML>DeviceRegistry.yml</NIFI_DEVICE_REGISTRY_YAML>
+                            </buildArgs>
+                            <resources>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.basedir}/../web/target</directory>
+                                    <include>/nifi-device-registry-web-${nifi.device.registry.version}.jar</include>
+                                    <include>DeviceRegistry.yml</include>
+                                </resource>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.basedir}/../web</directory>
+                                    <include>DeviceRegistry.yml</include>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

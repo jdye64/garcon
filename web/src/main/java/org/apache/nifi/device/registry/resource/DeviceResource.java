@@ -76,7 +76,6 @@ public class DeviceResource {
     @POST
     @Timed
     public Response announceAvailability(NiFiDevice device) {
-        logger.info("Message: " + device.toString());
 
         deviceDAO.insert(device);
 

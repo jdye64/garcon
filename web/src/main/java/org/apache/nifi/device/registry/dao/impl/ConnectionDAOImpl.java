@@ -60,6 +60,8 @@ public class ConnectionDAOImpl
         List<List<ConnectionStatus>> pressuredHistory = db.get(deviceId);
         if (pressuredHistory == null) {
             pressuredHistory = new ArrayList<List<ConnectionStatus>>();
+        } else {
+            //Get the current connections for this device and reset them
         }
         pressuredHistory.add(pressuredConnections);
         db.put(deviceId, pressuredHistory);
@@ -106,6 +108,31 @@ public class ConnectionDAOImpl
         return pressuredConnectionCount;
     }
 
+    public long getTotalConnectionsCountForDevice(String deviceId) {
+
+        long totalConnections = 0l;
+
+        if (!StringUtils.isEmpty(deviceId)) {
+            List<List<ConnectionStatus>> deviceConnections = db.get(deviceId);  //Basically at the processor level. could have multiples of course
+            for (List<ConnectionStatus> con : deviceConnections) {
+                totalConnections =+ con.size();
+            }
+
+        } else {
+            Iterator<String> itr = db.keySet().iterator();
+            while (itr.hasNext()) {
+                String devId = itr.next();
+                List<List<ConnectionStatus>> deviceConnections =  db.get(devId);
+                for (List<ConnectionStatus> con : deviceConnections) {
+                    totalConnections =+ con.size();
+                }
+            }
+        }
+
+        return totalConnections;
+
+    }
+
     public long getPressuredConnectionBytesForDevice(String deviceId) {
         long pressuredConnectionBytes = 0l;
 
@@ -113,7 +140,7 @@ public class ConnectionDAOImpl
             List<List<ConnectionStatus>> deviceConnections = db.get(deviceId);  //Basically at the processor level. could have multiples of course
             for (List<ConnectionStatus> con : deviceConnections) {
                 for (ConnectionStatus cs : con) {
-                    pressuredConnectionBytes += cs.getQueuedBytes();
+                    pressuredConnectionBytes = pressuredConnectionBytes + cs.getQueuedBytes();
                 }
             }
 
@@ -124,7 +151,7 @@ public class ConnectionDAOImpl
                 List<List<ConnectionStatus>> deviceConnections =  db.get(devId);
                 for (List<ConnectionStatus> con : deviceConnections) {
                     for (ConnectionStatus cs : con) {
-                        pressuredConnectionBytes += cs.getQueuedBytes();
+                        pressuredConnectionBytes = pressuredConnectionBytes + cs.getQueuedBytes();
                     }
                 }
             }
@@ -140,7 +167,7 @@ public class ConnectionDAOImpl
             List<List<ConnectionStatus>> deviceConnections = db.get(deviceId);  //Basically at the processor level. could have multiples of course
             for (List<ConnectionStatus> con : deviceConnections) {
                 for (ConnectionStatus cs : con) {
-                    pressuredConnectionObjects += cs.getQueuedCount();
+                    pressuredConnectionObjects = pressuredConnectionObjects +  cs.getQueuedCount();
                 }
             }
 
@@ -151,7 +178,7 @@ public class ConnectionDAOImpl
                 List<List<ConnectionStatus>> deviceConnections =  db.get(devId);
                 for (List<ConnectionStatus> con : deviceConnections) {
                     for (ConnectionStatus cs : con) {
-                        pressuredConnectionObjects += cs.getQueuedCount();
+                        pressuredConnectionObjects = pressuredConnectionObjects +  cs.getQueuedCount();
                     }
                 }
             }

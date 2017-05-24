@@ -12,9 +12,14 @@
 
     <modules>
         <module>web</module>
-        <module>reportingtasks</module>
+        <module>reportingtasks/nifi</module>
         <module>api</module>
+        <module>docker</module>
     </modules>
+
+    <properties>
+        <nifi.version>1.2.0</nifi.version>
+    </properties>
 
     <url>http://nifi.apache.org</url>
     <organization>

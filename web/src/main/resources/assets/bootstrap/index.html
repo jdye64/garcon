@@ -47,24 +47,29 @@
 </nav>
 
 <div class="container-fluid">
-  <div class="row content">
+  <div class="row">
     <div class="col-sm-2 sidenav hidden-xs">
       <h2><img src="images/nifi_logo.png" width="150px"/></h2>
       <ul class="nav nav-pills nav-stacked">
-        <li class="active"><a href="#section1">Devices</a></li>
-        <li><a href="#section2">Workflow Health</a></li>
-        <li><a href="#section3">ReportingTask Portal</a></li>
-        <li><a href="#section3">Provenance Archive</a></li>
+      	<li class="active"><a href="dashboard">Dashboard</a></li>
+        <li><a href="devices">Devices</a></li>
+        <li><a href="connections">Connections</a></li>
+        <li><a href="health">Workflow Health</a></li>
+        <li><a href="rtportal">ReportingTask Portal</a></li>
+        <li><a href="provArchive">Provenance Archive</a></li>
       </ul>
+      <!--
       <ul class="nav navbar-nav navbar-right">
 	    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
 	    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 	  </ul>
+	-->
     </div>
     <br>
-    
-    <div class="col-sm-10">
-      <div class="well">
+
+    <!-- Devices Table -->
+    <div id="devices" class="content col-sm-10" style="display: none;">
+    	<div class="well">
         <h4>Devices</h4>
         <table class="table">
 	        <thead>
@@ -84,7 +89,16 @@
 	        </tbody>
 	    </table>
       </div>
-      <div class="well">
+    </div>
+
+    <!-- Workflow Health -->
+    <div id="health" class="content col-sm-10" style="display: none;">
+    	<p>Show workflow health</p>
+    </div>
+
+    <!-- NiFi Connections Info -->
+    <div id="connections" class="content col-sm-10" style="display: none;">
+    	<div class="well">
         <h4>Backpressured Connections</h4>
         <table class="table">
 	        <thead>
@@ -99,37 +113,91 @@
 	        <tbody id="pressuredConnectionBody"></tbody>
 	    </table>
       </div>
+    </div>
+
+    <!-- NiFi Processors Info -->
+    <div id="processors" class="content col-sm-10" style="display: none;">
+    	<div class="well">
+        <h4>Processors</h4>
+        <table class="table">
+	        <thead>
+	            <tr>
+	                <th>Connection ID</th>
+	                <th>Backpressure Object Threshold</th>
+	                <th>Backpressure Size Threshold</th>
+	                <th>Queued Count</th>
+	                <th>Queued Bytes</th>
+	            </tr>
+	        </thead>
+	        <tbody id="processorsBody"></tbody>
+	    </table>
+      </div>
+    </div>
+
+    <!-- ReportingTask Portal -->
+    <div id="rtportal" class="content col-sm-10" style="display: none;">
+    	<p>Show reporting task portal elements</p>
+    </div>
+
+    <!-- Provenance Archive -->
+    <div id="provArchive" class="content col-sm-10" style="display: none;">
+    	<p>Provenacne archive</p>
+    </div>
+    
+    <div id="dashboard" class="content col-sm-10">
+
+    	<!-- Devices HUD -->
+    	<div class="row">
+			<div class="col-sm-4">
+				<div class="well">
+					<h4>Devices</h4>
+        			<p id="nifiDevicesWell"></p>
+				</div>
+        	</div>
+        	<div class="col-sm-4">
+				<div class="well">
+					<h4>MiNiFi Java Devices</h4>
+        			<p id="minifiJavaDevicesWell"></p>
+				</div>
+        	</div>
+        	<div class="col-sm-4">
+				<div class="well">
+					<h4>MiNiFi C++ Devices</h4>
+        			<p id="minifiCppDevicesWell"></p>
+				</div>
+        	</div>
+    	</div>
 
       <!-- NiFi Processors HUD -->
       <div class="row">
         <div class="col-sm-2">
           <div class="well">
             <h4>Total Processors</h4>
-            <p>1 Million</p> 
+            <p id="totalNumProcessors"></p> 
           </div>
         </div>
         <div class="col-sm-2">
           <div class="well">
             <h4>Stopped Processors</h4>
-            <p>100 Million</p> 
+            <p id="numStoppedProcessors"></p>
           </div>
         </div>
         <div class="col-sm-2">
           <div class="well">
             <h4>Invalid Processors</h4>
-            <p>10 Million</p> 
+            <p id="numInvalidProcessors"></p>
           </div>
         </div>
         <div class="col-sm-2">
           <div class="well">
             <h4>Running Processors</h4>
-            <p>30%</p> 
+            <p id="numRunningProcessors"></p>
           </div>
         </div>
         <div class="col-sm-2">
           <div class="well">
             <h4>Disabled Processors</h4>
-            <p>30%</p> 
+            <p id="numDisabledProcessors"></p>
           </div>
         </div>
         <div class="col-sm-2">
@@ -150,14 +218,14 @@
         </div>
         <div class="col-sm-2">
           <div class="well">
-            <h4>Average Throughput</h4>
-            <p>6 mbps</p> 
+            <h4>Backpressured Bytes</h4>
+            <p id="backPressuredBytes"></p> 
           </div>
         </div>
         <div class="col-sm-2">
           <div class="well">
-            <h4>Average Runtime</h4>
-            <p>30%</p> 
+            <h4>Backpressured Objects</h4>
+            <p id="backPressuredObjects"></p> 
           </div>
         </div>
         <div class="col-sm-2">
@@ -197,5 +265,6 @@
 </body>
 
 <script src="assets/js/main.js"></script>
+<script src="assets/js/bootstrap-support.js"></script>
 
 </html>

@@ -28,6 +28,8 @@ public interface ConnectionDAO {
 
     long getPressuredConnectionsCountForDevice(String deviceId);
 
+    long getTotalConnectionsCountForDevice(String deviceId);
+
     long getPressuredConnectionBytesForDevice(String deviceId);
 
     long getPressuedConenctionsObjectCountForDevice(String deviceId);

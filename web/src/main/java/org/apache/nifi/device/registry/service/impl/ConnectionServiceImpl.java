@@ -45,6 +45,7 @@ public class ConnectionServiceImpl
     public ConnectionsHUD generateConnectionsHUD(String deviceId) {
         ConnectionsHUD hud = new ConnectionsHUD();
         hud.setBackPressuredConnections(connectionDAO.getPressuredConnectionsCountForDevice(deviceId));
+        hud.setTotalConnections(connectionDAO.getTotalConnectionsCountForDevice(deviceId));
         hud.setBackPressuredBytes(connectionDAO.getPressuredConnectionBytesForDevice(deviceId));
         hud.setBackPressuredObjects(connectionDAO.getPressuedConenctionsObjectCountForDevice(deviceId));
         return hud;

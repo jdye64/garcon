@@ -61,13 +61,13 @@ public class ConnectionsResource {
     @Timed
     public Response getRegisteredDevices() {
         logger.info("Retrieving pressured connections");
-        return Response.ok(conDao.getLatestPressuredConnectionForDevice("1")).build();
+        return Response.ok(conDao.getLatestPressuredConnectionForDevice(null)).build();
     }
 
     @GET
     @Timed
-    @Path("/{id}")
-    public Response getDetailedConnectionStatusForConnectionById(@PathParam("id") String connectionId) {
+    @Path("/{connectionId}")
+    public Response getDetailedConnectionStatusForConnectionById(@PathParam("connectionId") String connectionId) {
         logger.info("Retrieving detailed information for backpressured connection with ID: {}", new Object[]{connectionId});
         return Response.ok(conDao.getPressuredConnectionDetails("1", connectionId)).build();
     }

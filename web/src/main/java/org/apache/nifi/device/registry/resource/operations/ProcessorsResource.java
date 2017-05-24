@@ -87,13 +87,13 @@ public class ProcessorsResource {
         return Response.ok(hud).build();
     }
 
-    @GET
-    @Timed
-    @Path("/status")
-    public Response getProcessorsStatus() {
-        logger.info("Retrieving processors status");
-        return Response.ok(processorsDAO.getProcessorStatusesForDevice(1l)).build();
-    }
+//    @GET
+//    @Timed
+//    @Path("/status")
+//    public Response getProcessorsStatus() {
+//        logger.info("Retrieving processors status");
+//        return Response.ok(processorsDAO.getProcessorStatusesForDevice(null)).build();
+//    }
 
     @POST
     @Timed

@@ -24,6 +24,7 @@ public class ConnectionsHUD {
 
     private String deviceId;        //If null or empty means the metrics are for the entire registry.
     private long backPressuredConnections;  //Number of connections currently experiencing backpressure.
+    private long totalConnections;
     private long backPressuredBytes;        //Number of bytes that are currently present in back pressured connections (note not all connections)
     private long backPressuredObjects;      //Number of objects that are current present in back pressured connections (note not all connections)
 
@@ -41,6 +42,14 @@ public class ConnectionsHUD {
 
     public void setBackPressuredConnections(long backPressuredConnections) {
         this.backPressuredConnections = backPressuredConnections;
+    }
+
+    public long getTotalConnections() {
+        return totalConnections;
+    }
+
+    public void setTotalConnections(long totalConnections) {
+        this.totalConnections = totalConnections;
     }
 
     public long getBackPressuredBytes() {
