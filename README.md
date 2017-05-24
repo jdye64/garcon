@@ -22,3 +22,10 @@ the entire organization. Often there are several thousand instances of Apache Ni
 single location to better understand the state of NiFi as well as basic informaiton about the devices NiFi is running on.
 
 The UI can be accessed at: ```http://IP_OF_SERVER:8888/assets/index.html```
+
+
+## Running via Docker
+Hands down the easiest way to start using the NiFi Device Registry is via Docker. There are several dependencies and to ease the initial run configuration
+I have offered a single fat Docker image that contains all of the required dependencies. If you don't wish to run via Docker I still recommend looking at the
+Dockerfile as it will give the most up to date way to manually install NiFi Device Registry on your system. You can find more information on running via Docker
+ at [Running with Docker](./docker/README.md)
