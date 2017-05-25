@@ -28,7 +28,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.github.jdye64</groupId>
+            <groupId>org.apache.nifi</groupId>
             <artifactId>abstract-reportingtasks</artifactId>
             <version>1.2.0-SNAPSHOT</version>
         </dependency>
