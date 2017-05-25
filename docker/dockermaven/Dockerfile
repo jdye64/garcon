@@ -52,11 +52,28 @@ RUN cp /phoenix/phoenix-${PHOENIX_VER}-server.jar /hbase/lib
 ADD conf /hbase/conf
 ADD mysql /mysql
 ADD scripts /scripts
+RUN chmod +x /scripts/*
 CMD source /root/.bashrc; sh /hbase/bin/start-hbase.sh; sleep 10; /phoenix/bin/queryserver.py
 
 # Install MySQL for NiFi Device Registry Web tier
 RUN rpm -ivh /mysql/mysql57-community-release-el7-9.noarch.rpm
 RUN yum install -y mysql-server
+
+# Install Apache NiFi
+RUN mkdir /opt/nifi
+RUN wget -nv http://www.gtlib.gatech.edu/pub/apache/nifi/1.2.0/nifi-1.2.0-bin.tar.gz -O /opt/nifi/nifi-1.2.0-bin.tar.gz
+RUN cd /opt/nifi && tar -xzvf nifi-1.2.0-bin.tar.gz
+# Remove the large tar.gz file to help keep the image as small as possible even though its still gonna be big ...
+RUN rm -f /opt/nifi/nifi-1.2.0-bin.tar.gz
+
+# Install the NARs that are built as part of this project and needed for for Apache NiFi Device Registry ecosystem to function properly
+RUN mkdir /opt/nifi/nifideps
+ADD nifi /opt/nifi/nifideps
+ADD nifi-backpressure-nar-$NIFI_DEVICE_REGISTRY_VERSION.nar /opt/nifi/nifi-1.2.0/lib/.
+ADD nifi-clusterstate-nar-$NIFI_DEVICE_REGISTRY_VERSION.nar /opt/nifi/nifi-1.2.0/lib/.
+ADD nifi-provenance-nar-$NIFI_DEVICE_REGISTRY_VERSION.nar /opt/nifi/nifi-1.2.0/lib/.
+ADD nifi-rt-nar-$NIFI_DEVICE_REGISTRY_VERSION.nar /opt/nifi/nifi-1.2.0/lib/.
+ADD nifi-sla-nar-$NIFI_DEVICE_REGISTRY_VERSION.nar /opt/nifi/nifi-1.2.0/lib/.
 
 # Expose all needed ports
 EXPOSE 8080

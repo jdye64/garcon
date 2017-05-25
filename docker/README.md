@@ -6,4 +6,4 @@ Running Apache NiFi Device Registry via Docker is extremely straightforward.
 
 Then after the image has successfully built run.
 
-```docker run -itd jdye64/nifideviceregistry:1.2.0-SNAPSHOT```
+```docker run -d -p 8888:8888 -p 8080:8080 jdye64/nifideviceregistry:1.2.0-SNAPSHOT```

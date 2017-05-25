@@ -77,6 +77,31 @@ language governing permissions and limitations under the License. -->
                                     <directory>${project.basedir}/../web</directory>
                                     <include>DeviceRegistry.yml</include>
                                 </resource>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.basedir}/../reportingtasks/nifi/backpressure-reportingtasks/nifi-backpressure-nar/target</directory>
+                                    <include>/nifi-backpressure-nar-${nifi.device.registry.version}.nar</include>
+                                </resource>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.basedir}/../reportingtasks/nifi/deviceregistry-reportingtasks/nifi-rt-nar/target</directory>
+                                    <include>/nifi-rt-nar-${nifi.device.registry.version}.nar</include>
+                                </resource>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.basedir}/../reportingtasks/nifi/clusterstate-reportingtasks/nifi-clusterstate-nar/target</directory>
+                                    <include>/nifi-clusterstate-nar-${nifi.device.registry.version}.nar</include>
+                                </resource>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.basedir}/../reportingtasks/nifi/provenance-reportingtasks/nifi-provenance-nar/target</directory>
+                                    <include>/nifi-provenance-nar-${nifi.device.registry.version}.nar</include>
+                                </resource>
+                                <resource>
+                                    <targetPath>/</targetPath>
+                                    <directory>${project.basedir}/../reportingtasks/nifi/sla-reportingtasks/nifi-sla-nar/target</directory>
+                                    <include>/nifi-sla-nar-${nifi.device.registry.version}.nar</include>
+                                </resource>
                             </resources>
                         </configuration>
                     </plugin>
