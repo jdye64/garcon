@@ -7,7 +7,7 @@ nohup java -jar $NIFI_DEVICE_REGISTRY_BASE_DIR/nifi-device-registry-web-1.2.0-SN
 
 # Set MySQL environment parameters
 export MYSQL_ROOT_PASSWORD=nifidevregistry
-export MYSQL_DATABASE=device_registry
+export MYSQL_DATABASE=DEVICE_REGISTRY
 
 # Start MySQL
 /scripts/mysql.sh mysqld --user=root &
