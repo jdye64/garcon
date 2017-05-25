@@ -58,6 +58,7 @@ CMD source /root/.bashrc; sh /hbase/bin/start-hbase.sh; sleep 10; /phoenix/bin/q
 # Install MySQL for NiFi Device Registry Web tier
 RUN rpm -ivh /mysql/mysql57-community-release-el7-9.noarch.rpm
 RUN yum install -y mysql-server
+ADD docker-entrypoint-initdb.d /docker-entrypoint-initdb.d
 
 # Install Apache NiFi
 RUN mkdir /opt/nifi
