@@ -1,4 +1,4 @@
-package org.apache.nifi.device.registry.api;
+package org.apache.nifi.device.registry.service.monitor.impl;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -16,22 +16,9 @@ package org.apache.nifi.device.registry.api;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * <p>
- * Created on 3/10/17.
+ * Created on 6/7/17.
  */
 
 
-public class MiNiFiDevice
-    extends Device {
-
-    private String deviceName;
-
-    public MiNiFiDevice() {}
-
-    public String getDeviceName() {
-        return deviceName;
-    }
-
-    public void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
-    }
+public class ScheduledMonitoringServiceImpl {
 }

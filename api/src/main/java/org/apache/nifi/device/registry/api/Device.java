@@ -33,9 +33,6 @@ public abstract class Device {
 
     // Common Hardware based monitoring
     private int availableProcessors;
-    private long jvmFreeMemory;
-    private long jvmTotalMemory;
-    private long jvmMaxMemory;
 
     private Map<String, DiskReport> provRepoDiskReport;
     private Map<String, DiskReport> contentRepoDiskReport;
@@ -91,30 +88,6 @@ public abstract class Device {
 
     public void setAvailableProcessors(int availableProcessors) {
         this.availableProcessors = availableProcessors;
-    }
-
-    public long getJvmFreeMemory() {
-        return jvmFreeMemory;
-    }
-
-    public void setJvmFreeMemory(long jvmFreeMemory) {
-        this.jvmFreeMemory = jvmFreeMemory;
-    }
-
-    public long getJvmTotalMemory() {
-        return jvmTotalMemory;
-    }
-
-    public void setJvmTotalMemory(long jvmTotalMemory) {
-        this.jvmTotalMemory = jvmTotalMemory;
-    }
-
-    public long getJvmMaxMemory() {
-        return jvmMaxMemory;
-    }
-
-    public void setJvmMaxMemory(long jvmMaxMemory) {
-        this.jvmMaxMemory = jvmMaxMemory;
     }
 
     public Map<String, DiskReport> getContentRepoDiskReport() {

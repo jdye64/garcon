@@ -27,6 +27,9 @@ public class NiFiDevice
 
     private String templateMD5;
     private Map<String, String> nifiProperties;
+    private long jvmFreeMemory;
+    private long jvmTotalMemory;
+    private long jvmMaxMemory;
 
     public String getTemplateMD5() {
         return templateMD5;
@@ -34,6 +37,38 @@ public class NiFiDevice
 
     public void setTemplateMD5(String templateMD5) {
         this.templateMD5 = templateMD5;
+    }
+
+    public Map<String, String> getNifiProperties() {
+        return nifiProperties;
+    }
+
+    public void setNifiProperties(Map<String, String> nifiProperties) {
+        this.nifiProperties = nifiProperties;
+    }
+
+    public long getJvmFreeMemory() {
+        return jvmFreeMemory;
+    }
+
+    public void setJvmFreeMemory(long jvmFreeMemory) {
+        this.jvmFreeMemory = jvmFreeMemory;
+    }
+
+    public long getJvmTotalMemory() {
+        return jvmTotalMemory;
+    }
+
+    public void setJvmTotalMemory(long jvmTotalMemory) {
+        this.jvmTotalMemory = jvmTotalMemory;
+    }
+
+    public long getJvmMaxMemory() {
+        return jvmMaxMemory;
+    }
+
+    public void setJvmMaxMemory(long jvmMaxMemory) {
+        this.jvmMaxMemory = jvmMaxMemory;
     }
 
     public String toString() {
