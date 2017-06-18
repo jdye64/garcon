@@ -1,4 +1,4 @@
-package org.apache.nifi.device.registry.service.monitor.impl;
+package org.apache.nifi.device.registry.client;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -20,5 +20,5 @@ package org.apache.nifi.device.registry.service.monitor.impl;
  */
 
 
-public class ScheduledMonitoringServiceImpl {
+public interface NiFiClient {
 }

@@ -1,4 +1,4 @@
-package org.apache.nifi.device.registry.service.container.docker.impl;
+package org.apache.nifi.device.registry.service.monitor;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -20,5 +20,5 @@ package org.apache.nifi.device.registry.service.container.docker.impl;
  */
 
 
-public class DockerEngineServiceRESTImpl {
+public interface MonitorTask {
 }

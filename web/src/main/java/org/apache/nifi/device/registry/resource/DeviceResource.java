@@ -1,10 +1,5 @@
 package org.apache.nifi.device.registry.resource;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
-import javax.jms.Message;
-import javax.jms.MessageProducer;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -12,9 +7,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.nifi.device.registry.NiFiDeviceRegistryConfiguration;
+import org.apache.nifi.device.registry.api.MiNiFiDevice;
 import org.apache.nifi.device.registry.api.NiFiDevice;
 import org.apache.nifi.device.registry.dao.DeviceDAO;
 import org.apache.nifi.device.registry.dao.impl.DeviceDAOImpl;
@@ -55,9 +49,9 @@ public class DeviceResource {
     private DeviceService deviceService = null;
     private DeviceDAO deviceDAO = null;
 
-    private javax.jms.Session jmsSession = null;
-    private Destination destination = null;
-    private MessageProducer producer = null;
+//    private javax.jms.Session jmsSession = null;
+//    private Destination destination = null;
+//    private MessageProducer producer = null;
     private ObjectMapper mapper = new ObjectMapper();
 
     public DeviceResource(NiFiDeviceRegistryConfiguration conf) {
@@ -75,32 +69,40 @@ public class DeviceResource {
 
     @POST
     @Timed
+    @Path("/minifi")
+    public Response testingMiNiFiCPP(MiNiFiDevice miNiFiDevice) {
+        System.out.println("Yippie C++ device is talking to Garcon!!!");
+        return Response.ok("OK").build();
+    }
+
+    @POST
+    @Timed
     public Response announceAvailability(NiFiDevice device) {
 
         deviceDAO.insert(device);
 
-        if (this.producer == null) {
-            try {
-                ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
-
-                Connection connection = connectionFactory.createConnection();
-                this.jmsSession = connection.createSession(false,
-                        javax.jms.Session.AUTO_ACKNOWLEDGE);
-
-                destination = new ActiveMQQueue("DeviceRegistryEvents");
-                this.producer = jmsSession.createProducer(destination);
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        try {
-            Message msg = jmsSession.createTextMessage(mapper.writeValueAsString(device));
-            producer.send(msg);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+//        if (this.producer == null) {
+//            try {
+//                ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+//
+//                Connection connection = connectionFactory.createConnection();
+//                this.jmsSession = connection.createSession(false,
+//                        javax.jms.Session.AUTO_ACKNOWLEDGE);
+//
+//                destination = new ActiveMQQueue("DeviceRegistryEvents");
+//                this.producer = jmsSession.createProducer(destination);
+//
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
+//        }
+//
+//        try {
+//            Message msg = jmsSession.createTextMessage(mapper.writeValueAsString(device));
+//            producer.send(msg);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
 
         return Response.ok().build();
     }
