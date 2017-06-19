@@ -1,7 +1,6 @@
 package org.apache.nifi.processors.rt;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
@@ -9,8 +8,6 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +20,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.nifi.annotation.documentation.CapabilityDescription;
 import org.apache.nifi.annotation.documentation.Tags;
 import org.apache.nifi.components.PropertyDescriptor;
-import org.apache.nifi.device.registry.api.DiskReport;
-import org.apache.nifi.device.registry.api.NiFiDevice;
+import org.apache.nifi.device.registry.api.device.NiFiDevice;
 import org.apache.nifi.processor.util.StandardValidators;
 import org.apache.nifi.reporting.AbstractReportingTask;
 import org.apache.nifi.reporting.ReportingContext;
@@ -159,8 +155,8 @@ public class DeviceRegistryReportingTask
 
             //Set the values to the device object.
             device.setPrimaryNICMac(sb.toString());
-            device.setInternalIPAddress(ip.getHostAddress());
-            device.setExternalIPAddress(ip.getHostAddress());   //TODO: This should not be this way
+            device.setPrivateIPAddress(ip.getHostAddress());
+            device.setPublicIPAddress(ip.getHostAddress());   //TODO: This should not be this way
 
             String hostname = InetAddress.getLocalHost().getHostName();
             logger.error("First attempt at getting hostname: " + hostname);
@@ -200,9 +196,9 @@ public class DeviceRegistryReportingTask
 
     private NiFiDevice populateMemoryInfo(NiFiDevice device) {
         device.setAvailableProcessors(Runtime.getRuntime().availableProcessors());
-        device.setJvmTotalMemory(Runtime.getRuntime().totalMemory());
-        device.setJvmFreeMemory(Runtime.getRuntime().freeMemory());
-        device.setJvmMaxMemory(Runtime.getRuntime().maxMemory());
+        device.setAvailableSystemMemory(Runtime.getRuntime().totalMemory());
+        device.setConsumedMemory(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
+        device.setAvailableSystemMemory(Runtime.getRuntime().freeMemory());
         return device;
     }
 
@@ -230,7 +226,7 @@ public class DeviceRegistryReportingTask
 //            }
 
             //Set the disk report
-            device.setRootDiskReport(createDiskReportForPath(Paths.get("/")));
+            //device.setRootDiskReport(createDiskReportForPath(Paths.get("/")));
             //device.setDbDiskReport(createDiskReportForPath(properties.getDatabaseRepositoryPath()));
             //device.setFlowfileRepoDiskReport(createDiskReportForPath(properties.getFlowFileRepositoryPath()));
 
@@ -265,19 +261,19 @@ public class DeviceRegistryReportingTask
         return device;
     }
 
-    private DiskReport createDiskReportForPath(Path path) {
-        DiskReport report = new DiskReport();
-
-        File f = path.toFile();
-        if (f.exists()) {
-            report.setAvailableBytes(f.getFreeSpace());
-            report.setPath(path.toString());
-            report.setTotalBytes(f.getTotalSpace());
-            report.setUsedBytes(f.getUsableSpace());
-        } else {
-            //File doesn't exist so null out all information and flag that.
-        }
-
-        return report;
-    }
+//    private DiskReport createDiskReportForPath(Path path) {
+//        DiskReport report = new DiskReport();
+//
+//        File f = path.toFile();
+//        if (f.exists()) {
+//            report.setAvailableBytes(f.getFreeSpace());
+//            report.setPath(path.toString());
+//            report.setTotalBytes(f.getTotalSpace());
+//            report.setUsedBytes(f.getUsableSpace());
+//        } else {
+//            //File doesn't exist so null out all information and flag that.
+//        }
+//
+//        return report;
+//    }
 }

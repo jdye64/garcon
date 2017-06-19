@@ -17,9 +17,86 @@
     <properties>
         <dropwizard.version>1.0.5</dropwizard.version>
         <nifi.version>1.2.0</nifi.version>
+        <httpcomponents.version>4.5.2</httpcomponents.version>
+        <jackson.version>2.7.3</jackson.version>
+        <commons.cli.version>1.3.1</commons.cli.version>
+        <logback.version>1.0.13</logback.version>
+        <json.version>20160212</json.version>
+        <commons.lang.version>3.4</commons.lang.version>
+        <javax.servlet.version>3.1.0</javax.servlet.version>
+        <jersey.server.version>2.23.2</jersey.server.version>
+        <docker.java.version>3.0.6</docker.java.version>
+        <mysql.version>5.1.34</mysql.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-api-client</artifactId>
+            <version>1.2.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.ws.rs</groupId>
+                    <artifactId>jsr311-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>javax.servlet-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpmime</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.8.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-client-dto</artifactId>
+            <version>${nifi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.nifi</groupId>
+            <artifactId>nifi-framework-cluster</artifactId>
+            <version>${nifi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.zookeeper</groupId>
+                    <artifactId>zookeeper</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jersey</groupId>
+                    <artifactId>jersey-client</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jersey</groupId>
+                    <artifactId>jersey-server</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jersey</groupId>
+                    <artifactId>jersey-json</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>${httpcomponents.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.docker-java</groupId>
+            <artifactId>docker-java</artifactId>
+            <version>${docker.java.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.nifi</groupId>
@@ -27,11 +104,11 @@
             <version>1.2.0-SNAPSHOT</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.eclipse.jetty.websocket</groupId>
-            <artifactId>javax-websocket-server-impl</artifactId>
-            <version>9.3.9.v20160517</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.jetty.websocket</groupId>-->
+            <!--<artifactId>javax-websocket-server-impl</artifactId>-->
+            <!--<version>9.3.9.v20160517</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>io.dropwizard</groupId>
@@ -55,6 +132,12 @@
         </dependency>
 
         <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.nifi</groupId>
             <artifactId>nifi-properties</artifactId>
             <version>${nifi.version}</version>
@@ -64,11 +147,7 @@
             <artifactId>nifi-framework-api</artifactId>
             <version>${nifi.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.3</version>
-        </dependency>
+
         <dependency>
             <groupId>org.apache.nifi</groupId>
             <artifactId>nifi-api</artifactId>
@@ -85,28 +164,18 @@
             <version>${nifi.version}</version>
         </dependency>
 
-
-        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.193</version>
-        </dependency>
-
         <!-- Websocket support for DropWizard -->
-        <!-- https://mvnrepository.com/artifact/com.liveperson/dropwizard-websockets -->
         <dependency>
             <groupId>com.liveperson</groupId>
             <artifactId>dropwizard-websockets</artifactId>
             <version>1.0.5-1</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.activemq/activemq-broker -->
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-all</artifactId>
-            <version>5.14.4</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.httpcomponents</groupId>-->
+            <!--<artifactId>httpclient</artifactId>-->
+            <!--<version>${httpcomponents.version}</version>-->
+        <!--</dependency>-->
 
     </dependencies>
 
@@ -139,7 +208,7 @@
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.apache.nifi.device.registry.NiFiDeviceRegistry</mainClass>
+                                    <mainClass>org.apache.nifi.device.registry.Garcon</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

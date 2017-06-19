@@ -15,6 +15,7 @@
         <module>reportingtasks/nifi</module>
         <module>api</module>
         <module>docker</module>
+        <module>nifi-api-client</module>
     </modules>
 
     <properties>

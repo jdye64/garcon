@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.nifi.controller.status.ConnectionStatus;
-import org.apache.nifi.device.registry.NiFiDeviceRegistryConfiguration;
+import org.apache.nifi.device.registry.GarconConfiguration;
 import org.apache.nifi.device.registry.dao.ConnectionDAO;
 import org.apache.nifi.device.registry.dao.impl.ConnectionDAOImpl;
 import org.apache.nifi.device.registry.dto.ConnectionsHUD;
@@ -47,11 +47,11 @@ public class ConnectionsResource {
 
     private static final Logger logger = LoggerFactory.getLogger(ConnectionsResource.class);
 
-    private NiFiDeviceRegistryConfiguration configuration;
+    private GarconConfiguration configuration;
     private ConnectionService connectionService = null;
     private ConnectionDAO conDao = null;
 
-    public ConnectionsResource(NiFiDeviceRegistryConfiguration conf) {
+    public ConnectionsResource(GarconConfiguration conf) {
         this.configuration = conf;
         this.connectionService = ConnectionServiceImpl.getInstance();
         this.conDao = ConnectionDAOImpl.getInstance();

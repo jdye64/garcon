@@ -1,14 +1,7 @@
 package org.apache.nifi.device.registry.resource;
 
 import java.io.IOException;
-import java.util.List;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.MessageConsumer;
-import javax.jms.TextMessage;
 import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -16,8 +9,6 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.nifi.device.registry.dao.WebsocketClientSessionDAO;
 import org.apache.nifi.device.registry.dao.impl.WebsocketClientSessionDAOImpl;
 
@@ -53,8 +44,8 @@ public class NiFiDeviceWebSocketNotifier {
     private final WebsocketClientSessionDAO websocketSessions = new WebsocketClientSessionDAOImpl();
 
     public NiFiDeviceWebSocketNotifier() {
-        Thread t = new Thread(new ActiveMQConsumer());
-        t.start();
+//        Thread t = new Thread(new ActiveMQConsumer());
+//        t.start();
     }
 
     @OnOpen
@@ -75,48 +66,48 @@ public class NiFiDeviceWebSocketNotifier {
     }
 
 
-    public class ActiveMQConsumer
-            implements Runnable {
-
-        private javax.jms.Session jmsSession = null;
-        private Destination destination = null;
-        private Connection connection = null;
-        private MessageConsumer consumer = null;
-
-        public ActiveMQConsumer() {
-            try {
-
-                ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
-                destination = new ActiveMQQueue("DeviceRegistryEvents");
-
-                connection = connectionFactory.createConnection();
-                this.jmsSession = connection.createSession(false,
-                        javax.jms.Session.AUTO_ACKNOWLEDGE);
-
-                consumer = this.jmsSession.createConsumer(destination);
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        public void run() {
-            try {
-                connection.start();
-                TextMessage msg = (TextMessage) consumer.receive();
-
-                List<Session> sessionList = websocketSessions.getActiveSessions();
-                for (Session session : sessionList) {
-                    try {
-                        session.getBasicRemote().sendText(msg.getText());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            } catch (JMSException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    public class ActiveMQConsumer
+//            implements Runnable {
+//
+//        private javax.jms.Session jmsSession = null;
+//        private Destination destination = null;
+//        private Connection connection = null;
+//        private MessageConsumer consumer = null;
+//
+//        public ActiveMQConsumer() {
+//            try {
+//
+//                ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+//                destination = new ActiveMQQueue("DeviceRegistryEvents");
+//
+//                connection = connectionFactory.createConnection();
+//                this.jmsSession = connection.createSession(false,
+//                        javax.jms.Session.AUTO_ACKNOWLEDGE);
+//
+//                consumer = this.jmsSession.createConsumer(destination);
+//
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
+//        }
+//
+//        public void run() {
+//            try {
+//                connection.start();
+//                TextMessage msg = (TextMessage) consumer.receive();
+//
+//                List<Session> sessionList = websocketSessions.getActiveSessions();
+//                for (Session session : sessionList) {
+//                    try {
+//                        session.getBasicRemote().sendText(msg.getText());
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//            } catch (JMSException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 }

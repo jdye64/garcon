@@ -6,7 +6,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.nifi.device.registry.NiFiDeviceRegistryConfiguration;
+import org.apache.nifi.device.registry.GarconConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,9 +37,9 @@ public class DeviceRegistryDashboardResource {
 
     private static final Logger logger = LoggerFactory.getLogger(DeviceRegistryDashboardResource.class);
 
-    private NiFiDeviceRegistryConfiguration configuration;
+    private GarconConfiguration configuration;
 
-    public DeviceRegistryDashboardResource(NiFiDeviceRegistryConfiguration conf) {
+    public DeviceRegistryDashboardResource(GarconConfiguration conf) {
         this.configuration = conf;
     }
 

@@ -1,0 +1,27 @@
+DROP TABLE NIFI_PROV;
+CREATE TABLE NIFI_PROV (
+	eventId VARCHAR PRIMARY KEY,
+	eventOrdinal VARCHAR,
+	eventType VARCHAR,
+	timestampMillis VARCHAR,
+	timestamp VARCHAR,
+	durationMillis VARCHAR,
+	lineageStart VARCHAR,
+	details VARCHAR,
+	componentId VARCHAR,
+	componentType VARCHAR,
+	componentName VARCHAR,
+	entityId VARCHAR,
+	entityType VARCHAR,
+	entitySize VARCHAR,
+	updatedAttributes VARCHAR,
+	previousAttributes VARCHAR,
+	actorHostname VARCHAR,
+	contentURI VARCHAR,
+	previousContentURI VARCHAR,
+	parentIds VARCHAR,
+	childIds VARCHAR,
+	platform VARCHAR,
+	application VARCHAR,
+	uuid VARCHAR
+);

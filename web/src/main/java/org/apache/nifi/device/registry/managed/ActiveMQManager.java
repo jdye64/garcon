@@ -1,7 +1,6 @@
 package org.apache.nifi.device.registry.managed;
 
-import org.apache.activemq.broker.BrokerService;
-import org.apache.nifi.device.registry.NiFiDeviceRegistryConfiguration;
+import org.apache.nifi.device.registry.GarconConfiguration;
 
 import io.dropwizard.lifecycle.Managed;
 
@@ -28,20 +27,20 @@ import io.dropwizard.lifecycle.Managed;
 public class ActiveMQManager
     implements Managed {
 
-    private BrokerService jmsBrokerService = null;
-    private NiFiDeviceRegistryConfiguration configuration = null;
+//    private BrokerService jmsBrokerService = null;
+    private GarconConfiguration configuration = null;
 
-    public ActiveMQManager(NiFiDeviceRegistryConfiguration conf) {
+    public ActiveMQManager(GarconConfiguration conf) {
         configuration = conf;
     }
 
     public void start() throws Exception {
-        jmsBrokerService = new BrokerService();
-        jmsBrokerService.addConnector("tcp://localhost:61616");
-        jmsBrokerService.start();
+//        jmsBrokerService = new BrokerService();
+//        jmsBrokerService.addConnector("tcp://localhost:61616");
+//        jmsBrokerService.start();
     }
 
     public void stop() throws Exception {
-        jmsBrokerService.stop();
+//        jmsBrokerService.stop();
     }
 }

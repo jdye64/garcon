@@ -19,7 +19,7 @@ package org.apache.nifi.device.registry.managed;
  * Created on 3/10/17.
  */
 
-import org.apache.nifi.device.registry.NiFiDeviceRegistryConfiguration;
+import org.apache.nifi.device.registry.GarconConfiguration;
 import org.apache.nifi.remote.client.SiteToSiteClient;
 import org.apache.nifi.remote.client.SiteToSiteClientConfig;
 
@@ -28,16 +28,13 @@ import io.dropwizard.lifecycle.Managed;
 public class Site2SiteManagedProxy
     implements Managed{
 
-    private NiFiDeviceRegistryConfiguration configuration = null;
+    private GarconConfiguration configuration = null;
 
-    public Site2SiteManagedProxy(NiFiDeviceRegistryConfiguration conf) {
+    public Site2SiteManagedProxy(GarconConfiguration conf) {
         this.configuration = conf;
     }
 
     public void start() throws Exception {
-
-
-
         SiteToSiteClientConfig config = new SiteToSiteClient.Builder()
                 .url("http://nifi.dev:9191/nifi")
                 .portName("Data For Spark")

@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.nifi.controller.status.ProcessorStatus;
-import org.apache.nifi.device.registry.NiFiDeviceRegistryConfiguration;
+import org.apache.nifi.device.registry.GarconConfiguration;
 import org.apache.nifi.device.registry.dao.ProcessorsDAO;
 import org.apache.nifi.device.registry.dao.impl.ProcessorsDAOImpl;
 import org.apache.nifi.device.registry.dto.DeviceProcessorsHUD;
@@ -48,11 +48,11 @@ public class ProcessorsResource {
 
     private static final Logger logger = LoggerFactory.getLogger(ProcessorsResource.class);
 
-    private NiFiDeviceRegistryConfiguration configuration;
+    private GarconConfiguration configuration;
     private ProcessorsService processorsService = null;
     private ProcessorsDAO processorsDAO = null;
 
-    public ProcessorsResource(NiFiDeviceRegistryConfiguration conf) {
+    public ProcessorsResource(GarconConfiguration conf) {
         this.configuration = conf;
         this.processorsService = new ProcessorsServiceImpl();
         this.processorsDAO = ProcessorsDAOImpl.getInstance();
