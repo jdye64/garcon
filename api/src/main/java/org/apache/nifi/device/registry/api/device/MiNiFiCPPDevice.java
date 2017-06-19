@@ -23,17 +23,17 @@ package org.apache.nifi.device.registry.api.device;
 public class MiNiFiCPPDevice
     extends Device {
 
-    private String deviceDesc;
+    private String deviceName;
 
     public MiNiFiCPPDevice() {
 
     }
 
-    public String getDeviceDesc() {
-        return deviceDesc;
+    public String getDeviceName() {
+        return deviceName;
     }
 
-    public void setDeviceDesc(String deviceDesc) {
-        this.deviceDesc = deviceDesc;
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 }

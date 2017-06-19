@@ -9,6 +9,8 @@
 ..* React to missed SLAs by auto scaling to increase flow throughput
 * **Examine Global Processor state** – Visualize all stopped, disabled, invalid, and running processors across your entire Garcon managed domain in a single location.
 * **Spot global “backpressured” connections** – Maintain a list of “backpressure” occurrences to understand periods of increased load for capacity planning or auto scaling.
+* **Chargeback** – Understand the amount of resources that each user in a multi-tenant environment is using
+
 
 ## Building and Running Garcon
 Garcon is built using the popular Dropwizard Java microframework and the standard gamut of Java development tools EX: Maven. To build the application

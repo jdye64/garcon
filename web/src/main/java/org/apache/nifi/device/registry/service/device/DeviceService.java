@@ -3,6 +3,9 @@ package org.apache.nifi.device.registry.service.device;
 import java.util.List;
 
 import org.apache.nifi.device.registry.api.device.Device;
+import org.apache.nifi.device.registry.api.device.MiNiFiCPPDevice;
+import org.apache.nifi.device.registry.api.device.MiNiFiJavaDevice;
+import org.apache.nifi.device.registry.api.device.NiFiDevice;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -26,7 +29,13 @@ import org.apache.nifi.device.registry.api.device.Device;
 
 public interface DeviceService {
 
-    List<Device> getDevices();
+    List<Device> getNiFiDevices();
 
-    Device getDeviceById(String deviceId);
+    Device getNiFiDeviceById(String deviceId);
+
+    void addNiFiDevice(NiFiDevice niFiDevice);
+
+    void addMiNiFiCPPDevice(MiNiFiCPPDevice miNiFiCPPDevice);
+
+    void addMiNiFiJavaDevice(MiNiFiJavaDevice miNiFiJavaDevice);
 }

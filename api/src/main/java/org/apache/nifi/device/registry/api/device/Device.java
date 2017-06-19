@@ -22,6 +22,8 @@ package org.apache.nifi.device.registry.api.device;
 
 public class Device {
 
+    private long deviceId;
+
     // Device networking info
     private String primaryNICMac;           // Used as the unique "ID" for each device is the sprawling flow graph
     private String privateIPAddress;
@@ -33,6 +35,14 @@ public class Device {
     private long totalSystemMemory;
     private long availableSystemMemory;
     private long consumedMemory;
+
+    public long getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(long deviceId) {
+        this.deviceId = deviceId;
+    }
 
     public String getPrimaryNICMac() {
         return primaryNICMac;

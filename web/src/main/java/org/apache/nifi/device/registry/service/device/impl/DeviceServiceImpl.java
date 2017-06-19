@@ -4,8 +4,14 @@ import java.util.List;
 
 import org.apache.nifi.device.registry.GarconConfiguration;
 import org.apache.nifi.device.registry.api.device.Device;
+import org.apache.nifi.device.registry.api.device.MiNiFiCPPDevice;
+import org.apache.nifi.device.registry.api.device.MiNiFiJavaDevice;
+import org.apache.nifi.device.registry.api.device.NiFiDevice;
+import org.apache.nifi.device.registry.dao.DBConstants;
 import org.apache.nifi.device.registry.dao.device.DeviceDAO;
 import org.apache.nifi.device.registry.service.device.DeviceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -30,6 +36,7 @@ import org.apache.nifi.device.registry.service.device.DeviceService;
 public class DeviceServiceImpl
     implements DeviceService {
 
+    private static final Logger logger = LoggerFactory.getLogger(DeviceServiceImpl.class);
     private GarconConfiguration garconConfiguration = null;
 
     // DAO
@@ -40,11 +47,35 @@ public class DeviceServiceImpl
         this.deviceDAO = deviceDAO;
     }
 
-    public List<Device> getDevices() {
-        return this.deviceDAO.getAllDevices();
+    public List<Device> getNiFiDevices() {
+        return this.deviceDAO.getAllNiFiDevices();
     }
 
-    public Device getDeviceById(String deviceId) {
-        return this.deviceDAO.getDeviceById(deviceId);
+    public Device getNiFiDeviceById(String deviceId) {
+        return this.deviceDAO.getNiFiDeviceById(deviceId);
+    }
+
+    public void addNiFiDevice(NiFiDevice niFiDevice) {
+        try {
+            deviceDAO.insertNiFiDeviceTransaction(niFiDevice);
+        } catch (Exception ex) {
+            logger.error("Error inserting NiFiDevice object into {} with exception {}", DBConstants.DEVICE_TABLE, ex.getMessage());
+        }
+    }
+
+    public void addMiNiFiJavaDevice(MiNiFiJavaDevice mjd) {
+        try {
+            deviceDAO.insertMiNiFiJavaDeviceTransaction(mjd);
+        } catch (Exception ex) {
+            logger.error("Error inserting MiNiFiJavaDevice object into {} with exception {}", DBConstants.MINIFI_DEVICE_TABLE, ex.getMessage());
+        }
+    }
+
+    public void addMiNiFiCPPDevice(MiNiFiCPPDevice mjd) {
+        try {
+            deviceDAO.insertMiNiFiCPPDeviceTransaction(mjd);
+        } catch (Exception ex) {
+            logger.error("Error inserting MiNiFiCPPDevice object into {} with exception {}", DBConstants.MINIFI_DEVICE_TABLE, ex.getMessage());
+        }
     }
 }

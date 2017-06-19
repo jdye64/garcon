@@ -52,43 +52,56 @@ public class DeviceResource {
         this.deviceService = deviceService;
     }
 
-    // ---------- BEGIN GET OPERATIONS FOR RETRIEVING DEVICE OBJECTS ------------------
+    // ---------- BEGIN NIFI DEVICES OPERATIONS ------------------
 
     @GET
     @Timed
-    public Response getDevices() {
+    @Path("/nifi")
+    public Response getNiFiDevices() {
         if (logger.isDebugEnabled()) {
             logger.debug("Retrieving devices registered to Garcon");
         }
-        return Response.ok(this.deviceService.getDevices()).build();
+        return Response.ok(this.deviceService.getNiFiDevices()).build();
     }
 
     @GET
     @Timed
-    @Path("/{deviceId}")
-    public Response getDeviceById(@PathParam("deviceId") String deviceId) {
+    @Path("/nifi/{deviceId}")
+    public Response getNiFiDeviceById(@PathParam("deviceId") String deviceId) {
         if (logger.isDebugEnabled()) {
             logger.debug("Attempting to retrieve device with id {}", deviceId);
         }
-        return Response.ok(this.deviceService.getDeviceById(deviceId)).build();
+        return Response.ok(this.deviceService.getNiFiDeviceById(deviceId)).build();
     }
 
-    // ---------- END GET OPERATIONS FOR RETRIEVING DEVICE OBJECTS ------------------
+    @POST
+    @Timed
+    @Path("/nifi")
+    public Response announceNiFiDeviceAvailability(NiFiDevice device) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Garcon accepting NiFi Device register heartbeat for device id: {}", device.getPrimaryNICMac());
+        }
+
+        if (device != null) {
+            deviceService.addNiFiDevice(device);
+            return Response.ok().build();
+        } else {
+            logger.warn("NiFiDevice object received was invalid. Most likely null.");
+            return Response.serverError().build();
+        }
+    }
+
+    // ---------- END NIFI DEVICE OPERATIONS ---------------------
 
     @POST
     @Timed
     @Path("/minifi")
-    public Response testingMiNiFiCPP(MiNiFiCPPDevice miNiFiDevice) {
+    public Response announceMiNiFiCPPAvailability(MiNiFiCPPDevice miNiFiDevice) {
         if (logger.isDebugEnabled()) {
             logger.debug("Apache NiFi MiNiFi C++ device heartbeat received for hostname {}", miNiFiDevice.getHostname());
         }
+        deviceService.addMiNiFiCPPDevice(miNiFiDevice);
         return Response.ok("OK").build();
     }
 
-    @POST
-    @Timed
-    public Response announceAvailability(NiFiDevice device) {
-        //deviceDAO.insert(device);
-        return Response.ok().build();
-    }
 }

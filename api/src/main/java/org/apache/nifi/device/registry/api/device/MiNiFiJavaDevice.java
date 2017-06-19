@@ -22,4 +22,16 @@ package org.apache.nifi.device.registry.api.device;
 
 public class MiNiFiJavaDevice
     extends Device {
+
+    private String deviceName;
+
+    public MiNiFiJavaDevice() {}
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
 }

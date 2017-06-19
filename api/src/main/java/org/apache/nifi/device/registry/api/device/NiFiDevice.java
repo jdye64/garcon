@@ -1,7 +1,5 @@
 package org.apache.nifi.device.registry.api.device;
 
-import java.sql.Timestamp;
-
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -27,6 +25,22 @@ public class NiFiDevice
 
     private long id;
     private String uri;
-    private Timestamp startTime;
 
+    public NiFiDevice() {}
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
 }
