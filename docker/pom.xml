@@ -63,19 +63,19 @@ language governing permissions and limitations under the License. -->
                             <buildArgs>
                                 <NIFI_DEVICE_REGISTRY_VERSION>${nifi.device.registry.version}</NIFI_DEVICE_REGISTRY_VERSION>
                                 <NIFI_DEVICE_REGISTRY_BINARY>nifi-device-registry-web-${nifi.device.registry.version}.jar</NIFI_DEVICE_REGISTRY_BINARY>
-                                <NIFI_DEVICE_REGISTRY_YAML>DeviceRegistry.yml</NIFI_DEVICE_REGISTRY_YAML>
+                                <NIFI_DEVICE_REGISTRY_YAML>Garcon.yml</NIFI_DEVICE_REGISTRY_YAML>
                             </buildArgs>
                             <resources>
                                 <resource>
                                     <targetPath>/</targetPath>
                                     <directory>${project.basedir}/../web/target</directory>
                                     <include>/nifi-device-registry-web-${nifi.device.registry.version}.jar</include>
-                                    <include>DeviceRegistry.yml</include>
+                                    <include>Garcon.yml</include>
                                 </resource>
                                 <resource>
                                     <targetPath>/</targetPath>
                                     <directory>${project.basedir}/../web</directory>
-                                    <include>DeviceRegistry.yml</include>
+                                    <include>Garcon.yml</include>
                                 </resource>
                                 <resource>
                                     <targetPath>/</targetPath>
