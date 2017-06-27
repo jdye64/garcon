@@ -20,7 +20,7 @@ Dropwizard is really neat in that it produces a single jar with a standard java 
 like to run the microservice. For example the standard way this application will be ran is as a "server". This means that Dropwizard will start up a Jetty
 server and serve both the UI and the REST API components of the application from the single jar. To command to run in this mode is.
 
-```java -jar ./web/target/nifi-device-registry-1.2.0-SNAPSHOT.jar server ./web/Garcon.yml```
+```java -jar ./web/target/nifi-device-registry-web-1.2.0-SNAPSHOT.jar server ./web/Garcon.yml```
 
 The "Garcon.yml" file is a single location where you can adjust the configurations for the Garcon application.
 

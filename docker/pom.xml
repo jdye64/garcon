@@ -13,7 +13,7 @@ language governing permissions and limitations under the License. -->
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>nifi-device-registry</artifactId>
+        <artifactId>garcon</artifactId>
         <groupId>org.apache.nifi</groupId>
         <version>1.2.0-SNAPSHOT</version>
     </parent>
@@ -63,19 +63,19 @@ language governing permissions and limitations under the License. -->
                             <buildArgs>
                                 <NIFI_DEVICE_REGISTRY_VERSION>${nifi.device.registry.version}</NIFI_DEVICE_REGISTRY_VERSION>
                                 <NIFI_DEVICE_REGISTRY_BINARY>nifi-device-registry-web-${nifi.device.registry.version}.jar</NIFI_DEVICE_REGISTRY_BINARY>
-                                <NIFI_DEVICE_REGISTRY_YAML>DeviceRegistry.yml</NIFI_DEVICE_REGISTRY_YAML>
+                                <NIFI_DEVICE_REGISTRY_YAML>Garcon.yml</NIFI_DEVICE_REGISTRY_YAML>
                             </buildArgs>
                             <resources>
                                 <resource>
                                     <targetPath>/</targetPath>
                                     <directory>${project.basedir}/../web/target</directory>
                                     <include>/nifi-device-registry-web-${nifi.device.registry.version}.jar</include>
-                                    <include>DeviceRegistry.yml</include>
+                                    <include>Garcon.yml</include>
                                 </resource>
                                 <resource>
                                     <targetPath>/</targetPath>
                                     <directory>${project.basedir}/../web</directory>
-                                    <include>DeviceRegistry.yml</include>
+                                    <include>Garcon.yml</include>
                                 </resource>
                                 <resource>
                                     <targetPath>/</targetPath>

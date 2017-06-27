@@ -62,7 +62,7 @@ ADD docker-entrypoint-initdb.d /docker-entrypoint-initdb.d
 
 # Install Apache NiFi
 RUN mkdir /opt/nifi
-RUN wget -nv http://www.gtlib.gatech.edu/pub/apache/nifi/1.2.0/nifi-1.2.0-bin.tar.gz -O /opt/nifi/nifi-1.2.0-bin.tar.gz
+RUN wget -nv http://mirror.cc.columbia.edu/pub/software/apache/nifi/1.2.0/nifi-1.2.0-bin.tar.gz -O /opt/nifi/nifi-1.2.0-bin.tar.gz
 RUN cd /opt/nifi && tar -xzvf nifi-1.2.0-bin.tar.gz
 # Remove the large tar.gz file to help keep the image as small as possible even though its still gonna be big ...
 RUN rm -f /opt/nifi/nifi-1.2.0-bin.tar.gz
