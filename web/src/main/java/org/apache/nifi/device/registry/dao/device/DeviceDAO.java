@@ -46,8 +46,8 @@ public abstract class DeviceDAO {
     public abstract Device getNiFiDeviceById(@Bind("deviceId") String deviceId);
 
 
-    @SqlUpdate("INSERT INTO " + DBConstants.DEVICE_TABLE + "(PRIMARY_NIC_MAC, PRIVATE_IP, PUBLIC_IP, HOSTNAME, NUM_PROCESSORS, TOTAL_SYS_MEM, AVAIL_SYS_MEM, CONSUMED_SYS_MEM) " +
-            "VALUES (:primaryNICMac, :privateIP, :publicIP, :hostname, :numProcessors, :totalSysMem, :availSysMem, :consumedSysMem)")
+    @SqlUpdate("INSERT INTO " + DBConstants.DEVICE_TABLE + "(PRIMARY_NIC_MAC, IP, HOSTNAME, NUM_PROCESSORS, TOTAL_SYS_MEM, AVAIL_SYS_MEM, CONSUMED_SYS_MEM) " +
+            "VALUES (:primaryNICMac, :publicIP, :hostname, :numProcessors, :totalSysMem, :availSysMem, :consumedSysMem)")
     @GetGeneratedKeys
     public abstract long insertDevice(@Bind("primaryNICMac") String pnicMac, @Bind("privateIP") String privateIP, @Bind("publicIP") String publicIP,
             @Bind("hostname") String hostname, @Bind("numProcessors") int numProcessors, @Bind("totalSysMem") long totalSysMem,

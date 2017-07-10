@@ -1,7 +1,6 @@
-package org.apache.nifi.device.registry.resource.c2.dao.impl;
+package org.apache.nifi.device.registry.resource.c2.core.device;
 
-import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
-import org.apache.nifi.device.registry.resource.c2.dao.HeartbeatDAO;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -19,17 +18,44 @@ import org.apache.nifi.device.registry.resource.c2.dao.HeartbeatDAO;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * <p>
- * Created on 7/7/17.
+ * Created on 7/10/17.
  */
 
 
-public class HeartbeatDAOImpl
-    implements HeartbeatDAO {
+public class NetworkInfo {
 
+    @JsonProperty("deviceid")
+    private String deviceid;
 
+    @JsonProperty("ip")
+    private String ip;
 
-    public long registerHeartbeat(C2Payload heartbeatPayload) {
+    @JsonProperty("hostname")
+    private String hostname;
 
-        return 0l;
+    public NetworkInfo() {}
+
+    public String getDeviceid() {
+        return deviceid;
+    }
+
+    public void setDeviceid(String deviceid) {
+        this.deviceid = deviceid;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
     }
 }

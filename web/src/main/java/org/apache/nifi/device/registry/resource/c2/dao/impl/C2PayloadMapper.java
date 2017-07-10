@@ -1,6 +1,11 @@
-package org.apache.nifi.device.registry.resource.c2.dao;
+package org.apache.nifi.device.registry.resource.c2.dao.impl;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
+import org.skife.jdbi.v2.StatementContext;
+import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -18,11 +23,21 @@ import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * <p>
- * Created on 7/7/17.
+ * Created on 7/10/17.
  */
 
 
-public interface HeartbeatDAO {
-
-    long registerHeartbeat(C2Payload heartbeatPayload);
+public class C2PayloadMapper
+        implements ResultSetMapper<C2Payload>
+{
+    public C2Payload map(int index, ResultSet resultSet, StatementContext statementContext) throws SQLException
+    {
+        C2Payload nc = new C2Payload();
+//        nc.setId(resultSet.getLong("CLUSTER_ID"));
+//        nc.setName(resultSet.getString("CLUSTER_NAME"));
+//        nc.setDescription(resultSet.getString("CLUSTER_DESC"));
+//        nc.setHostname(resultSet.getString("CLUSTER_HOSTNAME"));
+//        nc.setPort(resultSet.getString("CLUSTER_PORT"));
+        return nc;
+    }
 }

@@ -24,19 +24,19 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class C2QueueMetrics {
 
-    @JsonProperty("Name")
+    @JsonProperty("name")
     private String name;
 
-    @JsonProperty("DATASIZE")
+    @JsonProperty("datasize")
     private long dataSize;
 
-    @JsonProperty("DATASIZEMAX")
+    @JsonProperty("dataSizeMax")
     private long dataSizeMax;
 
-    @JsonProperty("QUEUED")
+    @JsonProperty("queued")
     private long queued;
 
-    @JsonProperty("QUEUEMAX")
+    @JsonProperty("queueMax")
     private long queueMax;
 
     public C2QueueMetrics() {

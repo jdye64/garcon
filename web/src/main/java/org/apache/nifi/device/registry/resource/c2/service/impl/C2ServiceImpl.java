@@ -2,12 +2,16 @@ package org.apache.nifi.device.registry.resource.c2.service.impl;
 
 import java.util.List;
 
+import org.apache.nifi.device.registry.api.device.MiNiFiCPPDevice;
+import org.apache.nifi.device.registry.dao.device.DeviceDAO;
 import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
 import org.apache.nifi.device.registry.resource.c2.core.C2Response;
 import org.apache.nifi.device.registry.resource.c2.core.ops.C2Operation;
-import org.apache.nifi.device.registry.resource.c2.dao.HeartbeatDAO;
-import org.apache.nifi.device.registry.resource.c2.dao.impl.HeartbeatDAOImpl;
+import org.apache.nifi.device.registry.resource.c2.dao.C2PayloadDAO;
 import org.apache.nifi.device.registry.resource.c2.service.C2Service;
+import org.skife.jdbi.v2.sqlobject.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -32,22 +36,52 @@ import org.apache.nifi.device.registry.resource.c2.service.C2Service;
 public class C2ServiceImpl
     implements C2Service {
 
-    private HeartbeatDAO heartbeatDAO;
+    private static final Logger logger = LoggerFactory.getLogger(C2ServiceImpl.class);
 
-    public C2ServiceImpl() {
-        this.heartbeatDAO = new HeartbeatDAOImpl();
+    private C2PayloadDAO heartbeatDAO;
+    private DeviceDAO deviceDAO;
+
+    public C2ServiceImpl(C2PayloadDAO payloadDAO, DeviceDAO deviceDAO) {
+        this.heartbeatDAO = payloadDAO;
+        this.deviceDAO = deviceDAO;
     }
 
+    @Transaction
     public C2Response registerHeartBeat(C2Payload heartbeatPayload) {
-        long registerId = this.heartbeatDAO.registerHeartbeat(heartbeatPayload);
 
-        // Create the response.
-        C2Response response = new C2Response();
-        response.setOperation(heartbeatPayload.getOperation());
-        response.setOperations(operationsForDevice(heartbeatPayload));
-        return response;
+        //First save the MiNiFi Device in the DB if it doesn't already exist.
+        MiNiFiCPPDevice cppDevice = new MiNiFiCPPDevice();
+        if (heartbeatPayload.getDeviceInfo() != null) {
+            cppDevice.setPrimaryNICMac(heartbeatPayload.getDeviceInfo().getNetworkInfo().get(0).getDeviceid());
+            cppDevice.setPublicIPAddress(heartbeatPayload.getDeviceInfo().getNetworkInfo().get(0).getIp());
+            cppDevice.setHostname(heartbeatPayload.getDeviceInfo().getNetworkInfo().get(0).getHostname());
+            cppDevice.setAvailableProcessors(heartbeatPayload.getDeviceInfo().getSystemInfo().get(0).getVcores());
+            cppDevice.setTotalSystemMemory(heartbeatPayload.getDeviceInfo().getSystemInfo().get(0).getPhysicalMemory());
+
+            this.deviceDAO.insertMiNiFiCPPDeviceTransaction(cppDevice);
+
+            this.heartbeatDAO.registerHeartbeat(heartbeatPayload);
+
+            // Create the response.
+            C2Response response = new C2Response();
+            response.setOperation(heartbeatPayload.getOperation());
+            response.setOperations(operationsForDevice(heartbeatPayload));
+            return response;
+        } else {
+            logger.warn("DeviceInfo in the Heartbeat payload is NULL!");
+            return null;
+        }
     }
 
+    /**
+     * Retrieves the list of pending operations for the device from the backing store.
+     *
+     * @param heartbeat
+     *  Heartbeat received from the device.
+     *
+     * @return
+     *  List of Operations that the device should perform.
+     */
     private List<C2Operation> operationsForDevice(C2Payload heartbeat) {
         return null;
     }

@@ -27,7 +27,7 @@ public class C2State {
     @JsonProperty("running")
     private String running;
 
-    @JsonProperty("uptime")
+    @JsonProperty("uptimeMilliseconds")
     private String uptimeMilliseconds;
 
     public C2State() {

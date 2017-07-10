@@ -1,5 +1,7 @@
 package org.apache.nifi.device.registry.resource.c2.core.device;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
@@ -24,38 +26,27 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class DeviceInfo {
 
-    @JsonProperty("nic_mac_address")
-    private String primaryNicMacAddress;
+    @JsonProperty("NetworkInfo")
+    private List<NetworkInfo> networkInfo;
 
-    @JsonProperty("ip")
-    private String ip;
-
-    @JsonProperty("hostname")
-    private String hostname;
+    @JsonProperty("SystemInformation")
+    private List<SystemInfo> systemInfo;
 
     public DeviceInfo(){}
 
-    public String getPrimaryNicMacAddress() {
-        return primaryNicMacAddress;
+    public List<NetworkInfo> getNetworkInfo() {
+        return networkInfo;
     }
 
-    public void setPrimaryNicMacAddress(String primaryNicMacAddress) {
-        this.primaryNicMacAddress = primaryNicMacAddress;
+    public void setNetworkInfo(List<NetworkInfo> networkInfo) {
+        this.networkInfo = networkInfo;
     }
 
-    public String getIp() {
-        return ip;
+    public List<SystemInfo> getSystemInfo() {
+        return systemInfo;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public String getHostname() {
-        return hostname;
-    }
-
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
+    public void setSystemInfo(List<SystemInfo> systemInfo) {
+        this.systemInfo = systemInfo;
     }
 }

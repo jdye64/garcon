@@ -1,6 +1,4 @@
-package org.apache.nifi.device.registry.resource.c2.core.metrics;
-
-import java.util.List;
+package org.apache.nifi.device.registry.resource.c2.core.device;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -20,23 +18,33 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * <p>
- * Created on 7/7/17.
+ * Created on 7/10/17.
  */
 
 
-public class C2Metrics {
+public class SystemInfo {
 
-    @JsonProperty("queueMetrics")
-    private List<C2QueueMetrics> queueMetrics;
+    @JsonProperty("physicalmem")
+    private long physicalMemory;
 
-    public C2Metrics() {
+    @JsonProperty("vcores")
+    private int vcores;
+
+    public SystemInfo() {}
+
+    public long getPhysicalMemory() {
+        return physicalMemory;
     }
 
-    public List<C2QueueMetrics> getQueueMetrics() {
-        return queueMetrics;
+    public void setPhysicalMemory(long physicalMemory) {
+        this.physicalMemory = physicalMemory;
     }
 
-    public void setQueueMetrics(List<C2QueueMetrics> queueMetrics) {
-        this.queueMetrics = queueMetrics;
+    public int getVcores() {
+        return vcores;
+    }
+
+    public void setVcores(int vcores) {
+        this.vcores = vcores;
     }
 }

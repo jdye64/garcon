@@ -28,6 +28,7 @@ import org.apache.nifi.device.registry.dao.device.NiFiDeviceDAO;
 import org.apache.nifi.device.registry.dao.monitor.MetricThresholdDAO;
 import org.apache.nifi.device.registry.resource.DeviceRegistryDashboardResource;
 import org.apache.nifi.device.registry.resource.c2.C2Resource;
+import org.apache.nifi.device.registry.resource.c2.dao.C2PayloadDAO;
 import org.apache.nifi.device.registry.resource.device.DeviceResource;
 import org.apache.nifi.device.registry.resource.NiFiDeviceWebSocketNotifier;
 import org.apache.nifi.device.registry.resource.operations.ConnectionsResource;
@@ -69,6 +70,7 @@ public class Garcon
         final NiFiDeviceDAO nodeDAO = jdbi.onDemand(NiFiDeviceDAO.class);
         final MetricThresholdDAO metricThresholdDAO = jdbi.onDemand(MetricThresholdDAO.class);
         final DeviceDAO deviceDAO = jdbi.onDemand(DeviceDAO.class);
+        final C2PayloadDAO c2PayloadDAO = jdbi.onDemand(C2PayloadDAO.class);
 
 //        //Add managed instances.
 //        environment.lifecycle().manage(new Site2SiteManagedProxy(configuration));
@@ -81,7 +83,7 @@ public class Garcon
         environment.jersey().register(new DeviceRegistryDashboardResource(configuration));
         environment.jersey().register(new ConnectionsResource(configuration));
         environment.jersey().register(new ProcessorsResource(configuration));
-        environment.jersey().register(new C2Resource(configuration));
+        environment.jersey().register(new C2Resource(configuration, deviceDAO, c2PayloadDAO));
 
         //Create an instance of the MonitorService in a new thread that will be ran periodically.
         //TODO: Move this to a managed instance.
