@@ -27,6 +27,7 @@ import org.apache.nifi.device.registry.dao.device.DeviceDAO;
 import org.apache.nifi.device.registry.dao.device.NiFiDeviceDAO;
 import org.apache.nifi.device.registry.dao.monitor.MetricThresholdDAO;
 import org.apache.nifi.device.registry.resource.DeviceRegistryDashboardResource;
+import org.apache.nifi.device.registry.resource.c2.C2Resource;
 import org.apache.nifi.device.registry.resource.device.DeviceResource;
 import org.apache.nifi.device.registry.resource.NiFiDeviceWebSocketNotifier;
 import org.apache.nifi.device.registry.resource.operations.ConnectionsResource;
@@ -80,6 +81,7 @@ public class Garcon
         environment.jersey().register(new DeviceRegistryDashboardResource(configuration));
         environment.jersey().register(new ConnectionsResource(configuration));
         environment.jersey().register(new ProcessorsResource(configuration));
+        environment.jersey().register(new C2Resource(configuration));
 
         //Create an instance of the MonitorService in a new thread that will be ran periodically.
         //TODO: Move this to a managed instance.

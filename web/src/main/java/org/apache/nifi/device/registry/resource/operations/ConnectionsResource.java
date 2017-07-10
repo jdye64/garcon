@@ -85,7 +85,9 @@ public class ConnectionsResource {
     @Timed
     @Path("/pressured")
     public Response addPressuredConnections(List<ConnectionStatus> pressuredConnections) {
-        logger.info("Pressured Connects: " + pressuredConnections);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Received PressuredConnections: " + pressuredConnections);
+        }
         conDao.insertPressuredConnectionForDevice(pressuredConnections, "1");
         return Response.ok().build();
     }
