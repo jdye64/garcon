@@ -154,9 +154,8 @@ public class DeviceRegistryReportingTask
             }
 
             //Set the values to the device object.
-            device.setPrimaryNICMac(sb.toString());
-            device.setPrivateIPAddress(ip.getHostAddress());
-            device.setPublicIPAddress(ip.getHostAddress());   //TODO: This should not be this way
+            device.setDeviceId(sb.toString());
+            device.setIp(ip.getHostAddress());
 
             String hostname = InetAddress.getLocalHost().getHostName();
             logger.error("First attempt at getting hostname: " + hostname);
