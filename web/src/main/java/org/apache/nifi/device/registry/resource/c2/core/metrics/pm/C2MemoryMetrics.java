@@ -1,9 +1,6 @@
-package org.apache.nifi.device.registry.resource.c2.core.metrics;
-
-import java.util.List;
+package org.apache.nifi.device.registry.resource.c2.core.metrics.pm;
 
 import org.codehaus.jackson.annotate.JsonProperty;
-
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -21,36 +18,22 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * <p>
- * Created on 7/7/17.
+ * Created on 7/11/17.
  */
 
 
-public class C2Metrics {
+public class C2MemoryMetrics {
 
-    @JsonProperty("queueMetrics")
-    private List<C2QueueMetrics> queueMetrics;
+    @JsonProperty("maxrss")
+    private long maxrss;
 
-    @JsonProperty("ProcessMetrics")
-    private List<C2ProcessMetrics> processMetricss;
+    public C2MemoryMetrics() {}
 
-    public C2Metrics() {
+    public long getMaxrss() {
+        return maxrss;
     }
 
-    @JsonProperty("queueMetrics")
-    public List<C2QueueMetrics> getQueueMetrics() {
-        return queueMetrics;
-    }
-
-    @JsonProperty("queueMetrics")
-    public void setQueueMetrics(List<C2QueueMetrics> queueMetrics) {
-        this.queueMetrics = queueMetrics;
-    }
-
-    public List<C2ProcessMetrics> getProcessMetricss() {
-        return processMetricss;
-    }
-
-    public void setProcessMetricss(List<C2ProcessMetrics> processMetricss) {
-        this.processMetricss = processMetricss;
+    public void setMaxrss(long maxrss) {
+        this.maxrss = maxrss;
     }
 }

@@ -2,8 +2,9 @@ package org.apache.nifi.device.registry.resource.c2.core.metrics;
 
 import java.util.List;
 
+import org.apache.nifi.device.registry.resource.c2.core.metrics.pm.C2CPUMetrics;
+import org.apache.nifi.device.registry.resource.c2.core.metrics.pm.C2MemoryMetrics;
 import org.codehaus.jackson.annotate.JsonProperty;
-
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -21,36 +22,33 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * <p>
- * Created on 7/7/17.
+ * Created on 7/11/17.
  */
 
 
-public class C2Metrics {
+public class C2ProcessMetrics {
 
-    @JsonProperty("queueMetrics")
-    private List<C2QueueMetrics> queueMetrics;
+    @JsonProperty("MemoryMetrics")
+    private List<C2MemoryMetrics> memoryMetrics;
 
-    @JsonProperty("ProcessMetrics")
-    private List<C2ProcessMetrics> processMetricss;
+    @JsonProperty("CpuMetrics")
+    private List<C2CPUMetrics> cpuMetrics;
 
-    public C2Metrics() {
+    public C2ProcessMetrics() {}
+
+    public List<C2MemoryMetrics> getMemoryMetrics() {
+        return memoryMetrics;
     }
 
-    @JsonProperty("queueMetrics")
-    public List<C2QueueMetrics> getQueueMetrics() {
-        return queueMetrics;
+    public void setMemoryMetrics(List<C2MemoryMetrics> memoryMetrics) {
+        this.memoryMetrics = memoryMetrics;
     }
 
-    @JsonProperty("queueMetrics")
-    public void setQueueMetrics(List<C2QueueMetrics> queueMetrics) {
-        this.queueMetrics = queueMetrics;
+    public List<C2CPUMetrics> getCpuMetrics() {
+        return cpuMetrics;
     }
 
-    public List<C2ProcessMetrics> getProcessMetricss() {
-        return processMetricss;
-    }
-
-    public void setProcessMetricss(List<C2ProcessMetrics> processMetricss) {
-        this.processMetricss = processMetricss;
+    public void setCpuMetrics(List<C2CPUMetrics> cpuMetrics) {
+        this.cpuMetrics = cpuMetrics;
     }
 }

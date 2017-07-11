@@ -16,7 +16,7 @@ database:
   user: garcon
 
   # the password
-  password: !QAZ2wsx
+  password: !iAMs00perSecrEET
 
   # the JDBC URL
   url: jdbc:mysql://localhost:3306/GARCON

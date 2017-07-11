@@ -23,11 +23,13 @@ import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
 import org.apache.nifi.device.registry.resource.c2.core.metrics.C2Metrics;
 import org.apache.nifi.device.registry.resource.c2.core.state.C2State;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * Payload received from the MiNiFi-CPP C2Agent
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class C2Payload {
 
     @JsonProperty("DeviceInfo")
