@@ -1,5 +1,6 @@
 package org.apache.nifi.device.registry.resource.c2.core.metrics;
 
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
@@ -42,42 +43,52 @@ public class C2QueueMetrics {
     public C2QueueMetrics() {
     }
 
+    @JsonProperty("name")
     public String getName() {
         return name;
     }
 
+    @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
     }
 
+    @JsonProperty("datasize")
     public long getDataSize() {
         return dataSize;
     }
 
+    @JsonProperty("datasize")
     public void setDataSize(long dataSize) {
         this.dataSize = dataSize;
     }
 
+    @JsonProperty("dataSizeMax")
     public long getDataSizeMax() {
         return dataSizeMax;
     }
 
+    @JsonProperty("dataSizeMax")
     public void setDataSizeMax(long dataSizeMax) {
         this.dataSizeMax = dataSizeMax;
     }
 
+    @JsonProperty("queued")
     public long getQueued() {
         return queued;
     }
 
+    @JsonProperty("queued")
     public void setQueued(long queued) {
         this.queued = queued;
     }
 
+    @JsonProperty("queueMax")
     public long getQueueMax() {
         return queueMax;
     }
 
+    @JsonProperty("queueMax")
     public void setQueueMax(long queueMax) {
         this.queueMax = queueMax;
     }

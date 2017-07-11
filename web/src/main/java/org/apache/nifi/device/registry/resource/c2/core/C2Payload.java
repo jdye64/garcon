@@ -22,6 +22,7 @@ package org.apache.nifi.device.registry.resource.c2.core;
 import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
 import org.apache.nifi.device.registry.resource.c2.core.metrics.C2Metrics;
 import org.apache.nifi.device.registry.resource.c2.core.state.C2State;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
@@ -44,34 +45,42 @@ public class C2Payload {
     public C2Payload() {
     }
 
+    @JsonProperty("DeviceInfo")
     public DeviceInfo getDeviceInfo() {
         return deviceInfo;
     }
 
+    @JsonProperty("DeviceInfo")
     public void setDeviceInfo(DeviceInfo deviceInfo) {
         this.deviceInfo = deviceInfo;
     }
 
+    @JsonProperty("operation")
     public String getOperation() {
         return operation;
     }
 
+    @JsonProperty("operation")
     public void setOperation(String operation) {
         this.operation = operation;
     }
 
+    @JsonProperty("metrics")
     public C2Metrics getMetrics() {
         return metrics;
     }
 
+    @JsonProperty("metrics")
     public void setMetrics(C2Metrics metrics) {
         this.metrics = metrics;
     }
 
+    @JsonProperty("state")
     public C2State getState() {
         return state;
     }
 
+    @JsonProperty("state")
     public void setState(C2State state) {
         this.state = state;
     }

@@ -1,5 +1,6 @@
 package org.apache.nifi.device.registry.resource.c2.core.device;
 
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
@@ -35,26 +36,32 @@ public class NetworkInfo {
 
     public NetworkInfo() {}
 
+    @JsonProperty("deviceid")
     public String getDeviceid() {
         return deviceid;
     }
 
+    @JsonProperty("deviceid")
     public void setDeviceid(String deviceid) {
         this.deviceid = deviceid;
     }
 
+    @JsonProperty("ip")
     public String getIp() {
         return ip;
     }
 
+    @JsonProperty("ip")
     public void setIp(String ip) {
         this.ip = ip;
     }
 
+    @JsonProperty("hostname")
     public String getHostname() {
         return hostname;
     }
 
+    @JsonProperty("hostname")
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }

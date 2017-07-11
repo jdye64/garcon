@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -34,18 +35,22 @@ public class DeviceInfo {
 
     public DeviceInfo(){}
 
+    @JsonProperty("NetworkInfo")
     public List<NetworkInfo> getNetworkInfo() {
         return networkInfo;
     }
 
+    @JsonProperty("NetworkInfo")
     public void setNetworkInfo(List<NetworkInfo> networkInfo) {
         this.networkInfo = networkInfo;
     }
 
+    @JsonProperty("SystemInformation")
     public List<SystemInfo> getSystemInfo() {
         return systemInfo;
     }
 
+    @JsonProperty("SystemInformation")
     public void setSystemInfo(List<SystemInfo> systemInfo) {
         this.systemInfo = systemInfo;
     }

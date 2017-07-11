@@ -1,5 +1,6 @@
 package org.apache.nifi.device.registry.resource.c2.core.device;
 
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
@@ -32,18 +33,22 @@ public class SystemInfo {
 
     public SystemInfo() {}
 
+    @JsonProperty("physicalmem")
     public long getPhysicalMemory() {
         return physicalMemory;
     }
 
+    @JsonProperty("physicalmem")
     public void setPhysicalMemory(long physicalMemory) {
         this.physicalMemory = physicalMemory;
     }
 
+    @JsonProperty("vcores")
     public int getVcores() {
         return vcores;
     }
 
+    @JsonProperty("vcores")
     public void setVcores(int vcores) {
         this.vcores = vcores;
     }

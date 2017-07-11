@@ -1,5 +1,6 @@
 package org.apache.nifi.device.registry.resource.c2.core.state;
 
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
@@ -33,18 +34,22 @@ public class C2State {
     public C2State() {
     }
 
+    @JsonProperty("running")
     public String getRunning() {
         return running;
     }
 
+    @JsonProperty("running")
     public void setRunning(String running) {
         this.running = running;
     }
 
+    @JsonProperty("uptimeMilliseconds")
     public String getUptimeMilliseconds() {
         return uptimeMilliseconds;
     }
 
+    @JsonProperty("uptimeMilliseconds")
     public void setUptimeMilliseconds(String uptimeMilliseconds) {
         this.uptimeMilliseconds = uptimeMilliseconds;
     }

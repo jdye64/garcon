@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -32,10 +33,12 @@ public class C2Metrics {
     public C2Metrics() {
     }
 
+    @JsonProperty("queueMetrics")
     public List<C2QueueMetrics> getQueueMetrics() {
         return queueMetrics;
     }
 
+    @JsonProperty("queueMetrics")
     public void setQueueMetrics(List<C2QueueMetrics> queueMetrics) {
         this.queueMetrics = queueMetrics;
     }
