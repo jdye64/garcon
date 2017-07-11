@@ -79,7 +79,7 @@ public class DeviceResource {
     @Path("/nifi")
     public Response announceNiFiDeviceAvailability(NiFiDevice device) {
         if (logger.isDebugEnabled()) {
-            logger.debug("Garcon accepting NiFi Device register heartbeat for device id: {}", device.getPrimaryNICMac());
+            logger.debug("Garcon accepting NiFi Device register heartbeat for device id: {}", device.getDeviceId());
         }
 
         if (device != null) {

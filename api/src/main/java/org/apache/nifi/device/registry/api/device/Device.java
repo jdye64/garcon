@@ -22,12 +22,10 @@ package org.apache.nifi.device.registry.api.device;
 
 public class Device {
 
-    private long deviceId;
+    private String deviceId;
 
     // Device networking info
-    private String primaryNICMac;           // Used as the unique "ID" for each device is the sprawling flow graph
-    private String privateIPAddress;
-    private String publicIPAddress;
+    private String ip;
     private String hostname;
 
     // Common Hardware info
@@ -36,36 +34,20 @@ public class Device {
     private long availableSystemMemory;
     private long consumedMemory;
 
-    public long getDeviceId() {
+    public String getDeviceId() {
         return deviceId;
     }
 
-    public void setDeviceId(long deviceId) {
+    public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
     }
 
-    public String getPrimaryNICMac() {
-        return primaryNICMac;
+    public String getIp() {
+        return ip;
     }
 
-    public void setPrimaryNICMac(String primaryNICMac) {
-        this.primaryNICMac = primaryNICMac;
-    }
-
-    public String getPrivateIPAddress() {
-        return privateIPAddress;
-    }
-
-    public void setPrivateIPAddress(String privateIPAddress) {
-        this.privateIPAddress = privateIPAddress;
-    }
-
-    public String getPublicIPAddress() {
-        return publicIPAddress;
-    }
-
-    public void setPublicIPAddress(String publicIPAddress) {
-        this.publicIPAddress = publicIPAddress;
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     public String getHostname() {

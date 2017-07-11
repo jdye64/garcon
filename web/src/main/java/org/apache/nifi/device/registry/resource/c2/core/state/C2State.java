@@ -29,7 +29,7 @@ public class C2State {
     private String running;
 
     @JsonProperty("uptimeMilliseconds")
-    private String uptimeMilliseconds;
+    private long uptimeMilliseconds;
 
     public C2State() {
     }
@@ -45,12 +45,12 @@ public class C2State {
     }
 
     @JsonProperty("uptimeMilliseconds")
-    public String getUptimeMilliseconds() {
+    public long getUptimeMilliseconds() {
         return uptimeMilliseconds;
     }
 
     @JsonProperty("uptimeMilliseconds")
-    public void setUptimeMilliseconds(String uptimeMilliseconds) {
+    public void setUptimeMilliseconds(long uptimeMilliseconds) {
         this.uptimeMilliseconds = uptimeMilliseconds;
     }
 }

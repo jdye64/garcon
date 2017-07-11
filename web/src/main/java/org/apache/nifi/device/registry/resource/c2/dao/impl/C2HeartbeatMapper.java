@@ -3,7 +3,7 @@ package org.apache.nifi.device.registry.resource.c2.dao.impl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
+import org.apache.nifi.device.registry.resource.c2.core.C2Heartbeat;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
@@ -23,21 +23,21 @@ import org.skife.jdbi.v2.tweak.ResultSetMapper;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * <p>
- * Created on 7/10/17.
+ * Created on 7/11/17.
  */
 
 
-public class C2PayloadMapper
-        implements ResultSetMapper<C2Payload>
-{
-    public C2Payload map(int index, ResultSet resultSet, StatementContext statementContext) throws SQLException
+public class C2HeartbeatMapper
+        implements ResultSetMapper<C2Heartbeat> {
+
+    public C2Heartbeat map(int index, ResultSet resultSet, StatementContext statementContext) throws SQLException
     {
-        C2Payload nc = new C2Payload();
-//        nc.setId(resultSet.getLong("CLUSTER_ID"));
-//        nc.setName(resultSet.getString("CLUSTER_NAME"));
-//        nc.setDescription(resultSet.getString("CLUSTER_DESC"));
-//        nc.setHostname(resultSet.getString("CLUSTER_HOSTNAME"));
-//        nc.setPort(resultSet.getString("CLUSTER_PORT"));
-        return nc;
+        C2Heartbeat hb = new C2Heartbeat();
+        hb.setDeviceId(resultSet.getString("DEVICE_ID"));
+        hb.setHeartBeatId(resultSet.getLong("HEARTBEAT_ID"));
+        hb.setOperation(resultSet.getString("OPERATION"));
+        hb.setState(resultSet.getString("STATE"));
+        hb.setHeartbeatTimestamp(resultSet.getTimestamp("HEARTBEAT_TIMESTAMP"));
+        return hb;
     }
 }

@@ -3,11 +3,9 @@ package org.apache.nifi.device.registry.resource.c2.dao;
 import java.sql.Timestamp;
 
 import org.apache.nifi.device.registry.dao.DBConstants;
-import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
-import org.apache.nifi.device.registry.resource.c2.dao.impl.C2PayloadMapper;
+import org.apache.nifi.device.registry.resource.c2.dao.impl.C2HeartbeatMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
-import org.skife.jdbi.v2.sqlobject.Transaction;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
 /**
@@ -26,20 +24,14 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * <p>
- * Created on 7/7/17.
+ * Created on 7/11/17.
  */
 
-@RegisterMapper(C2PayloadMapper.class)
-public abstract class C2PayloadDAO {
+@RegisterMapper(C2HeartbeatMapper.class)
+public abstract class C2HeartbeatDAO {
 
-    @Transaction
-    public void registerHeartbeat(C2Payload heartbeatPayload) {
-        //long deviceId = registerHeartbeat();
-
-    }
-
-    @SqlUpdate("INSERT INTO " + DBConstants.MINIFI_HEARTBEATS_TABLE + "(MINIFI_DEVICE_ID, OPERATION, STATE, HEARTBEAT_TIMESTAMP) " +
-            "VALUES (:minifiDeviceId, :operation, :state, :heartbeatTimestamp)")
-    public abstract void registerHeartbeat(@Bind("minifiDeviceID") long minifiDeviceId, @Bind("operation") String operation,
-            @Bind("state") String state, @Bind("heartbeatTimestamp") Timestamp heartbeatTimestamp);
+    @SqlUpdate("INSERT INTO " + DBConstants.C2_HEARTBEATS + "(DEVICE_ID, OPERATION, STATE, UPTIME, HEARTBEAT_TIMESTAMP) " +
+            "VALUES (:deviceId, :operation, :state, :uptime, :heartbeatTimestamp)")
+    public abstract void registerHeartbeat(@Bind("deviceId") String deviceId, @Bind("operation") String operation, @Bind("state") String state,
+            @Bind("uptime") long uptime, @Bind("heartbeatTimestamp") Timestamp heartbeatTimestamp);
 }

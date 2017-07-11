@@ -25,6 +25,9 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class SystemInfo {
 
+    @JsonProperty("machine_arch")
+    private String machine_arch;
+
     @JsonProperty("physicalmem")
     private long physicalMemory;
 
@@ -32,6 +35,16 @@ public class SystemInfo {
     private int vcores;
 
     public SystemInfo() {}
+
+    @JsonProperty("machine_arch")
+    public String getMachineArchitecture() {
+        return machine_arch;
+    }
+
+    @JsonProperty("machine_arch")
+    public void setMachineArchitecture(String machineArchitecture) {
+        this.machine_arch = machineArchitecture;
+    }
 
     @JsonProperty("physicalmem")
     public long getPhysicalMemory() {

@@ -1,13 +1,17 @@
 package org.apache.nifi.device.registry.resource.c2.service.impl;
 
+import java.sql.Timestamp;
 import java.util.List;
 
-import org.apache.nifi.device.registry.api.device.MiNiFiCPPDevice;
-import org.apache.nifi.device.registry.dao.device.DeviceDAO;
 import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
 import org.apache.nifi.device.registry.resource.c2.core.C2Response;
+import org.apache.nifi.device.registry.resource.c2.core.device.NetworkInfo;
+import org.apache.nifi.device.registry.resource.c2.core.device.SystemInfo;
+import org.apache.nifi.device.registry.resource.c2.core.metrics.C2QueueMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.ops.C2Operation;
-import org.apache.nifi.device.registry.resource.c2.dao.C2PayloadDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2HeartbeatDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2QueueMetricsDAO;
 import org.apache.nifi.device.registry.resource.c2.service.C2Service;
 import org.skife.jdbi.v2.sqlobject.Transaction;
 import org.slf4j.Logger;
@@ -38,39 +42,60 @@ public class C2ServiceImpl
 
     private static final Logger logger = LoggerFactory.getLogger(C2ServiceImpl.class);
 
-    private C2PayloadDAO heartbeatDAO;
-    private DeviceDAO deviceDAO;
+    private C2DeviceDAO c2DeviceDAO;
+    private C2QueueMetricsDAO c2QueueMetricsDAO;
+    private C2HeartbeatDAO c2HeartbeatDAO;
 
-    public C2ServiceImpl(C2PayloadDAO payloadDAO, DeviceDAO deviceDAO) {
-        this.heartbeatDAO = payloadDAO;
-        this.deviceDAO = deviceDAO;
+    public C2ServiceImpl(C2DeviceDAO c2DeviceDAO, C2QueueMetricsDAO c2QueueMetricsDAO, C2HeartbeatDAO c2HeartbeatDAO) {
+        this.c2DeviceDAO = c2DeviceDAO;
+        this.c2QueueMetricsDAO = c2QueueMetricsDAO;
+        this.c2HeartbeatDAO = c2HeartbeatDAO;
     }
 
     @Transaction
     public C2Response registerHeartBeat(C2Payload heartbeatPayload) {
 
-        //First save the MiNiFi Device in the DB if it doesn't already exist.
-        MiNiFiCPPDevice cppDevice = new MiNiFiCPPDevice();
-        if (heartbeatPayload.getDeviceInfo() != null) {
-            cppDevice.setPrimaryNICMac(heartbeatPayload.getDeviceInfo().getNetworkInfo().get(0).getDeviceid());
-            cppDevice.setPublicIPAddress(heartbeatPayload.getDeviceInfo().getNetworkInfo().get(0).getIp());
-            cppDevice.setHostname(heartbeatPayload.getDeviceInfo().getNetworkInfo().get(0).getHostname());
-            cppDevice.setAvailableProcessors(heartbeatPayload.getDeviceInfo().getSystemInfo().get(0).getVcores());
-            cppDevice.setTotalSystemMemory(heartbeatPayload.getDeviceInfo().getSystemInfo().get(0).getPhysicalMemory());
-
-            this.deviceDAO.insertMiNiFiCPPDeviceTransaction(cppDevice);
-
-            this.heartbeatDAO.registerHeartbeat(heartbeatPayload);
-
-            // Create the response.
-            C2Response response = new C2Response();
-            response.setOperation(heartbeatPayload.getOperation());
-            response.setOperations(operationsForDevice(heartbeatPayload));
-            return response;
-        } else {
-            logger.warn("DeviceInfo in the Heartbeat payload is NULL!");
-            return null;
+        NetworkInfo ni = null;
+        SystemInfo si = null;
+        if (heartbeatPayload.getDeviceInfo().getNetworkInfo() != null) {
+            ni = heartbeatPayload.getDeviceInfo().getNetworkInfo().get(0);
         }
+        if (heartbeatPayload.getDeviceInfo().getSystemInfo() != null) {
+            si = heartbeatPayload.getDeviceInfo().getSystemInfo().get(0);
+        }
+
+        try {
+            this.c2DeviceDAO.registerC2Device(ni.getDeviceid(), ni.getHostname(), ni.getIp(), si.getMachineArchitecture(), si.getPhysicalMemory(), si.getVcores());
+        } catch (Exception ex) {
+            // The device already exists so lets update it.
+            this.c2DeviceDAO.updateC2Device(ni.getHostname(), ni.getIp(), si.getMachineArchitecture(), si.getPhysicalMemory(), si.getVcores(), ni.getDeviceid());
+        }
+
+        // Insert all of the queue metrics received from the device.
+        if (heartbeatPayload.getMetrics().getQueueMetrics() != null) {
+            for (C2QueueMetrics m : heartbeatPayload.getMetrics().getQueueMetrics()) {
+                try {
+                    this.c2QueueMetricsDAO.insertQueueMetrics(ni.getDeviceid(), m.getName(), m.getDataSize(),
+                            m.getDataSizeMax(), m.getQueued(), m.getQueueMax());
+                } catch (Exception ex) {
+                    // The Queue Metric already exists so lets update it.
+                    this.c2QueueMetricsDAO.updateQueueMetrics(ni.getDeviceid(), m.getName(), m.getDataSize(),
+                            m.getDataSizeMax(), m.getQueued(), m.getQueueMax());
+                }
+            }
+        }
+
+        // Registers the heartbeat in the DB
+        this.c2HeartbeatDAO.registerHeartbeat(ni.getDeviceid(), heartbeatPayload.getOperation(), heartbeatPayload.getState().getRunning(),
+                heartbeatPayload.getState().getUptimeMilliseconds(), new Timestamp(System.currentTimeMillis()));
+
+        // Create the C2Response
+        C2Response response = new C2Response();
+
+        response.setOperation(heartbeatPayload.getOperation());
+        response.setOperations(operationsForDevice(heartbeatPayload));
+
+        return response;
     }
 
     /**

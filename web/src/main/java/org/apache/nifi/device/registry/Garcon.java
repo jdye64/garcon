@@ -27,10 +27,12 @@ import org.apache.nifi.device.registry.dao.device.DeviceDAO;
 import org.apache.nifi.device.registry.dao.device.NiFiDeviceDAO;
 import org.apache.nifi.device.registry.dao.monitor.MetricThresholdDAO;
 import org.apache.nifi.device.registry.resource.DeviceRegistryDashboardResource;
-import org.apache.nifi.device.registry.resource.c2.C2Resource;
-import org.apache.nifi.device.registry.resource.c2.dao.C2PayloadDAO;
-import org.apache.nifi.device.registry.resource.device.DeviceResource;
 import org.apache.nifi.device.registry.resource.NiFiDeviceWebSocketNotifier;
+import org.apache.nifi.device.registry.resource.c2.C2Resource;
+import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2HeartbeatDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2QueueMetricsDAO;
+import org.apache.nifi.device.registry.resource.device.DeviceResource;
 import org.apache.nifi.device.registry.resource.operations.ConnectionsResource;
 import org.apache.nifi.device.registry.resource.operations.ProcessorsResource;
 import org.apache.nifi.device.registry.service.device.DeviceService;
@@ -70,7 +72,11 @@ public class Garcon
         final NiFiDeviceDAO nodeDAO = jdbi.onDemand(NiFiDeviceDAO.class);
         final MetricThresholdDAO metricThresholdDAO = jdbi.onDemand(MetricThresholdDAO.class);
         final DeviceDAO deviceDAO = jdbi.onDemand(DeviceDAO.class);
-        final C2PayloadDAO c2PayloadDAO = jdbi.onDemand(C2PayloadDAO.class);
+
+        // C2 JDBI Instances
+        final C2DeviceDAO c2DeviceDAO = jdbi.onDemand(C2DeviceDAO.class);
+        final C2QueueMetricsDAO c2QueueMetricsDAO = jdbi.onDemand(C2QueueMetricsDAO.class);
+        final C2HeartbeatDAO c2HeartbeatDAO = jdbi.onDemand(C2HeartbeatDAO.class);
 
 //        //Add managed instances.
 //        environment.lifecycle().manage(new Site2SiteManagedProxy(configuration));
@@ -83,7 +89,7 @@ public class Garcon
         environment.jersey().register(new DeviceRegistryDashboardResource(configuration));
         environment.jersey().register(new ConnectionsResource(configuration));
         environment.jersey().register(new ProcessorsResource(configuration));
-        environment.jersey().register(new C2Resource(configuration, deviceDAO, c2PayloadDAO));
+        environment.jersey().register(new C2Resource(configuration, c2DeviceDAO, c2QueueMetricsDAO, c2HeartbeatDAO));
 
         //Create an instance of the MonitorService in a new thread that will be ran periodically.
         //TODO: Move this to a managed instance.

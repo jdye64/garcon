@@ -26,5 +26,9 @@ public class DBConstants {
     public static final String DEVICE_TABLE = "DEVICE";
     public static final String NIFI_DEVICE_TABLE = "NIFI_NODE";
     public static final String MINIFI_DEVICE_TABLE = "MINIFI_DEVICE";
-    public static final String MINIFI_HEARTBEATS_TABLE = "MINIFI_HEARTBEATS";
+    public static final String MINIFI_HEARTBEATS_TABLE = "MINIFI_CPP_HEARTBEATS";
+
+    public static final String C2_DEVICE_TABLE = "C2_DEVICE";
+    public static final String C2_QUEUE_METRICS = "C2_QUEUE_METRICS";
+    public static final String C2_HEARTBEATS = "C2_HEARTBEATS";
 }

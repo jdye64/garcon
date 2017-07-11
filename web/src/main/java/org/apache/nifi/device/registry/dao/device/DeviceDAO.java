@@ -45,46 +45,51 @@ public abstract class DeviceDAO {
     @SqlQuery("SELECT * FROM " + DBConstants.DEVICE_TABLE + " WHERE DEVICE_ID = :deviceId")
     public abstract Device getNiFiDeviceById(@Bind("deviceId") String deviceId);
 
+    @SqlQuery("SELECT * FROM " + DBConstants.MINIFI_DEVICE_TABLE + " WHERE DEVICE_ID =:deviceId")
+    public abstract MiNiFiCPPDevice getMiNiFiCPPDeviceById(@Bind("deviceId") String deviceId);
 
-    @SqlUpdate("INSERT INTO " + DBConstants.DEVICE_TABLE + "(PRIMARY_NIC_MAC, IP, HOSTNAME, NUM_PROCESSORS, TOTAL_SYS_MEM, AVAIL_SYS_MEM, CONSUMED_SYS_MEM) " +
-            "VALUES (:primaryNICMac, :publicIP, :hostname, :numProcessors, :totalSysMem, :availSysMem, :consumedSysMem)")
+    @SqlUpdate("INSERT INTO " + DBConstants.DEVICE_TABLE + "(DEVICE_ID, IP, HOSTNAME, NUM_PROCESSORS, TOTAL_SYS_MEM, AVAIL_SYS_MEM, CONSUMED_SYS_MEM) " +
+            "VALUES (:deviceId, :ip, :hostname, :numProcessors, :totalSysMem, :availSysMem, :consumedSysMem)")
     @GetGeneratedKeys
-    public abstract long insertDevice(@Bind("primaryNICMac") String pnicMac, @Bind("privateIP") String privateIP, @Bind("publicIP") String publicIP,
+    public abstract long insertDevice(@Bind("deviceId") String pnicMac, @Bind("ip") String privateIP,
             @Bind("hostname") String hostname, @Bind("numProcessors") int numProcessors, @Bind("totalSysMem") long totalSysMem,
             @Bind("availSysMem") long availSysMem, @Bind("consumedSysMem") long consumedSysMem);
 
 
     @SqlUpdate("INSERT INTO " + DBConstants.NIFI_DEVICE_TABLE + "(NODE_URI, DEVICE_ID) VALUES (:nodeURI, :deviceID)")
-    public abstract  void insertNiFiDevice(@Bind("nodeURI") String nodeURI, @Bind("deviceID") long deviceId);
+    public abstract  void insertNiFiDevice(@Bind("nodeURI") String nodeURI, @Bind("deviceID") String deviceId);
 
 
     @SqlUpdate("INSERT INTO " + DBConstants.MINIFI_DEVICE_TABLE + "(DEVICE_ID, DEVICE_NAME, DEVICE_TYPE) VALUES (:deviceId, :deviceName, :deviceType)")
-    public abstract void insertMiNiFiDevice(@Bind("deviceId") long deviceId, @Bind("deviceName") String deviceName, @Bind("deviceType") String deviceType);
+    public abstract void insertMiNiFiDevice(@Bind("deviceId") String deviceId, @Bind("deviceName") String deviceName, @Bind("deviceType") String deviceType);
 
 
     @Transaction
-    public void insertNiFiDeviceTransaction(NiFiDevice niFiDevice) {
-        long deviceId = insertDevice(niFiDevice.getPrimaryNICMac(), niFiDevice.getPrivateIPAddress(), niFiDevice.getPublicIPAddress(),
+    public NiFiDevice insertNiFiDeviceTransaction(NiFiDevice niFiDevice) {
+        insertDevice(niFiDevice.getDeviceId(), niFiDevice.getIp(),
                 niFiDevice.getHostname(), niFiDevice.getAvailableProcessors(), niFiDevice.getTotalSystemMemory(),
                 niFiDevice.getAvailableSystemMemory(), niFiDevice.getConsumedMemory());
-        insertNiFiDevice(niFiDevice.getUri(), deviceId);
+        insertNiFiDevice(niFiDevice.getUri(), niFiDevice.getDeviceId());
+        return niFiDevice;
     }
 
     @Transaction
-    public void insertMiNiFiJavaDeviceTransaction(MiNiFiJavaDevice md) {
-        long deviceId = insertDevice(md.getPrimaryNICMac(), md.getPrivateIPAddress(), md.getPublicIPAddress(),
+    public MiNiFiJavaDevice insertMiNiFiJavaDeviceTransaction(MiNiFiJavaDevice md) {
+        insertDevice(md.getDeviceId(), md.getIp(),
                 md.getHostname(), md.getAvailableProcessors(), md.getTotalSystemMemory(),
                 md.getAvailableSystemMemory(), md.getConsumedMemory());
-        insertMiNiFiDevice(deviceId, md.getDeviceName(), "JAVA");
+        insertMiNiFiDevice(md.getDeviceId(), md.getDeviceName(), "JAVA");
+        return md;
     }
 
 
     @Transaction
-    public void insertMiNiFiCPPDeviceTransaction(MiNiFiCPPDevice md) {
-        long deviceId = insertDevice(md.getPrimaryNICMac(), md.getPrivateIPAddress(), md.getPublicIPAddress(),
+    public MiNiFiCPPDevice insertMiNiFiCPPDeviceTransaction(MiNiFiCPPDevice md) {
+        insertDevice(md.getDeviceId(), md.getIp(),
                 md.getHostname(), md.getAvailableProcessors(), md.getTotalSystemMemory(),
                 md.getAvailableSystemMemory(), md.getConsumedMemory());
-        insertMiNiFiDevice(deviceId, md.getDeviceName(), "CPP");
+        insertMiNiFiDevice(md.getDeviceId(), md.getDeviceName(), "CPP");
+        return md;
     }
 
 }
