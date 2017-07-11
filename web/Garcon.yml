@@ -13,10 +13,10 @@ database:
   driverClass: com.mysql.jdbc.Driver
 
   # the username
-  user: root
+  user: garcon
 
   # the password
-  password: nifidevregistry
+  password: !QAZ2wsx
 
   # the JDBC URL
   url: jdbc:mysql://localhost:3306/GARCON
