@@ -148,8 +148,8 @@ public class C2Resource {
         List<SystemInfo> sil = new ArrayList<SystemInfo>();
         sil.add(si);
 
-        di.setSystemInfo(sil);
-        di.setNetworkInfo(nil);
+        di.setSystemInfo(si);
+        di.setNetworkInfo(ni);
 
         p.setState(s);
         p.setOperation("heartbeat");

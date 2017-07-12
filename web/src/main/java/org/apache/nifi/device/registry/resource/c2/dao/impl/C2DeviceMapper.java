@@ -44,7 +44,7 @@ public class C2DeviceMapper
         ni.setHostname(resultSet.getString("HOSTNAME"));
 
         List<NetworkInfo> nil = Arrays.asList(ni);
-        di.setNetworkInfo(nil);
+        di.setNetworkInfo(ni);
 
         SystemInfo si = new SystemInfo();
         si.setMachineArchitecture(resultSet.getString("MACHINE_ARCH"));
@@ -52,7 +52,7 @@ public class C2DeviceMapper
         si.setVcores(resultSet.getInt("VCORES"));
 
         List<SystemInfo> sil = Arrays.asList(si);
-        di.setSystemInfo(sil);
+        di.setSystemInfo(si);
 
         return di;
     }

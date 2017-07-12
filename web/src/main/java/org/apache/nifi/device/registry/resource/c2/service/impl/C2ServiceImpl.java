@@ -58,10 +58,10 @@ public class C2ServiceImpl
         NetworkInfo ni = null;
         SystemInfo si = null;
         if (heartbeatPayload.getDeviceInfo().getNetworkInfo() != null) {
-            ni = heartbeatPayload.getDeviceInfo().getNetworkInfo().get(0);
+            ni = heartbeatPayload.getDeviceInfo().getNetworkInfo();
         }
         if (heartbeatPayload.getDeviceInfo().getSystemInfo() != null) {
-            si = heartbeatPayload.getDeviceInfo().getSystemInfo().get(0);
+            si = heartbeatPayload.getDeviceInfo().getSystemInfo();
         }
 
         try {

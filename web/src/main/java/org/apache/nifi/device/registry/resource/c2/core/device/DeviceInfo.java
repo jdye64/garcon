@@ -1,7 +1,5 @@
 package org.apache.nifi.device.registry.resource.c2.core.device;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -28,30 +26,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class DeviceInfo {
 
     @JsonProperty("NetworkInfo")
-    private List<NetworkInfo> networkInfo;
+    private NetworkInfo networkInfo;
 
     @JsonProperty("SystemInformation")
-    private List<SystemInfo> systemInfo;
+    private SystemInfo systemInfo;
 
     public DeviceInfo(){}
 
-    @JsonProperty("NetworkInfo")
-    public List<NetworkInfo> getNetworkInfo() {
+    public NetworkInfo getNetworkInfo() {
         return networkInfo;
     }
 
-    @JsonProperty("NetworkInfo")
-    public void setNetworkInfo(List<NetworkInfo> networkInfo) {
+    public void setNetworkInfo(NetworkInfo networkInfo) {
         this.networkInfo = networkInfo;
     }
 
-    @JsonProperty("SystemInformation")
-    public List<SystemInfo> getSystemInfo() {
+    public SystemInfo getSystemInfo() {
         return systemInfo;
     }
 
-    @JsonProperty("SystemInformation")
-    public void setSystemInfo(List<SystemInfo> systemInfo) {
+    public void setSystemInfo(SystemInfo systemInfo) {
         this.systemInfo = systemInfo;
     }
 }
