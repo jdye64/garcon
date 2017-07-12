@@ -28,12 +28,12 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 @RegisterMapper(C2ProcessMetricsMapper.class)
 public abstract class C2ProcessMetricsDAO {
 
-    @SqlUpdate("INSERT INTO " + DBConstants.C2_PROCESS_METRICS + "(DEVICE_ID, MEMORY_MAXRSS, CPU_INVOLCS) " +
-            "VALUES (:deviceId, :memoryMaxRSS, :cpuInvolcs)")
+    @SqlUpdate("INSERT INTO " + DBConstants.C2_PROCESS_METRICS + "(DEVICE_ID, MEMORY_MAXRSS, CPU_INVOLCS, LAST_UPDATE_TIMESTAMP) " +
+            "VALUES (:deviceId, :memoryMaxRSS, :cpuInvolcs, NOW())")
     public abstract void insertProcessMetrics(@Bind("deviceId") String deviceId, @Bind("memoryMaxRSS") long memoryMaxRSS,
             @Bind("cpuInvolcs") long cpuInvolcs);
 
-    @SqlUpdate("UPDATE " + DBConstants.C2_PROCESS_METRICS + " SET MEMORY_MAXRSS = :memoryMaxRSS, CPU_INVOLCS = :cpuInvolcs " +
+    @SqlUpdate("UPDATE " + DBConstants.C2_PROCESS_METRICS + " SET MEMORY_MAXRSS = :memoryMaxRSS, CPU_INVOLCS = :cpuInvolcs, LAST_UPDATE_TIMESTAMP = NOW() " +
             "WHERE DEVICE_ID = :deviceId")
     public abstract void updateProcessMetrics(@Bind("deviceId") String deviceId, @Bind("memoryMaxRSS") long memoryMaxRSS,
             @Bind("cpuInvolcs") long cpuInvolcs);

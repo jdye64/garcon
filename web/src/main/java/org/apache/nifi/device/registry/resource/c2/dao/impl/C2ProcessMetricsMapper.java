@@ -35,8 +35,8 @@ public class C2ProcessMetricsMapper
     public C2ProcessMetrics map(int index, ResultSet resultSet, StatementContext statementContext) throws SQLException
     {
         C2ProcessMetrics pm = new C2ProcessMetrics();
-        pm.setProcessMetricsId(resultSet.getLong("PROCESS_METRICS_ID"));
         pm.setDeviceId(resultSet.getString("DEVICE_ID"));
+        pm.setLastUpdateTimestamp(resultSet.getTimestamp("LAST_UPDATE_TIMESTAMP"));
         C2MemoryMetrics mm = new C2MemoryMetrics();
         mm.setMaxrss(resultSet.getLong("MEMORY_MAXRSS"));
         pm.setMemoryMetrics(mm);

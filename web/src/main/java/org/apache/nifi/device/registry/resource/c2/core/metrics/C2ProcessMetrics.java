@@ -1,5 +1,7 @@
 package org.apache.nifi.device.registry.resource.c2.core.metrics;
 
+import java.sql.Timestamp;
+
 import org.apache.nifi.device.registry.resource.c2.core.metrics.pm.C2CPUMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.metrics.pm.C2MemoryMetrics;
 
@@ -29,10 +31,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class C2ProcessMetrics {
 
     @JsonIgnore
-    private long processMetricsId;
+    private String deviceId;
 
     @JsonIgnore
-    private String deviceId;
+    private Timestamp lastUpdateTimestamp;
 
     @JsonProperty("MemoryMetrics")
     private C2MemoryMetrics memoryMetrics;
@@ -58,19 +60,19 @@ public class C2ProcessMetrics {
         this.cpuMetrics = cpuMetrics;
     }
 
-    public long getProcessMetricsId() {
-        return processMetricsId;
-    }
-
-    public void setProcessMetricsId(long processMetricsId) {
-        this.processMetricsId = processMetricsId;
-    }
-
     public String getDeviceId() {
         return deviceId;
     }
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public Timestamp getLastUpdateTimestamp() {
+        return lastUpdateTimestamp;
+    }
+
+    public void setLastUpdateTimestamp(Timestamp lastUpdateTimestamp) {
+        this.lastUpdateTimestamp = lastUpdateTimestamp;
     }
 }
