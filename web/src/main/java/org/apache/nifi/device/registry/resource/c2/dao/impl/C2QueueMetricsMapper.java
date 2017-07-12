@@ -33,7 +33,7 @@ public class C2QueueMetricsMapper
     public C2QueueMetrics map(int index, ResultSet resultSet, StatementContext statementContext) throws SQLException
     {
         C2QueueMetrics qm = new C2QueueMetrics();
-        qm.setName(resultSet.getString("QUEUE_METRICS_ID"));
+        //qm.setName(resultSet.getString("QUEUE_METRICS_ID"));
         qm.setDataSize(resultSet.getLong("DATA_SIZE"));
         qm.setDataSizeMax(resultSet.getLong("DATA_SIZE_MAX"));
         qm.setQueued(resultSet.getLong("QUEUED"));

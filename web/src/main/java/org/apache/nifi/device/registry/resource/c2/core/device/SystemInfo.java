@@ -25,8 +25,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SystemInfo {
 
-    @JsonProperty("machine_arch")
-    private String machine_arch;
+    @JsonProperty("machinearch")
+    private String machineArchitecture;
 
     @JsonProperty("physicalmem")
     private long physicalMemory;
@@ -36,32 +36,26 @@ public class SystemInfo {
 
     public SystemInfo() {}
 
-    @JsonProperty("machine_arch")
     public String getMachineArchitecture() {
-        return machine_arch;
+        return machineArchitecture;
     }
 
-    @JsonProperty("machine_arch")
     public void setMachineArchitecture(String machineArchitecture) {
-        this.machine_arch = machineArchitecture;
+        this.machineArchitecture = machineArchitecture;
     }
 
-    @JsonProperty("physicalmem")
     public long getPhysicalMemory() {
         return physicalMemory;
     }
 
-    @JsonProperty("physicalmem")
     public void setPhysicalMemory(long physicalMemory) {
         this.physicalMemory = physicalMemory;
     }
 
-    @JsonProperty("vcores")
     public int getVcores() {
         return vcores;
     }
 
-    @JsonProperty("vcores")
     public void setVcores(int vcores) {
         this.vcores = vcores;
     }

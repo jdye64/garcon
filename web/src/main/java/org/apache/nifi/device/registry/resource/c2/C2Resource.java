@@ -1,7 +1,9 @@
 package org.apache.nifi.device.registry.resource.c2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -104,7 +106,6 @@ public class C2Resource {
         qm.setQueued(0l);
         qm.setDataSizeMax(0l);
         qm.setDataSize(0l);
-        //qm.setName("testqueue");
         List<C2QueueMetrics> qml = new ArrayList<C2QueueMetrics>();
         qml.add(qm);
 
@@ -126,7 +127,10 @@ public class C2Resource {
         List<C2ProcessMetrics> pml = new ArrayList<C2ProcessMetrics>();
         pml.add(pm);
 
-        m.setQueueMetrics(qml);
+        Map<String, C2QueueMetrics> qmm = new HashMap<String, C2QueueMetrics>();
+        qmm.put("GetFile/success/LogAttribute", qm);
+
+        m.setQueueMetrics(qmm);
         m.setProcessMetricss(pml);
 
         // Create the DeviceInfo object

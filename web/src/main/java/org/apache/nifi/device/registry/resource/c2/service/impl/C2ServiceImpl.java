@@ -1,6 +1,7 @@
 package org.apache.nifi.device.registry.resource.c2.service.impl;
 
 import java.sql.Timestamp;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
@@ -72,14 +73,17 @@ public class C2ServiceImpl
         }
 
         // Insert all of the queue metrics received from the device.
-        if (heartbeatPayload.getMetrics().getQueueMetrics() != null) {
-            for (C2QueueMetrics m : heartbeatPayload.getMetrics().getQueueMetrics()) {
+        if (heartbeatPayload.getMetrics() != null && heartbeatPayload.getMetrics().getQueueMetrics() != null) {
+            Iterator<String> itr = heartbeatPayload.getMetrics().getQueueMetrics().keySet().iterator();
+            while (itr.hasNext()) {
+                String key = itr.next();
+                C2QueueMetrics m = heartbeatPayload.getMetrics().getQueueMetrics().get(key);
                 try {
-                    this.c2QueueMetricsDAO.insertQueueMetrics(ni.getDeviceid(), m.getName(), m.getDataSize(),
+                    this.c2QueueMetricsDAO.insertQueueMetrics(ni.getDeviceid(), key, m.getDataSize(),
                             m.getDataSizeMax(), m.getQueued(), m.getQueueMax());
                 } catch (Exception ex) {
                     // The Queue Metric already exists so lets update it.
-                    this.c2QueueMetricsDAO.updateQueueMetrics(ni.getDeviceid(), m.getName(), m.getDataSize(),
+                    this.c2QueueMetricsDAO.updateQueueMetrics(ni.getDeviceid(), key, m.getDataSize(),
                             m.getDataSizeMax(), m.getQueued(), m.getQueueMax());
                 }
             }

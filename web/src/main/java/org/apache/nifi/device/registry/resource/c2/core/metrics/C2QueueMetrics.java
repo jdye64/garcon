@@ -25,30 +25,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class C2QueueMetrics {
 
-    @JsonProperty("name")
-    private String name;
-
     @JsonProperty("datasize")
     private long dataSize;
 
-    @JsonProperty("dataSizeMax")
+    @JsonProperty("datasizemax")
     private long dataSizeMax;
 
     @JsonProperty("queued")
     private long queued;
 
-    @JsonProperty("queueMax")
+    @JsonProperty("queuedmax")
     private long queueMax;
 
     public C2QueueMetrics() {
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public long getDataSize() {
