@@ -122,8 +122,8 @@ public class C2Resource {
         List<C2MemoryMetrics> cmml = new ArrayList<C2MemoryMetrics>();
         cmml.add(cmm);
 
-        pm.setCpuMetrics(cpuml);
-        pm.setMemoryMetrics(cmml);
+        //pm.setCpuMetrics(cpuml);
+        //pm.setMemoryMetrics(cmml);
         List<C2ProcessMetrics> pml = new ArrayList<C2ProcessMetrics>();
         pml.add(pm);
 
@@ -131,7 +131,7 @@ public class C2Resource {
         qmm.put("GetFile/success/LogAttribute", qm);
 
         m.setQueueMetrics(qmm);
-        m.setProcessMetricss(pml);
+        //m.setProcessMetricss(pml);
 
         // Create the DeviceInfo object
         DeviceInfo di = new DeviceInfo();

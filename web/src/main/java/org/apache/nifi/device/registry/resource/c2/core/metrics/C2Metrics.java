@@ -1,6 +1,5 @@
 package org.apache.nifi.device.registry.resource.c2.core.metrics;
 
-import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,7 +32,7 @@ public class C2Metrics {
     private Map<String, C2QueueMetrics> queueMetrics;
 
     @JsonProperty("ProcessMetrics")
-    private List<C2ProcessMetrics> processMetricss;
+    private C2ProcessMetrics processMetricss;
 
     public C2Metrics() {
     }
@@ -46,11 +45,11 @@ public class C2Metrics {
         this.queueMetrics = queueMetrics;
     }
 
-    public List<C2ProcessMetrics> getProcessMetricss() {
+    public C2ProcessMetrics getProcessMetricss() {
         return processMetricss;
     }
 
-    public void setProcessMetricss(List<C2ProcessMetrics> processMetricss) {
+    public void setProcessMetricss(C2ProcessMetrics processMetricss) {
         this.processMetricss = processMetricss;
     }
 }

@@ -1,7 +1,5 @@
 package org.apache.nifi.device.registry.resource.c2.core.metrics;
 
-import java.util.List;
-
 import org.apache.nifi.device.registry.resource.c2.core.metrics.pm.C2CPUMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.metrics.pm.C2MemoryMetrics;
 
@@ -30,26 +28,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class C2ProcessMetrics {
 
     @JsonProperty("MemoryMetrics")
-    private List<C2MemoryMetrics> memoryMetrics;
+    private C2MemoryMetrics memoryMetrics;
 
     @JsonProperty("CpuMetrics")
-    private List<C2CPUMetrics> cpuMetrics;
+    private C2CPUMetrics cpuMetrics;
 
     public C2ProcessMetrics() {}
 
-    public List<C2MemoryMetrics> getMemoryMetrics() {
+    public C2MemoryMetrics getMemoryMetrics() {
         return memoryMetrics;
     }
 
-    public void setMemoryMetrics(List<C2MemoryMetrics> memoryMetrics) {
+    public void setMemoryMetrics(C2MemoryMetrics memoryMetrics) {
         this.memoryMetrics = memoryMetrics;
     }
 
-    public List<C2CPUMetrics> getCpuMetrics() {
+    public C2CPUMetrics getCpuMetrics() {
         return cpuMetrics;
     }
 
-    public void setCpuMetrics(List<C2CPUMetrics> cpuMetrics) {
+    public void setCpuMetrics(C2CPUMetrics cpuMetrics) {
         this.cpuMetrics = cpuMetrics;
     }
 }
