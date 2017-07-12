@@ -25,116 +25,57 @@
 </head>
 <body>
 
-<nav class="navbar navbar-inverse visible-xs">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-      <a class="navbar-brand" href="#"><img src="images/minifi-logo.png" width="50px"/></a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Devices</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+<!--<nav class="navbar navbar-inverse visible-xs">-->
+  <!--<div class="container-fluid">-->
+    <!--<div class="navbar-header">-->
+      <!--<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">-->
+        <!--<span class="icon-bar"></span>-->
+        <!--<span class="icon-bar"></span>-->
+        <!--<span class="icon-bar"></span>                        -->
+      <!--</button>-->
+      <!--<a class="navbar-brand" href="#"><img src="images/minifi-logo.png" width="50px"/></a>-->
+    <!--</div>-->
+    <!--<div class="collapse navbar-collapse" id="myNavbar">-->
+      <!--<ul class="nav navbar-nav">-->
+        <!--<li class="active"><a href="#">Devices</a></li>-->
+      <!--</ul>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</nav>-->
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-2 sidenav hidden-xs">
-      <h2><img src="images/minifi-logo.png" width="150px"/></h2>
-      <ul class="nav nav-pills nav-stacked">
-      	<li class="active"><a href="dashboard">Dashboard</a></li>
-        <li><a href="devices">Devices</a></li>
-        <li><a href="connections">Connections</a></li>
-      </ul>
-      <!--
-      <ul class="nav navbar-nav navbar-right">
-	    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-	    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-	  </ul>
-	-->
-    </div>
+    <!--<div class="col-sm-2 sidenav hidden-xs">-->
+      <!--<h2><img src="images/minifi-logo.png" width="150px"/></h2>-->
+      <!--<ul class="nav nav-pills nav-stacked">-->
+      	<!--<li class="active"><a href="dashboard">Dashboard</a></li>-->
+        <!--<li><a href="devices">Devices</a></li>-->
+        <!--<li><a href="connections">Connections</a></li>-->
+      <!--</ul>-->
+      <!--&lt;!&ndash;-->
+      <!--<ul class="nav navbar-nav navbar-right">-->
+	    <!--<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>-->
+	    <!--<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>-->
+	  <!--</ul>-->
+	<!--&ndash;&gt;-->
+    <!--</div>-->
     <br>
-
-    <!-- Devices Table -->
-    <div id="devices" class="content col-sm-10" style="display: none;">
-    	<div class="well">
-        <h4>Devices</h4>
-        <table class="table">
-	        <thead>
-	            <tr>
-	                <th>MAC</th>
-	                <th>IP</th>
-	                <th>Hostname</th>
-	                <th># Processors</th>
-	                <th>Free Memory</th>
-	                <th>Total Memory</th>
-	                <th>Free Disk</th>
-	                <th>Total Disk</th>
-	            </tr>
-	        </thead>
-	        <tbody id="contentBody">
-
-	        </tbody>
-	    </table>
-      </div>
-    </div>
-
-    <!-- NiFi Connections Info -->
-    <div id="connections" class="content col-sm-10" style="display: none;">
-    	<div class="well">
-        <h4>Backpressured Connections</h4>
-        <table class="table">
-	        <thead>
-	            <tr>
-	                <th>Connection ID</th>
-	                <th>Backpressure Object Threshold</th>
-	                <th>Backpressure Size Threshold</th>
-	                <th>Queued Count</th>
-	                <th>Queued Bytes</th>
-	            </tr>
-	        </thead>
-	        <tbody id="pressuredConnectionBody"></tbody>
-	    </table>
-      </div>
-    </div>
-
-    <!-- NiFi Processors Info -->
-    <div id="processors" class="content col-sm-10" style="display: none;">
-    	<div class="well">
-        <h4>Processors</h4>
-        <table class="table">
-	        <thead>
-	            <tr>
-	                <th>Connection ID</th>
-	                <th>Backpressure Object Threshold</th>
-	                <th>Backpressure Size Threshold</th>
-	                <th>Queued Count</th>
-	                <th>Queued Bytes</th>
-	            </tr>
-	        </thead>
-	        <tbody id="processorsBody"></tbody>
-	    </table>
-      </div>
-    </div>
     
-    <div id="dashboard" class="content col-sm-10">
+    <div id="dashboard" class="content col-sm-12">
+
+        <! -
 
     	<!-- Devices HUD -->
     	<div class="row">
         	<div class="col-sm-12">
 				<div class="well">
-					<h4>MiNiFi C++ Devices</h4>
+					<h4>MiNiFi C++ HUD</h4>
         			<p id="minifiCppDevicesWell"></p>
                     <div class="row">
                         <div class="col-sm-3">
                             <div class="well">
-                                Online Devices
+                                MiNiFi Devices:
+                                <p id="minifiDevicesHUD"></p>
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -157,85 +98,27 @@
         	</div>
     	</div>
 
-      <!-- NiFi Processors HUD -->
-      <div class="row">
-        <div class="col-sm-2">
-          <div class="well">
-            <h4>Total Processors</h4>
-            <p id="totalNumProcessors"></p> 
-          </div>
-        </div>
-        <div class="col-sm-2">
-          <div class="well">
-            <h4>Stopped Processors</h4>
-            <p id="numStoppedProcessors"></p>
-          </div>
-        </div>
-        <div class="col-sm-2">
-          <div class="well">
-            <h4>Invalid Processors</h4>
-            <p id="numInvalidProcessors"></p>
-          </div>
-        </div>
-        <div class="col-sm-2">
-          <div class="well">
-            <h4>Running Processors</h4>
-            <p id="numRunningProcessors"></p>
-          </div>
-        </div>
-        <div class="col-sm-2">
-          <div class="well">
-            <h4>Disabled Processors</h4>
-            <p id="numDisabledProcessors"></p>
-          </div>
-        </div>
-        <div class="col-sm-2">
-          <div class="well">
-            <h4>Average Runtime</h4>
-            <p>30%</p> 
-          </div>
-        </div>
-      </div>
+        <!-- Devices Table -->
+        <div id="devices" class="col-sm-12">
+            <div class="well">
+                <h4>Devices</h4>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Device ID</th>
+                        <th>IP</th>
+                        <th>Hostname</th>
+                        <th>Machine Arch</th>
+                        <th>VCores</th>
+                        <th>Physical Memory</th>
+                    </tr>
+                    </thead>
+                    <tbody id="contentBody">
 
-      <!-- NiFi Connections HUD -->
-      <div class="row">
-        <div class="col-sm-2">
-          <div class="well">
-            <h4>Backpressured Connections</h4>
-            <p id="backPressuredConnections"></p> 
-          </div>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="col-sm-2">
-          <div class="well">
-            <h4>Backpressured Bytes</h4>
-            <p id="backPressuredBytes"></p> 
-          </div>
-        </div>
-        <div class="col-sm-2">
-          <div class="well">
-            <h4>Backpressured Objects</h4>
-            <p id="backPressuredObjects"></p> 
-          </div>
-        </div>
-        <div class="col-sm-2">
-          <div class="well">
-            <h4>Average Runtime</h4>
-            <p>30%</p> 
-          </div>
-        </div>
-        <div class="col-sm-2">
-          <div class="well">
-            <h4>Average Runtime</h4>
-            <p>30%</p> 
-          </div>
-        </div>
-        <div class="col-sm-2">
-          <div class="well">
-            <h4>Average Runtime</h4>
-            <p>30%</p> 
-          </div>
-        </div>
-      </div>
 
     </div>
   </div>
