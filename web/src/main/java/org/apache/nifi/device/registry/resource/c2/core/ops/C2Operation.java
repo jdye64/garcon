@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class C2Operation {
 
-    @JsonProperty
+    @JsonProperty("operationid")
     private long operationId;
 
     @JsonProperty("operation")
