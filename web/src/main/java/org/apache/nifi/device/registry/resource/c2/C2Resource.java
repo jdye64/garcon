@@ -27,6 +27,7 @@ import org.apache.nifi.device.registry.resource.c2.core.state.C2State;
 import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2HeartbeatDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2OperationDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2ProcessMetricsDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2QueueMetricsDAO;
 import org.apache.nifi.device.registry.resource.c2.service.C2Service;
 import org.apache.nifi.device.registry.resource.c2.service.impl.C2ServiceImpl;
@@ -68,9 +69,10 @@ public class C2Resource {
     private C2Service c2Service;
 
     public C2Resource(GarconConfiguration conf, C2DeviceDAO c2DeviceDAO, C2QueueMetricsDAO c2QueueMetricsDAO, C2HeartbeatDAO c2HeartbeatDAO,
-            C2OperationDAO c2OperationDAO) {
+            C2OperationDAO c2OperationDAO, C2ProcessMetricsDAO c2ProcessMetricsDAO) {
         this.configuration = conf;
-        this.c2Service = new C2ServiceImpl(c2DeviceDAO, c2QueueMetricsDAO, c2HeartbeatDAO, c2OperationDAO);
+        this.c2Service = new C2ServiceImpl(c2DeviceDAO, c2QueueMetricsDAO,
+                c2HeartbeatDAO, c2OperationDAO, c2ProcessMetricsDAO);
     }
 
     @POST

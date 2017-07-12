@@ -8,11 +8,13 @@ import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
 import org.apache.nifi.device.registry.resource.c2.core.C2Response;
 import org.apache.nifi.device.registry.resource.c2.core.device.NetworkInfo;
 import org.apache.nifi.device.registry.resource.c2.core.device.SystemInfo;
+import org.apache.nifi.device.registry.resource.c2.core.metrics.C2ProcessMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.metrics.C2QueueMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.ops.C2Operation;
 import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2HeartbeatDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2OperationDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2ProcessMetricsDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2QueueMetricsDAO;
 import org.apache.nifi.device.registry.resource.c2.service.C2Service;
 import org.skife.jdbi.v2.sqlobject.Transaction;
@@ -48,13 +50,16 @@ public class C2ServiceImpl
     private C2QueueMetricsDAO c2QueueMetricsDAO;
     private C2HeartbeatDAO c2HeartbeatDAO;
     private C2OperationDAO c2OperationDAO;
+    private C2ProcessMetricsDAO c2ProcessMetricsDAO;
 
     public C2ServiceImpl(C2DeviceDAO c2DeviceDAO, C2QueueMetricsDAO c2QueueMetricsDAO,
-            C2HeartbeatDAO c2HeartbeatDAO, C2OperationDAO c2OperationDAO) {
+            C2HeartbeatDAO c2HeartbeatDAO, C2OperationDAO c2OperationDAO,
+            C2ProcessMetricsDAO c2ProcessMetricsDAO) {
         this.c2DeviceDAO = c2DeviceDAO;
         this.c2QueueMetricsDAO = c2QueueMetricsDAO;
         this.c2HeartbeatDAO = c2HeartbeatDAO;
         this.c2OperationDAO = c2OperationDAO;
+        this.c2ProcessMetricsDAO = c2ProcessMetricsDAO;
     }
 
     @Transaction
@@ -90,6 +95,29 @@ public class C2ServiceImpl
                     this.c2QueueMetricsDAO.updateQueueMetrics(ni.getDeviceid(), key, m.getDataSize(),
                             m.getDataSizeMax(), m.getQueued(), m.getQueueMax());
                 }
+            }
+        }
+
+        // Inserts or updates the ProcessMetrics.
+        C2ProcessMetrics pm = heartbeatPayload.getMetrics().getProcessMetricss();
+        if (pm != null) {
+            long memoryMaxRSS = 0l;
+            long cpuInvolcs = 0l;
+            if (pm.getMemoryMetrics() != null) {
+                memoryMaxRSS = pm.getMemoryMetrics().getMaxrss();
+            }
+            if (pm.getCpuMetrics() != null) {
+                cpuInvolcs = pm.getCpuMetrics().getInvolcs();
+            }
+            try {
+                this.c2ProcessMetricsDAO.insertProcessMetrics(ni.getDeviceid(), memoryMaxRSS, cpuInvolcs);
+            } catch (Exception ex) {
+                // Update the Process metrics.
+                this.c2ProcessMetricsDAO.updateProcessMetrics(ni.getDeviceid(), memoryMaxRSS, cpuInvolcs);
+            }
+        } else {
+            if (logger.isDebugEnabled()) {
+                logger.debug("No Process Metrics present in JSON payload. Not writing to DB");
             }
         }
 

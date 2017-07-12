@@ -30,6 +30,7 @@ public class DBConstants {
 
     public static final String C2_DEVICE_TABLE = "C2_DEVICE";
     public static final String C2_QUEUE_METRICS = "C2_QUEUE_METRICS";
+    public static final String C2_PROCESS_METRICS = "C2_PROCESS_METRICS";
     public static final String C2_HEARTBEATS = "C2_HEARTBEATS";
     public static final String C2_OPERATIONS = "C2_OPERATIONS";
 }

@@ -3,6 +3,7 @@ package org.apache.nifi.device.registry.resource.c2.core.metrics;
 import org.apache.nifi.device.registry.resource.c2.core.metrics.pm.C2CPUMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.metrics.pm.C2MemoryMetrics;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -27,6 +28,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class C2ProcessMetrics {
 
+    @JsonIgnore
+    private long processMetricsId;
+
+    @JsonIgnore
+    private String deviceId;
+
     @JsonProperty("MemoryMetrics")
     private C2MemoryMetrics memoryMetrics;
 
@@ -49,5 +56,21 @@ public class C2ProcessMetrics {
 
     public void setCpuMetrics(C2CPUMetrics cpuMetrics) {
         this.cpuMetrics = cpuMetrics;
+    }
+
+    public long getProcessMetricsId() {
+        return processMetricsId;
+    }
+
+    public void setProcessMetricsId(long processMetricsId) {
+        this.processMetricsId = processMetricsId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }
