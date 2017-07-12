@@ -1,6 +1,5 @@
 package org.apache.nifi.device.registry.resource.c2.service.impl;
 
-import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 
@@ -124,9 +123,15 @@ public class C2ServiceImpl
             }
         }
 
-        // Registers the heartbeat in the DB
-        this.c2HeartbeatDAO.registerHeartbeat(ni.getDeviceid(), heartbeatPayload.getOperation(), heartbeatPayload.getState().getRunning(),
-                heartbeatPayload.getState().getUptimeMilliseconds(), new Timestamp(System.currentTimeMillis()));
+        // Registers or updates the heartbeat in the DB.
+        try {
+            this.c2HeartbeatDAO.registerHeartbeat(ni.getDeviceid(), heartbeatPayload.getOperation(), heartbeatPayload.getState().isRunning(),
+                    heartbeatPayload.getState().getUptimeMilliseconds());
+        } catch (Exception ex) {
+            // UPdate the Heartbeat since it already exists.
+            this.c2HeartbeatDAO.udpateHeartbeat(ni.getDeviceid(), heartbeatPayload.getOperation(), heartbeatPayload.getState().isRunning(),
+                    heartbeatPayload.getState().getUptimeMilliseconds());
+        }
 
         // Create the C2Response
         C2Response response = new C2Response();
@@ -154,7 +159,7 @@ public class C2ServiceImpl
         if (deviceHeartBeats != null) {
             // Loop through and count the running and stopped devices.
             for (C2Heartbeat hb : deviceHeartBeats) {
-                if (hb.getState().equalsIgnoreCase("true") || hb.getState().equalsIgnoreCase("running")) {
+                if (hb.isRunning()) {
                     running++;
                 } else {
                     stopped++;

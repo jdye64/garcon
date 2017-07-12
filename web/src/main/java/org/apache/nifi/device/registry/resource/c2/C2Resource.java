@@ -125,7 +125,7 @@ public class C2Resource {
 
         // Create the C2State object.
         C2State s = new C2State();
-        s.setRunning("running");
+        //s.setRunning("running");
         s.setUptimeMilliseconds(100000l);
 
         // Create the Metrics object.

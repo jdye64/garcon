@@ -27,7 +27,7 @@ public class C2Heartbeat {
     private long heartBeatId;
     private String deviceId;
     private String operation;
-    private String state;
+    private boolean running;
     private Timestamp heartbeatTimestamp;
 
     public C2Heartbeat() {}
@@ -56,12 +56,12 @@ public class C2Heartbeat {
         this.operation = operation;
     }
 
-    public String getState() {
-        return state;
+    public boolean isRunning() {
+        return running;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 
     public Timestamp getHeartbeatTimestamp() {

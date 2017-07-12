@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class C2State {
 
     @JsonProperty("running")
-    private String running;
+    private boolean running;
 
     @JsonProperty("uptime")
     private long uptimeMilliseconds;
@@ -34,11 +34,11 @@ public class C2State {
     public C2State() {
     }
 
-    public String getRunning() {
+    public boolean isRunning() {
         return running;
     }
 
-    public void setRunning(String running) {
+    public void setRunning(boolean running) {
         this.running = running;
     }
 

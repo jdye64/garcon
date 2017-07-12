@@ -34,9 +34,8 @@ public class C2HeartbeatMapper
     {
         C2Heartbeat hb = new C2Heartbeat();
         hb.setDeviceId(resultSet.getString("DEVICE_ID"));
-        hb.setHeartBeatId(resultSet.getLong("HEARTBEAT_ID"));
         hb.setOperation(resultSet.getString("OPERATION"));
-        hb.setState(resultSet.getString("STATE"));
+        hb.setRunning(resultSet.getBoolean("RUNNING"));
         hb.setHeartbeatTimestamp(resultSet.getTimestamp("HEARTBEAT_TIMESTAMP"));
         return hb;
     }

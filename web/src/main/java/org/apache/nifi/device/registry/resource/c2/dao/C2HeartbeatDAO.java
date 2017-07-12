@@ -1,6 +1,5 @@
 package org.apache.nifi.device.registry.resource.c2.dao;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.nifi.device.registry.dao.DBConstants;
@@ -33,15 +32,16 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 @RegisterMapper(C2HeartbeatMapper.class)
 public abstract class C2HeartbeatDAO {
 
-    @SqlUpdate("INSERT INTO " + DBConstants.C2_HEARTBEATS + "(DEVICE_ID, OPERATION, STATE, UPTIME, HEARTBEAT_TIMESTAMP) " +
-            "VALUES (:deviceId, :operation, :state, :uptime, :heartbeatTimestamp)")
-    public abstract void registerHeartbeat(@Bind("deviceId") String deviceId, @Bind("operation") String operation, @Bind("state") String state,
-            @Bind("uptime") long uptime, @Bind("heartbeatTimestamp") Timestamp heartbeatTimestamp);
+    @SqlUpdate("INSERT INTO " + DBConstants.C2_HEARTBEATS + "(DEVICE_ID, OPERATION, RUNNING, UPTIME, HEARTBEAT_TIMESTAMP) " +
+            "VALUES (:deviceId, :operation, :running, :uptime, NOW())")
+    public abstract void registerHeartbeat(@Bind("deviceId") String deviceId, @Bind("operation") String operation, @Bind("running") boolean running,
+            @Bind("uptime") long uptime);
 
-    @SqlQuery("SELECT t1.*\n" +
-            "        FROM " + DBConstants.C2_HEARTBEATS+" t1\n" +
-            "        WHERE t1.HEARTBEAT_TIMESTAMP = (SELECT MAX(t2.HEARTBEAT_TIMESTAMP)\n" +
-            "        FROM " + DBConstants.C2_HEARTBEATS +" t2\n" +
-            "        WHERE t2.device_id = t1.device_id)")
+    @SqlUpdate("UPDATE " + DBConstants.C2_HEARTBEATS + " SET OPERATION = :operation, RUNNING = :running, UPTIME = :uptime, HEARTBEAT_TIMESTAMP = NOW()" +
+            " WHERE DEVICE_ID = :deviceId")
+    public abstract void udpateHeartbeat(@Bind("deviceId") String deviceId, @Bind("operation") String operation, @Bind("running") boolean running,
+            @Bind("uptime") long uptime);
+
+    @SqlQuery("SELECT * FROM " + DBConstants.C2_HEARTBEATS)
     public abstract List<C2Heartbeat> getLatestDeviceHeartbeat();
 }
