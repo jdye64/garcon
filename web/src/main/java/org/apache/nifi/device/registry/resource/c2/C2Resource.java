@@ -101,7 +101,7 @@ public class C2Resource {
     @Path("/operation/ack")
     public Response ackOperations(String payload) {
         JSONObject jsonObject = new JSONObject(payload);
-        long operationId = jsonObject.getLong("identifier");
+        long operationId = jsonObject.getLong("operationid");
         if (logger.isDebugEnabled()) {
             logger.debug("Acking operation with ID : " + operationId);
         }
@@ -112,6 +112,17 @@ public class C2Resource {
             logger.error(ex.getMessage());
             return Response.serverError().build();
         }
+    }
+
+    @GET
+    @Timed
+    @Path("/device/config/{deviceId}")
+    public Response getDeviceFlowFileConfiguration(@PathParam("deviceId") String deviceId) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Getting latest FlowFile configuration for device: " + deviceId);
+        }
+
+        return Response.ok().build();
     }
 
     @GET

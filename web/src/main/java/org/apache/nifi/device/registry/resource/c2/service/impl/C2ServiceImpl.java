@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.nifi.device.registry.resource.c2.core.C2Heartbeat;
 import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
 import org.apache.nifi.device.registry.resource.c2.core.C2Response;
+import org.apache.nifi.device.registry.resource.c2.core.config.C2DeviceFlowFileConfig;
 import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
 import org.apache.nifi.device.registry.resource.c2.core.device.NetworkInfo;
 import org.apache.nifi.device.registry.resource.c2.core.device.SystemInfo;
@@ -13,6 +14,8 @@ import org.apache.nifi.device.registry.resource.c2.core.metrics.C2ProcessMetrics
 import org.apache.nifi.device.registry.resource.c2.core.metrics.C2QueueMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.ops.C2Operation;
 import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceFlowFileConfigDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceFlowFileConfigMappingDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2HeartbeatDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2OperationDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2ProcessMetricsDAO;
@@ -53,6 +56,8 @@ public class C2ServiceImpl
     private C2HeartbeatDAO c2HeartbeatDAO;
     private C2OperationDAO c2OperationDAO;
     private C2ProcessMetricsDAO c2ProcessMetricsDAO;
+    private C2DeviceFlowFileConfigDAO c2DeviceFlowFileConfigDAO;
+    private C2DeviceFlowFileConfigMappingDAO c2DeviceFlowFileConfigMappingDAO;
 
     public C2ServiceImpl(C2DeviceDAO c2DeviceDAO, C2QueueMetricsDAO c2QueueMetricsDAO,
             C2HeartbeatDAO c2HeartbeatDAO, C2OperationDAO c2OperationDAO,
@@ -144,6 +149,16 @@ public class C2ServiceImpl
 
     public void ackOperation(long operationId) {
         this.c2OperationDAO.ackOperation(operationId);
+    }
+
+    public C2DeviceFlowFileConfig getDeviceLatestFlowFileConfig(String deviceId) {
+        // Get the mapping for this device.
+        //C2DeviceFlowFileConfigMapping mapping = this.c2DeviceFlowFileConfigMappingDAO
+
+        // Retrieve the actual configuration
+        //C2DeviceFlowFileConfig ffc = this.c2DeviceFlowFileConfigDAO.getDeviceFlowFileConfiguration();
+
+        return null;
     }
 
     public List<DeviceInfo> getDevice(String deviceId) {
