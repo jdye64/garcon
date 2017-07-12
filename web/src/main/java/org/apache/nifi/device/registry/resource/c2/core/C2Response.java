@@ -31,7 +31,7 @@ public class C2Response {
     @JsonProperty("operation")
     private String operation;
 
-    @JsonProperty("requests")
+    @JsonProperty("requested_operations")
     private List<C2Operation> operations;
 
     public C2Response() {

@@ -1,6 +1,7 @@
 package org.apache.nifi.device.registry.resource.c2.core.ops;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -25,13 +26,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class C2Operation {
 
+    @JsonProperty
+    private long operationId;
+
     @JsonProperty("operation")
     private String operation;
 
     @JsonProperty("name")
     private String name;
 
+    @JsonIgnore
+    private boolean acked;
+
     public C2Operation() {}
+
+    public long getOperationId() {
+        return operationId;
+    }
+
+    public void setOperationId(long operationId) {
+        this.operationId = operationId;
+    }
 
     public String getOperation() {
         return operation;
@@ -47,5 +62,13 @@ public class C2Operation {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isAcked() {
+        return acked;
+    }
+
+    public void setAcked(boolean acked) {
+        this.acked = acked;
     }
 }

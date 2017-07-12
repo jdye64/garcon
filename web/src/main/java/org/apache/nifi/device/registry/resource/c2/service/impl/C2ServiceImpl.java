@@ -12,6 +12,7 @@ import org.apache.nifi.device.registry.resource.c2.core.metrics.C2QueueMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.ops.C2Operation;
 import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2HeartbeatDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2OperationDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2QueueMetricsDAO;
 import org.apache.nifi.device.registry.resource.c2.service.C2Service;
 import org.skife.jdbi.v2.sqlobject.Transaction;
@@ -46,11 +47,14 @@ public class C2ServiceImpl
     private C2DeviceDAO c2DeviceDAO;
     private C2QueueMetricsDAO c2QueueMetricsDAO;
     private C2HeartbeatDAO c2HeartbeatDAO;
+    private C2OperationDAO c2OperationDAO;
 
-    public C2ServiceImpl(C2DeviceDAO c2DeviceDAO, C2QueueMetricsDAO c2QueueMetricsDAO, C2HeartbeatDAO c2HeartbeatDAO) {
+    public C2ServiceImpl(C2DeviceDAO c2DeviceDAO, C2QueueMetricsDAO c2QueueMetricsDAO,
+            C2HeartbeatDAO c2HeartbeatDAO, C2OperationDAO c2OperationDAO) {
         this.c2DeviceDAO = c2DeviceDAO;
         this.c2QueueMetricsDAO = c2QueueMetricsDAO;
         this.c2HeartbeatDAO = c2HeartbeatDAO;
+        this.c2OperationDAO = c2OperationDAO;
     }
 
     @Transaction
@@ -112,6 +116,6 @@ public class C2ServiceImpl
      *  List of Operations that the device should perform.
      */
     private List<C2Operation> operationsForDevice(C2Payload heartbeat) {
-        return null;
+        return this.c2OperationDAO.getPendingOperationsForDevice(heartbeat.getDeviceInfo().getNetworkInfo().getDeviceid());
     }
 }
