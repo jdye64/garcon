@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -91,6 +93,31 @@ public class C2Resource {
             ex.printStackTrace();
             return Response.serverError().build();
         }
+    }
+
+    @GET
+    @Timed
+    @Path("/device{deviceId : (/deviceId)?}")
+    public Response getDevice(@PathParam("deviceId") String deviceId) {
+        if (logger.isDebugEnabled()) {
+            if (deviceId == null) {
+                logger.debug("Retrieving all devices from DB");
+            } else {
+                logger.debug("Retrieving device with ID: " + deviceId);
+            }
+        }
+
+        return Response.ok(c2Service.getDevice(deviceId)).build();
+    }
+
+    @GET
+    @Timed
+    @Path("/hud")
+    public Response getC2HUD() {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Retrieving C2 HUD Metrics");
+        }
+        return Response.ok(this.c2Service.getC2HUD()).build();
     }
 
     public static void main(String[] args) throws JsonProcessingException {

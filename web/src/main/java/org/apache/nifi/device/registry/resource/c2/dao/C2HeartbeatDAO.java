@@ -1,10 +1,13 @@
 package org.apache.nifi.device.registry.resource.c2.dao;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.apache.nifi.device.registry.dao.DBConstants;
+import org.apache.nifi.device.registry.resource.c2.core.C2Heartbeat;
 import org.apache.nifi.device.registry.resource.c2.dao.impl.C2HeartbeatMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
+import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
@@ -34,4 +37,11 @@ public abstract class C2HeartbeatDAO {
             "VALUES (:deviceId, :operation, :state, :uptime, :heartbeatTimestamp)")
     public abstract void registerHeartbeat(@Bind("deviceId") String deviceId, @Bind("operation") String operation, @Bind("state") String state,
             @Bind("uptime") long uptime, @Bind("heartbeatTimestamp") Timestamp heartbeatTimestamp);
+
+    @SqlQuery("SELECT t1.*\n" +
+            "        FROM " + DBConstants.C2_HEARTBEATS+" t1\n" +
+            "        WHERE t1.HEARTBEAT_TIMESTAMP = (SELECT MAX(t2.HEARTBEAT_TIMESTAMP)\n" +
+            "        FROM " + DBConstants.C2_HEARTBEATS +" t2\n" +
+            "        WHERE t2.device_id = t1.device_id)")
+    public abstract List<C2Heartbeat> getLatestDeviceHeartbeat();
 }

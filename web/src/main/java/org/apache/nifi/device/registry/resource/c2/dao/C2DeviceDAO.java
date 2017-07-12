@@ -1,8 +1,12 @@
 package org.apache.nifi.device.registry.resource.c2.dao;
 
+import java.util.List;
+
 import org.apache.nifi.device.registry.dao.DBConstants;
+import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
 import org.apache.nifi.device.registry.resource.c2.dao.impl.C2DeviceMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
+import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
@@ -38,4 +42,13 @@ public abstract class C2DeviceDAO {
             "PHYSICAL_MEM = :physicalMem, VCORES = :vcores where DEVICE_ID = :deviceId")
     public abstract void updateC2Device(@Bind("hostname") String hostname, @Bind("ip") String ip, @Bind("machineArch") String machineArch,
             @Bind("physicalMem") long physicalMem, @Bind("vcores") int vcores, @Bind("deviceId") String deviceId);
+
+    @SqlQuery("SELECT COUNT(*) FROM " + DBConstants.C2_DEVICE_TABLE)
+    public abstract long totalNumDevices();
+
+    @SqlQuery("SELECT * FROM " + DBConstants.C2_DEVICE_TABLE + " WHERE DEVICE_ID = :deviceId")
+    public abstract DeviceInfo getDeviceById(@Bind("deviceId") String deviceId);
+
+    @SqlQuery("SELECT * FROM " + DBConstants.C2_DEVICE_TABLE + " LIMIT :limit")
+    public abstract List<DeviceInfo> getDeviceWithLimit(@Bind("limit") int limit);
 }

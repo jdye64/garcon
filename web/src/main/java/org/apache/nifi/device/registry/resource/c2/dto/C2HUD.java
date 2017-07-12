@@ -1,7 +1,5 @@
 package org.apache.nifi.device.registry.resource.c2.dto;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -18,44 +16,39 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * <p>
- * Created on 7/10/17.
+ * Created on 7/12/17.
  */
 
 
-public class MiNiFiDevice {
+public class C2HUD {
 
-    @JsonProperty("nic_mac_address")
-    private String primaryNicMacAddress;
+    private long totalDevices;      //Could probably just add running and stopped on JS side ...
+    private long runningDevices;
+    private long stoppedDevices;
 
-    @JsonProperty("ip")
-    private String ip;
+    public C2HUD() {}
 
-    @JsonProperty("hostname")
-    private String hostname;
-
-    public MiNiFiDevice(){}
-
-    public String getPrimaryNicMacAddress() {
-        return primaryNicMacAddress;
+    public long getTotalDevices() {
+        return totalDevices;
     }
 
-    public void setPrimaryNicMacAddress(String primaryNicMacAddress) {
-        this.primaryNicMacAddress = primaryNicMacAddress;
+    public void setTotalDevices(long totalDevices) {
+        this.totalDevices = totalDevices;
     }
 
-    public String getIp() {
-        return ip;
+    public long getRunningDevices() {
+        return runningDevices;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setRunningDevices(long runningDevices) {
+        this.runningDevices = runningDevices;
     }
 
-    public String getHostname() {
-        return hostname;
+    public long getStoppedDevices() {
+        return stoppedDevices;
     }
 
-    public void setHostname(String hostname) {
-        this.hostname = hostname;
+    public void setStoppedDevices(long stoppedDevices) {
+        this.stoppedDevices = stoppedDevices;
     }
 }

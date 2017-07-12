@@ -1,7 +1,11 @@
 package org.apache.nifi.device.registry.resource.c2.service;
 
+import java.util.List;
+
 import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
 import org.apache.nifi.device.registry.resource.c2.core.C2Response;
+import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
+import org.apache.nifi.device.registry.resource.c2.dto.C2HUD;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -25,7 +29,29 @@ import org.apache.nifi.device.registry.resource.c2.core.C2Response;
 
 public interface C2Service {
 
+    /**
+     * Handles the C2Payload JSON object received from the MiNifi device and writes all values
+     * into the underlying database.
+     *
+     * @param heartbeatPayload
+     * @return
+     */
     C2Response registerHeartBeat(C2Payload heartbeatPayload);
 
+    /**
+     * Retrieves the specified device from the DB. If the DeviceID is empty
+     * then all devices up to the DB return limit will be retrieved.
+     *
+     * @param deviceId
+     * @return
+     */
+    List<DeviceInfo> getDevice(String deviceId);
 
+    /**
+     * Creates the metrics for the UI to display the C2 Heads Up Display
+     *
+     * @return
+     *  C2HUD object representing the current HUD state.
+     */
+    C2HUD getC2HUD();
 }

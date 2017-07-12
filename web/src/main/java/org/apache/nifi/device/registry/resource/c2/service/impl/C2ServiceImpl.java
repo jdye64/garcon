@@ -4,8 +4,10 @@ import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.nifi.device.registry.resource.c2.core.C2Heartbeat;
 import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
 import org.apache.nifi.device.registry.resource.c2.core.C2Response;
+import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
 import org.apache.nifi.device.registry.resource.c2.core.device.NetworkInfo;
 import org.apache.nifi.device.registry.resource.c2.core.device.SystemInfo;
 import org.apache.nifi.device.registry.resource.c2.core.metrics.C2ProcessMetrics;
@@ -16,6 +18,7 @@ import org.apache.nifi.device.registry.resource.c2.dao.C2HeartbeatDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2OperationDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2ProcessMetricsDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2QueueMetricsDAO;
+import org.apache.nifi.device.registry.resource.c2.dto.C2HUD;
 import org.apache.nifi.device.registry.resource.c2.service.C2Service;
 import org.skife.jdbi.v2.sqlobject.Transaction;
 import org.slf4j.Logger;
@@ -132,6 +135,35 @@ public class C2ServiceImpl
         response.setOperations(operationsForDevice(heartbeatPayload));
 
         return response;
+    }
+
+    public List<DeviceInfo> getDevice(String deviceId) {
+        if (deviceId == null) {
+            return this.c2DeviceDAO.getDeviceWithLimit(50);
+        } else {
+            return this.c2DeviceDAO.getDeviceWithLimit(50);
+        }
+    }
+
+    public C2HUD getC2HUD() {
+        C2HUD hud = new C2HUD();
+        hud.setTotalDevices(c2DeviceDAO.totalNumDevices());
+        List<C2Heartbeat> deviceHeartBeats = this.c2HeartbeatDAO.getLatestDeviceHeartbeat();
+        long running = 0l;
+        long stopped = 0l;
+        if (deviceHeartBeats != null) {
+            // Loop through and count the running and stopped devices.
+            for (C2Heartbeat hb : deviceHeartBeats) {
+                if (hb.getState().equalsIgnoreCase("true") || hb.getState().equalsIgnoreCase("running")) {
+                    running++;
+                } else {
+                    stopped++;
+                }
+            }
+        }
+        hud.setRunningDevices(running);
+        hud.setStoppedDevices(stopped);
+        return hud;
     }
 
     /**
