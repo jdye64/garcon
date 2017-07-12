@@ -33,6 +33,7 @@ import org.apache.nifi.device.registry.resource.c2.dao.C2ProcessMetricsDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2QueueMetricsDAO;
 import org.apache.nifi.device.registry.resource.c2.service.C2Service;
 import org.apache.nifi.device.registry.resource.c2.service.impl.C2ServiceImpl;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -95,10 +96,12 @@ public class C2Resource {
         }
     }
 
-    @GET
+    @POST
     @Timed
-    @Path("/operation/ack/{operationId}")
-    public Response ackOperations(@PathParam("operationId") long operationId) {
+    @Path("/operation/ack")
+    public Response ackOperations(String payload) {
+        JSONObject jsonObject = new JSONObject(payload);
+        long operationId = jsonObject.getLong("identifier");
         if (logger.isDebugEnabled()) {
             logger.debug("Acking operation with ID : " + operationId);
         }
