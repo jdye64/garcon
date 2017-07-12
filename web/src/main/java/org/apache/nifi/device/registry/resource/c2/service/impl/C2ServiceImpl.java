@@ -142,6 +142,10 @@ public class C2ServiceImpl
         return response;
     }
 
+    public void ackOperation(long operationId) {
+        this.c2OperationDAO.ackOperation(operationId);
+    }
+
     public List<DeviceInfo> getDevice(String deviceId) {
         if (deviceId == null) {
             return this.c2DeviceDAO.getDeviceWithLimit(50);

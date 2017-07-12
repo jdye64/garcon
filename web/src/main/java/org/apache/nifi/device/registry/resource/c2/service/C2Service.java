@@ -39,6 +39,13 @@ public interface C2Service {
     C2Response registerHeartBeat(C2Payload heartbeatPayload);
 
     /**
+     * Acknowledges that the operation with the specified id was completed on the client side.
+     *
+     * @param operationId
+     */
+    void ackOperation(long operationId);
+
+    /**
      * Retrieves the specified device from the DB. If the DeviceID is empty
      * then all devices up to the DB return limit will be retrieved.
      *

@@ -97,6 +97,22 @@ public class C2Resource {
 
     @GET
     @Timed
+    @Path("/operation/ack/{operationId}")
+    public Response ackOperations(@PathParam("operationId") long operationId) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Acking operation with ID : " + operationId);
+        }
+        try {
+            this.c2Service.ackOperation(operationId);
+            return Response.ok().build();
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            return Response.serverError().build();
+        }
+    }
+
+    @GET
+    @Timed
     @Path("/device{deviceId : (/deviceId)?}")
     public Response getDevice(@PathParam("deviceId") String deviceId) {
         if (logger.isDebugEnabled()) {
