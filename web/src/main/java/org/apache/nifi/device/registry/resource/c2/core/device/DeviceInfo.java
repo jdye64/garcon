@@ -2,7 +2,7 @@ package org.apache.nifi.device.registry.resource.c2.core.device;
 
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**

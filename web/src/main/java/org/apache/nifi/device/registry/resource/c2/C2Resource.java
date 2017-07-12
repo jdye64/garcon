@@ -1,5 +1,8 @@
 package org.apache.nifi.device.registry.resource.c2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -10,6 +13,15 @@ import javax.ws.rs.core.Response;
 import org.apache.nifi.device.registry.GarconConfiguration;
 import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
 import org.apache.nifi.device.registry.resource.c2.core.C2Response;
+import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
+import org.apache.nifi.device.registry.resource.c2.core.device.NetworkInfo;
+import org.apache.nifi.device.registry.resource.c2.core.device.SystemInfo;
+import org.apache.nifi.device.registry.resource.c2.core.metrics.C2Metrics;
+import org.apache.nifi.device.registry.resource.c2.core.metrics.C2ProcessMetrics;
+import org.apache.nifi.device.registry.resource.c2.core.metrics.C2QueueMetrics;
+import org.apache.nifi.device.registry.resource.c2.core.metrics.pm.C2CPUMetrics;
+import org.apache.nifi.device.registry.resource.c2.core.metrics.pm.C2MemoryMetrics;
+import org.apache.nifi.device.registry.resource.c2.core.state.C2State;
 import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2HeartbeatDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2QueueMetricsDAO;
@@ -19,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -72,5 +85,77 @@ public class C2Resource {
             ex.printStackTrace();
             return Response.serverError().build();
         }
+    }
+
+    public static void main(String[] args) throws JsonProcessingException {
+        C2Payload p = new C2Payload();
+
+        // Create the C2State object.
+        C2State s = new C2State();
+        s.setRunning("running");
+        s.setUptimeMilliseconds(100000l);
+
+        // Create the Metrics object.
+        C2Metrics m = new C2Metrics();
+
+        // -- nested create queue metrics.
+        C2QueueMetrics qm = new C2QueueMetrics();
+        qm.setQueueMax(0l);
+        qm.setQueued(0l);
+        qm.setDataSizeMax(0l);
+        qm.setDataSize(0l);
+        //qm.setName("testqueue");
+        List<C2QueueMetrics> qml = new ArrayList<C2QueueMetrics>();
+        qml.add(qm);
+
+        // -- nested create process metrics.
+        C2ProcessMetrics pm = new C2ProcessMetrics();
+
+        C2CPUMetrics cpm = new C2CPUMetrics();
+        cpm.setInvolcs(1000);
+        List<C2CPUMetrics> cpuml = new ArrayList<C2CPUMetrics>();
+        cpuml.add(cpm);
+
+        C2MemoryMetrics cmm = new C2MemoryMetrics();
+        cmm.setMaxrss(1000);
+        List<C2MemoryMetrics> cmml = new ArrayList<C2MemoryMetrics>();
+        cmml.add(cmm);
+
+        pm.setCpuMetrics(cpuml);
+        pm.setMemoryMetrics(cmml);
+        List<C2ProcessMetrics> pml = new ArrayList<C2ProcessMetrics>();
+        pml.add(pm);
+
+        m.setQueueMetrics(qml);
+        m.setProcessMetricss(pml);
+
+        // Create the DeviceInfo object
+        DeviceInfo di = new DeviceInfo();
+
+        // nested --- create device info
+        NetworkInfo ni = new NetworkInfo();
+        ni.setHostname("localhost");
+        ni.setDeviceid("13412341234");
+        ni.setIp("127.0.1.1");
+        List<NetworkInfo> nil = new ArrayList<NetworkInfo>();
+        nil.add(ni);
+
+        // nested --- create system info
+        SystemInfo si = new SystemInfo();
+        si.setVcores(8);
+        si.setPhysicalMemory(100231l);
+        si.setMachineArchitecture("x86_64");
+        List<SystemInfo> sil = new ArrayList<SystemInfo>();
+        sil.add(si);
+
+        di.setSystemInfo(sil);
+        di.setNetworkInfo(nil);
+
+        p.setState(s);
+        p.setOperation("heartbeat");
+        p.setMetrics(m);
+        p.setDeviceInfo(di);
+
+        System.out.println(mapper.writeValueAsString(p));
     }
 }

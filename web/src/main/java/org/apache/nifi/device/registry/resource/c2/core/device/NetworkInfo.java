@@ -1,7 +1,6 @@
 package org.apache.nifi.device.registry.resource.c2.core.device;
 
-
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more

@@ -1,7 +1,7 @@
 package org.apache.nifi.device.registry.resource.c2.core.state;
 
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -28,7 +28,7 @@ public class C2State {
     @JsonProperty("running")
     private String running;
 
-    @JsonProperty("uptimeMilliseconds")
+    @JsonProperty("uptime")
     private long uptimeMilliseconds;
 
     public C2State() {
