@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.nifi.device.registry.resource.c2.core.ops.C2Operation;
-import org.codehaus.jackson.annotate.JsonProperty;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
