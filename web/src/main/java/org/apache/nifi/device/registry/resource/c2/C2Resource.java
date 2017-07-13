@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 import org.apache.nifi.device.registry.GarconConfiguration;
 import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
 import org.apache.nifi.device.registry.resource.c2.core.C2Response;
+import org.apache.nifi.device.registry.resource.c2.core.config.C2DeviceFlowFileConfig;
 import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
 import org.apache.nifi.device.registry.resource.c2.core.device.NetworkInfo;
 import org.apache.nifi.device.registry.resource.c2.core.device.SystemInfo;
@@ -25,6 +26,7 @@ import org.apache.nifi.device.registry.resource.c2.core.metrics.C2ProcessMetrics
 import org.apache.nifi.device.registry.resource.c2.core.metrics.C2QueueMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.metrics.pm.C2CPUMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.metrics.pm.C2MemoryMetrics;
+import org.apache.nifi.device.registry.resource.c2.core.ops.C2Operation;
 import org.apache.nifi.device.registry.resource.c2.core.state.C2State;
 import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2HeartbeatDAO;
@@ -96,6 +98,17 @@ public class C2Resource {
         }
     }
 
+    @GET
+    @Timed
+    @Path("/device/{deviceId}/operations")
+    public Response listOperationsHistoryForDevice(@PathParam("deviceId") String deviceId) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Retrieving operation history for device: " + deviceId);
+        }
+        List<C2Operation> ops = this.c2Service.getOperationHistoryForDevice(deviceId);
+        return Response.ok(ops).build();
+    }
+
     @POST
     @Timed
     @Path("/operation/ack")
@@ -121,8 +134,8 @@ public class C2Resource {
         if (logger.isDebugEnabled()) {
             logger.debug("Getting latest FlowFile configuration for device: " + deviceId);
         }
-
-        return Response.ok().build();
+        C2DeviceFlowFileConfig ffc = this.c2Service.getDeviceLatestFlowFileConfig(deviceId);
+        return Response.ok(ffc.getConfigFile()).build();
     }
 
     @GET

@@ -1,13 +1,4 @@
 
-function formatBytes(bytes, decimals) {
-   if(bytes == 0) return '0 Bytes';
-   var k = 1000,
-       dm = decimals + 1 || 3,
-       sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-       i = Math.floor(Math.log(bytes) / Math.log(k));
-   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-}
-
 /**
 Gets all of the devices that are currently in the registry
 */
@@ -30,19 +21,13 @@ function getAllDevices() {
 	}, "json");
 }
 
-function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-function getMiNiFiHUD() {
-	console.log("Retrieving the HUD for all processors");
-	$.get("/api/v1/c2/hud", function(data) {
-	    console.log(JSON.stringify(data));
-	    var devicesInfo = "Total: " + data["totalDevices"] + " / Running: " + data["runningDevices"] + " / Stopped: " + data["stoppedDevices"]
-	    $("#minifiDevicesHUD").append(devicesInfo);
-	}, "json");
+function getDeviceOperations() {
+    console.log("listing device operations history");
+    $.get("/api/v1/c2/device/2597535544847920681", function(data) {
+        console.log(JSON.stringfy(data));
+    }, "json");
 }
 
 //onload invocations.
-getMiNiFiHUD();
-getAllDevices();
+getDevice();
+getDeviceOperations();  //History of current Device Operations.

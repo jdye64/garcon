@@ -6,6 +6,7 @@ import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
 import org.apache.nifi.device.registry.resource.c2.core.C2Response;
 import org.apache.nifi.device.registry.resource.c2.core.config.C2DeviceFlowFileConfig;
 import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
+import org.apache.nifi.device.registry.resource.c2.core.ops.C2Operation;
 import org.apache.nifi.device.registry.resource.c2.dto.C2HUD;
 
 /**
@@ -53,6 +54,16 @@ public interface C2Service {
      * @return
      */
     C2DeviceFlowFileConfig getDeviceLatestFlowFileConfig(String deviceId);
+
+    /**
+     * Retrieves the operation history for a particular device. This will include pending operations.
+     *
+     * @param deviceId
+     *  Id of the device the operation will be retrieve for.
+     *
+     * @return
+     */
+    List<C2Operation> getOperationHistoryForDevice(String deviceId);
 
     /**
      * Retrieves the specified device from the DB. If the DeviceID is empty

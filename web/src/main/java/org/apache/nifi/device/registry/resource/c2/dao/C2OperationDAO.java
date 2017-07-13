@@ -35,6 +35,9 @@ public abstract class C2OperationDAO {
     @SqlQuery("SELECT * FROM " + DBConstants.C2_OPERATIONS + " WHERE DEVICE_ID = :deviceId AND ACKED = 0")
     public abstract List<C2Operation> getPendingOperationsForDevice(@Bind("deviceId") String deviceId);
 
+    @SqlQuery("SELECT * FROM " + DBConstants.C2_OPERATIONS + " WHERE DEVICE_ID = :deviceId")
+    public abstract List<C2Operation> getDeviceOperationHistory(@Bind("deviceId") String deviceId);
+
     @SqlUpdate("UPDATE " + DBConstants.C2_OPERATIONS + " SET ACKED = 1, ACK_TIMESTAMP = NOW() WHERE OPERATION_ID = :operationId")
     public abstract void ackOperation(@Bind("operationId") long operationId);
 }

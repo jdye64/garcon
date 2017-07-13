@@ -1,7 +1,8 @@
 package org.apache.nifi.device.registry.resource.c2.core.ops;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.sql.Timestamp;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -35,8 +36,11 @@ public class C2Operation {
     @JsonProperty("name")
     private String name;
 
-    @JsonIgnore
+    @JsonProperty("acked")
     private boolean acked;
+
+    @JsonProperty("ackedTimestamp")
+    private Timestamp ackedTimestamp;
 
     public C2Operation() {}
 
@@ -70,5 +74,13 @@ public class C2Operation {
 
     public void setAcked(boolean acked) {
         this.acked = acked;
+    }
+
+    public Timestamp getAckedTimestamp() {
+        return ackedTimestamp;
+    }
+
+    public void setAckedTimestamp(Timestamp ackedTimestamp) {
+        this.ackedTimestamp = ackedTimestamp;
     }
 }

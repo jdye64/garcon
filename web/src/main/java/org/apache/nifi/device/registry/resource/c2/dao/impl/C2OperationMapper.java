@@ -37,6 +37,7 @@ public class C2OperationMapper
         o.setName(resultSet.getString("NAME"));
         o.setOperation(resultSet.getString("OPERATION"));
         o.setAcked(resultSet.getBoolean("ACKED"));
+        o.setAckedTimestamp(resultSet.getTimestamp("ACK_TIMESTAMP"));
         return o;
     }
 }

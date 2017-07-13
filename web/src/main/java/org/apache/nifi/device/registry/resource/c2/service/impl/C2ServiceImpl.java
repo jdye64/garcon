@@ -161,6 +161,10 @@ public class C2ServiceImpl
         return null;
     }
 
+    public List<C2Operation> getOperationHistoryForDevice(String deviceId) {
+        return this.c2OperationDAO.getDeviceOperationHistory(deviceId);
+    }
+
     public List<DeviceInfo> getDevice(String deviceId) {
         if (deviceId == null) {
             return this.c2DeviceDAO.getDeviceWithLimit(50);

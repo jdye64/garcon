@@ -31,6 +31,6 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 @RegisterMapper(C2DeviceFlowFileConfigMapper.class)
 public abstract class C2DeviceFlowFileConfigMappingDAO {
 
-    @SqlQuery("SELECT * FROM " + DBConstants.C2_DEVICE_CONFIG_MAPPING + " WHERE DEVICE_ID = :deviceConfigId")
-    public abstract List<C2Operation> getDeviceFlowFileConfiguration(@Bind("deviceConfigId") long deviceConfigId);
+    @SqlQuery("SELECT * FROM " + DBConstants.C2_DEVICE_CONFIG_MAPPING + " WHERE DEVICE_ID = :deviceId")
+    public abstract List<C2Operation> getDeviceFlowFileConfiguration(@Bind("deviceId") String deviceId);
 }
