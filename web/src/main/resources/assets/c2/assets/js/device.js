@@ -2,7 +2,7 @@
 /**
 Gets all of the devices that are currently in the registry
 */
-function getAllDevices() {
+function getDevice() {
 	$.get("/api/v1/c2/device", function(data) {
 	    console.log(JSON.stringify(data));
 	    for(var i = 0; i < data.length; i++) {
@@ -23,11 +23,21 @@ function getAllDevices() {
 
 function getDeviceOperations() {
     console.log("listing device operations history");
-    $.get("/api/v1/c2/device/2597535544847920681", function(data) {
-        console.log(JSON.stringfy(data));
+    $.get("/api/v1/c2/device/2597535544847920681/operations", function(data) {
+        console.log(JSON.stringify(data));
+        for(var i = 0; i < data.length; i++) {
+            var obj = data[i];
+            $("#operationHistoryBody")
+        	    .append("<tr><td align='center'>" + obj.operationid + "</td>"
+        	            + "<td align='center'>" + obj.operation + "</td>"
+        	            + "<td align='center'>" + obj.name + "</td>"
+        	            + "<td align='center'>" + obj.acked + "</td>"
+        	            + "<td align='center'>" + obj.ackedTimestamp + "</td>"
+        	            + "</tr>");
+        }
     }, "json");
 }
 
 //onload invocations.
-getDevice();
+//getDevice();
 getDeviceOperations();  //History of current Device Operations.

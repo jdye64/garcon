@@ -77,8 +77,21 @@
             <div id="operations" class="row">
                 <div class="col-sm-12">
                     <div class="well">
-                        Operation History
-                        <p id="operationHistory"></p>
+                        Operation History:
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Operation ID</th>
+                                <th>Operation</th>
+                                <th>Name</th>
+                                <th>Acked</th>
+                                <th>Acked Timestamp</th>
+                            </tr>
+                            </thead>
+                            <tbody id="operationHistoryBody">
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="col-sm-12">
