@@ -32,7 +32,7 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 @RegisterMapper(C2OperationMapper.class)
 public abstract class C2OperationDAO {
 
-    @SqlQuery("SELECT * FROM " + DBConstants.C2_OPERATIONS + " WHERE DEVICE_ID = :deviceId AND ACKED = 0")
+    @SqlQuery("SELECT * FROM " + DBConstants.C2_OPERATIONS + " WHERE DEVICE_ID = :deviceId AND ACKED = 0 AND LAST_RESPONSE_TIMESTAMP < (NOW() - INTERVAL 30 SECOND);")
     public abstract List<C2Operation> getPendingOperationsForDevice(@Bind("deviceId") String deviceId);
 
     @SqlQuery("SELECT * FROM " + DBConstants.C2_OPERATIONS + " WHERE DEVICE_ID = :deviceId")

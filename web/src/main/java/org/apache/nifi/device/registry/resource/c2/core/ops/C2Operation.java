@@ -39,6 +39,9 @@ public class C2Operation {
     @JsonProperty("acked")
     private boolean acked;
 
+    @JsonProperty("lastResponseTimestamp")
+    private Timestamp lastResponseTimestamp;
+
     @JsonProperty("ackedTimestamp")
     private Timestamp ackedTimestamp;
 
@@ -74,6 +77,14 @@ public class C2Operation {
 
     public void setAcked(boolean acked) {
         this.acked = acked;
+    }
+
+    public Timestamp getLastResponseTimestamp() {
+        return lastResponseTimestamp;
+    }
+
+    public void setLastResponseTimestamp(Timestamp lastResponseTimestamp) {
+        this.lastResponseTimestamp = lastResponseTimestamp;
     }
 
     public Timestamp getAckedTimestamp() {
