@@ -166,6 +166,10 @@ public class C2ServiceImpl
         this.c2OperationDAO.createOperationForDevice(cor.getOperation(), cor.getName(), cor.getDeviceId());
     }
 
+    public List<C2QueueMetrics> getConnectionsForDevice(String deviceId) {
+        return this.c2QueueMetricsDAO.connectionsForDevice(deviceId);
+    }
+
     public List<C2Operation> getOperationHistoryForDevice(String deviceId) {
         return this.c2OperationDAO.getDeviceOperationHistory(deviceId);
     }

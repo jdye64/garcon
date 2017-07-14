@@ -6,6 +6,7 @@ import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
 import org.apache.nifi.device.registry.resource.c2.core.C2Response;
 import org.apache.nifi.device.registry.resource.c2.core.config.C2DeviceFlowFileConfig;
 import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
+import org.apache.nifi.device.registry.resource.c2.core.metrics.C2QueueMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.ops.C2Operation;
 import org.apache.nifi.device.registry.resource.c2.dto.C2HUD;
 import org.apache.nifi.device.registry.resource.c2.dto.CreateOperationRequest;
@@ -54,6 +55,14 @@ public interface C2Service {
      * @param cor
      */
     void createOpearationForDevice(CreateOperationRequest cor);
+
+    /**
+     * Gets the connections for a particular device.
+     *
+     * @param deviceId
+     * @return
+     */
+    List<C2QueueMetrics> getConnectionsForDevice(String deviceId);
 
     /**
      * Gets the latest flowfile configuration for the minifi device.

@@ -132,6 +132,17 @@ public class C2Resource {
         return Response.ok(cor).build();
     }
 
+    @GET
+    @Timed
+    @Path("/device/{deviceId}/connections")
+    public Response getConnectionsForDevice(@PathParam("deviceId") String deviceId) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("retrieving connections for device : " + deviceId);
+        }
+        return Response.ok(this.c2Service.getConnectionsForDevice(deviceId)).build();
+    }
+
+
     @POST
     @Timed
     @Path("/operation/ack")

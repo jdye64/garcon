@@ -1,8 +1,12 @@
 package org.apache.nifi.device.registry.resource.c2.dao;
 
+import java.util.List;
+
 import org.apache.nifi.device.registry.dao.DBConstants;
+import org.apache.nifi.device.registry.resource.c2.core.metrics.C2QueueMetrics;
 import org.apache.nifi.device.registry.resource.c2.dao.impl.C2QueueMetricsMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
+import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
@@ -39,4 +43,7 @@ public abstract class C2QueueMetricsDAO {
     public abstract void updateQueueMetrics(@Bind("deviceId") String deviceId, @Bind("queueMetricsId") String queueMetricsId,
             @Bind("dataSize") long dataSize, @Bind("dataSizeMax") long dataSizeMax, @Bind("queued") long queued,
             @Bind("queuedMax") long queuedMax);
+
+    @SqlQuery("SELECT * FROM " + DBConstants.C2_QUEUE_METRICS + " WHERE DEVICE_ID = :deviceId")
+    public abstract List<C2QueueMetrics> connectionsForDevice(@Bind("deviceId") String deviceId);
 }
