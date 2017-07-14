@@ -8,6 +8,7 @@ import org.apache.nifi.device.registry.resource.c2.core.config.C2DeviceFlowFileC
 import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
 import org.apache.nifi.device.registry.resource.c2.core.ops.C2Operation;
 import org.apache.nifi.device.registry.resource.c2.dto.C2HUD;
+import org.apache.nifi.device.registry.resource.c2.dto.CreateOperationRequest;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -46,6 +47,13 @@ public interface C2Service {
      * @param operationId
      */
     void ackOperation(long operationId);
+
+    /**
+     * Creates an opeartion for the specified device.
+     *
+     * @param cor
+     */
+    void createOpearationForDevice(CreateOperationRequest cor);
 
     /**
      * Gets the latest flowfile configuration for the minifi device.

@@ -36,6 +36,17 @@ function getDevice() {
 	}, "json");
 }
 
+function setOperationsValues() {
+    console.log("Setting opeartion values");
+    $.get("/api/v1/c2/operations/supported", function(data) {
+        $.each(data.supportedOperations, function(i, option) {
+            console.log("Option: " + option);
+            console.log("I: " + i);
+            $('#operationsSel').append($('<option/>').attr("value", option).text(option));
+        });
+    }, "json");
+}
+
 function getDeviceOperations() {
     console.log("listing device operations history");
     var deviceId = getUrlParameter("deviceId");
@@ -56,4 +67,29 @@ function getDeviceOperations() {
 
 //onload invocations.
 //getDevice();
+setOperationsValues();
 getDeviceOperations();  //History of current Device Operations.
+
+
+// Listen for the operation creation click
+$("#createOperation").click(function() {
+    var operation = $("#operationsSel option:selected").text();
+    var name = $("#operationName").val();
+    var deviceId = getUrlParameter("deviceId");
+    var json = {};
+    json.operation = operation;
+    json.name = name;
+    json.deviceId = deviceId;
+    var jsonString = JSON.stringify(json);
+
+    $.ajax({
+      url:"/api/v1/c2/device/operation",
+      type:"POST",
+      data:jsonString,
+      contentType:"application/json",
+      dataType:"json",
+      success: function(data){
+        console.log("Data: " + JSON.stringify(data));
+      }
+    });
+});

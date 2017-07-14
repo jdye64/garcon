@@ -40,4 +40,7 @@ public abstract class C2OperationDAO {
 
     @SqlUpdate("UPDATE " + DBConstants.C2_OPERATIONS + " SET ACKED = 1, ACK_TIMESTAMP = NOW() WHERE OPERATION_ID = :operationId")
     public abstract void ackOperation(@Bind("operationId") long operationId);
+
+    @SqlUpdate("INSERT INTO " + DBConstants.C2_OPERATIONS + " (OPERATION, NAME, DEVICE_ID, ACKED) VALUES(:operation, :name, :deviceId, 0)")
+    public abstract void createOperationForDevice(@Bind("operation") String operation, @Bind("name") String name, @Bind("deviceId") String deviceId);
 }

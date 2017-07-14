@@ -33,6 +33,8 @@ import org.apache.nifi.device.registry.resource.c2.dao.C2HeartbeatDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2OperationDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2ProcessMetricsDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2QueueMetricsDAO;
+import org.apache.nifi.device.registry.resource.c2.dto.CreateOperationRequest;
+import org.apache.nifi.device.registry.resource.c2.dto.SupportedOperations;
 import org.apache.nifi.device.registry.resource.c2.service.C2Service;
 import org.apache.nifi.device.registry.resource.c2.service.impl.C2ServiceImpl;
 import org.json.JSONObject;
@@ -100,6 +102,16 @@ public class C2Resource {
 
     @GET
     @Timed
+    @Path("/operations/supported")
+    public Response getSupportedOperations() {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Getting list of currently supported operations");
+        }
+        return Response.ok(new SupportedOperations()).build();
+    }
+
+    @GET
+    @Timed
     @Path("/device/{deviceId}/operations")
     public Response listOperationsHistoryForDevice(@PathParam("deviceId") String deviceId) {
         if (logger.isDebugEnabled()) {
@@ -107,6 +119,17 @@ public class C2Resource {
         }
         List<C2Operation> ops = this.c2Service.getOperationHistoryForDevice(deviceId);
         return Response.ok(ops).build();
+    }
+
+    @POST
+    @Timed
+    @Path("/device/operation")
+    public Response createOperationForDevice(CreateOperationRequest cor) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Creating opeartion for device Id: " + cor.getDeviceId());
+        }
+        this.c2Service.createOpearationForDevice(cor);
+        return Response.ok(cor).build();
     }
 
     @POST

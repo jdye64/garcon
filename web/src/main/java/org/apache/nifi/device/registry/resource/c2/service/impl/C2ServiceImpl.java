@@ -21,6 +21,7 @@ import org.apache.nifi.device.registry.resource.c2.dao.C2OperationDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2ProcessMetricsDAO;
 import org.apache.nifi.device.registry.resource.c2.dao.C2QueueMetricsDAO;
 import org.apache.nifi.device.registry.resource.c2.dto.C2HUD;
+import org.apache.nifi.device.registry.resource.c2.dto.CreateOperationRequest;
 import org.apache.nifi.device.registry.resource.c2.service.C2Service;
 import org.skife.jdbi.v2.sqlobject.Transaction;
 import org.slf4j.Logger;
@@ -159,6 +160,10 @@ public class C2ServiceImpl
         //C2DeviceFlowFileConfig ffc = this.c2DeviceFlowFileConfigDAO.getDeviceFlowFileConfiguration();
 
         return null;
+    }
+
+    public void createOpearationForDevice(CreateOperationRequest cor) {
+        this.c2OperationDAO.createOperationForDevice(cor.getOperation(), cor.getName(), cor.getDeviceId());
     }
 
     public List<C2Operation> getOperationHistoryForDevice(String deviceId) {
