@@ -19,12 +19,16 @@ package org.apache.nifi.device.registry.resource.c2.core;
  * Created on 7/7/17.
  */
 
+import org.apache.nifi.device.registry.resource.c2.core.components.Component;
+import org.apache.nifi.device.registry.resource.c2.core.components.Components;
 import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
 import org.apache.nifi.device.registry.resource.c2.core.metrics.C2Metrics;
 import org.apache.nifi.device.registry.resource.c2.core.state.C2State;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Map;
 
 /**
  * Payload received from the MiNiFi-CPP C2Agent
@@ -43,6 +47,9 @@ public class C2Payload {
 
     @JsonProperty("state")
     private C2State state;
+
+    @JsonProperty("Components")
+    private Map<String,String> components;
 
     public C2Payload() {
     }
@@ -86,4 +93,8 @@ public class C2Payload {
     public void setState(C2State state) {
         this.state = state;
     }
+
+    public Map<String,String> getComponents(){ return this.components; }
+
+    public void setComponents(Map<String,String> components){ this.components = components; }
 }

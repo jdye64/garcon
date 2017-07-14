@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/datatables.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <style>
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
@@ -46,17 +47,50 @@
                             </div>
                             <div class="col-sm-3">
                                 <div class="well">
-                                    # Workflows
+                                    Operations Input form:
+                                    <form id="operationForm">
+                                        Operation:
+                                        <select id="operationsSel"></select><br>
+                                        <select id="contentoptions"></select><br>
+                                        <button type="button" id="createOperation">Create Operation</button>
+                                    </form>
                                 </div>
                             </div>
+
                             <div class="col-sm-3">
                                 <div class="well">
-                                    Slowest Workflows
+                                    Device Information
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Class</th>
+                                            <th>Memory Avail</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="deviceInfo">
+
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
+
                             <div class="col-sm-3">
                                 <div class="well">
                                     Connection Metrics
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Bytes Max</th>
+                                            <th>Bytes</th>
+                                            <th>Queued max</th>
+                                            <th>Queued</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="connectMetrics">
+
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -64,21 +98,27 @@
                 </div>
             </div>
 
-            <!-- Devices Table -->
-            <div id="devices" class="row">
-                <div class="col-sm-12">
-                    <div class="well">
-                        Device Information!
-                    </div>
-                </div>
-            </div>
+
 
             <!-- Operations -->
             <div id="operations" class="row">
+                <!--
+                <div class="col-sm-12">
+                    <div class="well">
+                        Operations Input form:
+                        <form id="operationForm">
+                            Operation:
+                            <select id="operationsSel"></select><br>
+                            <select id="contentoptions"></select><br>
+                            <button type="button" id="createOperation">Create Operation</button>
+                        </form>
+                    </div>
+                </div>
+                -->
                 <div class="col-sm-12">
                     <div class="well">
                         Operation History:
-                        <table class="table">
+                        <table id="leoperationtable" class="table">
                             <thead>
                             <tr>
                                 <th>Operation ID</th>
@@ -94,19 +134,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-sm-12">
-                    <div class="well">
-                        Operations Input form:
-                        <form id="operationForm">
-                            Operation:
-                            <select id="operationsSel"></select><br>
-                            <br>Name:
-                            <input type="text" id="operationName" name="name" />
-                            <br>
-                            <button type="button" id="createOperation">Create Operation</button>
-                        </form>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>

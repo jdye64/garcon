@@ -28,11 +28,7 @@ import org.apache.nifi.device.registry.resource.c2.core.metrics.pm.C2CPUMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.metrics.pm.C2MemoryMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.ops.C2Operation;
 import org.apache.nifi.device.registry.resource.c2.core.state.C2State;
-import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceDAO;
-import org.apache.nifi.device.registry.resource.c2.dao.C2HeartbeatDAO;
-import org.apache.nifi.device.registry.resource.c2.dao.C2OperationDAO;
-import org.apache.nifi.device.registry.resource.c2.dao.C2ProcessMetricsDAO;
-import org.apache.nifi.device.registry.resource.c2.dao.C2QueueMetricsDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.*;
 import org.apache.nifi.device.registry.resource.c2.dto.CreateOperationRequest;
 import org.apache.nifi.device.registry.resource.c2.dto.SupportedOperations;
 import org.apache.nifi.device.registry.resource.c2.service.C2Service;
@@ -76,10 +72,10 @@ public class C2Resource {
     private C2Service c2Service;
 
     public C2Resource(GarconConfiguration conf, C2DeviceDAO c2DeviceDAO, C2QueueMetricsDAO c2QueueMetricsDAO, C2HeartbeatDAO c2HeartbeatDAO,
-            C2OperationDAO c2OperationDAO, C2ProcessMetricsDAO c2ProcessMetricsDAO) {
+                      C2OperationDAO c2OperationDAO, C2ProcessMetricsDAO c2ProcessMetricsDAO, C2ComponentDAO c2ComponentDAO) {
         this.configuration = conf;
         this.c2Service = new C2ServiceImpl(c2DeviceDAO, c2QueueMetricsDAO,
-                c2HeartbeatDAO, c2OperationDAO, c2ProcessMetricsDAO);
+                c2HeartbeatDAO, c2OperationDAO, c2ProcessMetricsDAO,c2ComponentDAO);
     }
 
     @POST
@@ -142,6 +138,16 @@ public class C2Resource {
         return Response.ok(this.c2Service.getConnectionsForDevice(deviceId)).build();
     }
 
+    @GET
+    @Timed
+    @Path("/device/{deviceId}/components")
+    public Response getComponentsForDevice(@PathParam("deviceId") String deviceId) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("retrieving connections for device : " + deviceId);
+        }
+        return Response.ok(this.c2Service.getComponentsForDevice(deviceId)).build();
+    }
+
 
     @POST
     @Timed
@@ -160,6 +166,7 @@ public class C2Resource {
             return Response.serverError().build();
         }
     }
+
 
     @GET
     @Timed
@@ -187,6 +194,21 @@ public class C2Resource {
         return Response.ok(c2Service.getDevice(deviceId)).build();
     }
 
+
+    @GET
+    @Timed
+    @Path("/device/{deviceId}/information")
+    public Response getDeviceInformation(@PathParam("deviceId") String deviceId) {
+        if (logger.isDebugEnabled()) {
+            if (deviceId == null) {
+                logger.debug("Retrieving all devices from DB");
+            } else {
+                logger.debug("Retrieving device with ID: " + deviceId);
+            }
+        }
+
+        return Response.ok(c2Service.getDevice(deviceId)).build();
+    }
     @GET
     @Timed
     @Path("/hud")

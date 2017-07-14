@@ -1,11 +1,16 @@
 package org.apache.nifi.device.registry.resource.c2.dao.impl;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.apache.nifi.device.registry.resource.c2.core.metrics.C2QueueMetrics;
+import org.apache.nifi.device.registry.resource.c2.core.components.Component;
+import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
+import org.apache.nifi.device.registry.resource.c2.core.device.NetworkInfo;
+import org.apache.nifi.device.registry.resource.c2.core.device.SystemInfo;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -27,17 +32,15 @@ import org.skife.jdbi.v2.tweak.ResultSetMapper;
  */
 
 
-public class C2QueueMetricsMapper
-        implements ResultSetMapper<C2QueueMetrics> {
-
-    public C2QueueMetrics map(int index, ResultSet resultSet, StatementContext statementContext) throws SQLException
+public class C2ComponentMapper
+        implements ResultSetMapper<Component>
+{
+    public Component map(int index, ResultSet resultSet, StatementContext statementContext) throws SQLException
     {
-        C2QueueMetrics qm = new C2QueueMetrics();
-        qm.setQueueMetricsId(resultSet.getString("QUEUE_METRICS_ID"));
-        qm.setDataSize(resultSet.getLong("DATA_SIZE"));
-        qm.setDataSizeMax(resultSet.getLong("DATA_SIZE_MAX"));
-        qm.setQueued(resultSet.getLong("QUEUED"));
-        qm.setQueueMax(resultSet.getLong("QUEUED_MAX"));
-        return qm;
+        Component comp = new Component();
+        comp.setDeviceId(resultSet.getString("DEVICE_ID"));
+        comp.setComponent(resultSet.getString("COMPONENT"));
+        comp.setStatus(resultSet.getBoolean("STATUS"));
+        return comp;
     }
 }

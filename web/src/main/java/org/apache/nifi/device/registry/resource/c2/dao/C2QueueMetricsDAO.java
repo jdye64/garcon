@@ -10,6 +10,8 @@ import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
+import java.util.List;
+
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -45,5 +47,5 @@ public abstract class C2QueueMetricsDAO {
             @Bind("queuedMax") long queuedMax);
 
     @SqlQuery("SELECT * FROM " + DBConstants.C2_QUEUE_METRICS + " WHERE DEVICE_ID = :deviceId")
-    public abstract List<C2QueueMetrics> connectionsForDevice(@Bind("deviceId") String deviceId);
+    public abstract List<C2QueueMetrics> getConnectionsForDevice(@Bind("deviceId") String deviceId);
 }

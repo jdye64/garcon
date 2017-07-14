@@ -15,6 +15,8 @@
     <version>1.3.0-SNAPSHOT</version>
 
     <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <dropwizard.version>1.0.5</dropwizard.version>
         <httpcomponents.version>4.5.2</httpcomponents.version>
         <jackson.version>2.7.3</jackson.version>
@@ -29,6 +31,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.6</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.nifi</groupId>
             <artifactId>nifi-api-client</artifactId>

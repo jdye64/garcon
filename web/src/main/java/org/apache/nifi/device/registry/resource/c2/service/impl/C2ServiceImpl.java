@@ -2,10 +2,16 @@ package org.apache.nifi.device.registry.resource.c2.service.impl;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import org.apache.nifi.device.registry.resource.c2.core.C2Heartbeat;
 import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
 import org.apache.nifi.device.registry.resource.c2.core.C2Response;
+import org.apache.nifi.device.registry.resource.c2.core.components.Component;
+import org.apache.nifi.device.registry.resource.c2.core.components.Components;
 import org.apache.nifi.device.registry.resource.c2.core.config.C2DeviceFlowFileConfig;
 import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
 import org.apache.nifi.device.registry.resource.c2.core.device.NetworkInfo;
@@ -13,13 +19,7 @@ import org.apache.nifi.device.registry.resource.c2.core.device.SystemInfo;
 import org.apache.nifi.device.registry.resource.c2.core.metrics.C2ProcessMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.metrics.C2QueueMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.ops.C2Operation;
-import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceDAO;
-import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceFlowFileConfigDAO;
-import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceFlowFileConfigMappingDAO;
-import org.apache.nifi.device.registry.resource.c2.dao.C2HeartbeatDAO;
-import org.apache.nifi.device.registry.resource.c2.dao.C2OperationDAO;
-import org.apache.nifi.device.registry.resource.c2.dao.C2ProcessMetricsDAO;
-import org.apache.nifi.device.registry.resource.c2.dao.C2QueueMetricsDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.*;
 import org.apache.nifi.device.registry.resource.c2.dto.C2HUD;
 import org.apache.nifi.device.registry.resource.c2.dto.CreateOperationRequest;
 import org.apache.nifi.device.registry.resource.c2.service.C2Service;
@@ -57,17 +57,19 @@ public class C2ServiceImpl
     private C2HeartbeatDAO c2HeartbeatDAO;
     private C2OperationDAO c2OperationDAO;
     private C2ProcessMetricsDAO c2ProcessMetricsDAO;
+    private C2ComponentDAO c2componentDAO;
     private C2DeviceFlowFileConfigDAO c2DeviceFlowFileConfigDAO;
     private C2DeviceFlowFileConfigMappingDAO c2DeviceFlowFileConfigMappingDAO;
 
     public C2ServiceImpl(C2DeviceDAO c2DeviceDAO, C2QueueMetricsDAO c2QueueMetricsDAO,
             C2HeartbeatDAO c2HeartbeatDAO, C2OperationDAO c2OperationDAO,
-            C2ProcessMetricsDAO c2ProcessMetricsDAO) {
+            C2ProcessMetricsDAO c2ProcessMetricsDAO, C2ComponentDAO c2componentDAO) {
         this.c2DeviceDAO = c2DeviceDAO;
         this.c2QueueMetricsDAO = c2QueueMetricsDAO;
         this.c2HeartbeatDAO = c2HeartbeatDAO;
         this.c2OperationDAO = c2OperationDAO;
         this.c2ProcessMetricsDAO = c2ProcessMetricsDAO;
+        this.c2componentDAO = c2componentDAO;
     }
 
     @Transaction
@@ -87,6 +89,13 @@ public class C2ServiceImpl
         } catch (Exception ex) {
             // The device already exists so lets update it.
             this.c2DeviceDAO.updateC2Device(ni.getHostname(), ni.getIp(), si.getMachineArchitecture(), si.getPhysicalMemory(), si.getVcores(), ni.getDeviceid());
+        }
+
+        if (ni != null) {
+            Map<String,String> components = heartbeatPayload.getComponents();
+            final String deviceId = ni.getDeviceid();
+            components.entrySet().forEach(
+                    componentEntry -> c2componentDAO.updateComponentStatus(deviceId,componentEntry.getKey(), componentEntry.getValue().equals("enabled") ? true : false ));
         }
 
         // Insert all of the queue metrics received from the device.
@@ -163,12 +172,16 @@ public class C2ServiceImpl
     }
 
     public void createOpearationForDevice(CreateOperationRequest cor) {
-        this.c2OperationDAO.createOperationForDevice(cor.getOperation(), cor.getName(), cor.getDeviceId());
+
+        List<String> contentList = Lists.newArrayList();
+        if (null != cor.getContent()) {
+            cor.getContent().entrySet().forEach(contentEntry -> contentList.add(contentEntry.getKey() + ":" + contentEntry.getValue()));
+        }
+
+        String content = Joiner.on(",").join(contentList);
+        this.c2OperationDAO.createOperationForDevice(cor.getOperation(), cor.getName(), cor.getDeviceId(), content);
     }
 
-    public List<C2QueueMetrics> getConnectionsForDevice(String deviceId) {
-        return this.c2QueueMetricsDAO.connectionsForDevice(deviceId);
-    }
 
     public List<C2Operation> getOperationHistoryForDevice(String deviceId) {
         return this.c2OperationDAO.getDeviceOperationHistory(deviceId);
@@ -180,6 +193,27 @@ public class C2ServiceImpl
         } else {
             return this.c2DeviceDAO.getDeviceWithLimit(50);
         }
+    }
+
+
+    public List<C2QueueMetrics> getConnectionsForDevice(String deviceId){
+        List<C2QueueMetrics> metrics = Lists.newArrayList();
+
+        if (deviceId != null){
+            metrics.addAll ( this.c2QueueMetricsDAO.getConnectionsForDevice(deviceId) );
+
+        }
+        return metrics;
+    }
+
+    public List<Component> getComponentsForDevice(String deviceId){
+        List<Component> components = Lists.newArrayList();
+
+        if (deviceId != null){
+            components.addAll ( this.c2componentDAO.getComponentStatus(deviceId) );
+
+        }
+        return components;
     }
 
     public C2HUD getC2HUD() {
@@ -213,6 +247,7 @@ public class C2ServiceImpl
      *  List of Operations that the device should perform.
      */
     private List<C2Operation> operationsForDevice(C2Payload heartbeat) {
+        logger.info("Device ID is {}", heartbeat.getDeviceInfo().getNetworkInfo().getDeviceid());
         return this.c2OperationDAO.getPendingOperationsForDevice(heartbeat.getDeviceInfo().getNetworkInfo().getDeviceid());
     }
 }

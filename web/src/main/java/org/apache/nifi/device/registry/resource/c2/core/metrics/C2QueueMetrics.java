@@ -25,6 +25,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class C2QueueMetrics {
 
+    @JsonProperty("queue_metrics_id")
+    private String queue_metrics_id;
+
     @JsonProperty("datasize")
     private long dataSize;
 
@@ -38,6 +41,14 @@ public class C2QueueMetrics {
     private long queueMax;
 
     public C2QueueMetrics() {
+    }
+
+    public String getQueueMetricsId() {
+        return queue_metrics_id;
+    }
+
+    public void setQueueMetricsId(String queue_metrics_id) {
+        this.queue_metrics_id = queue_metrics_id;
     }
 
     public long getDataSize() {

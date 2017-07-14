@@ -1,8 +1,11 @@
-package org.apache.nifi.device.registry.resource.c2.dto;
+package org.apache.nifi.device.registry.resource.c2.core.components;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.nifi.device.registry.resource.c2.core.device.NetworkInfo;
+import org.apache.nifi.device.registry.resource.c2.core.device.SystemInfo;
 
 import java.util.Map;
+
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -20,49 +23,24 @@ import java.util.Map;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * <p>
- * Created on 7/13/17.
+ * Created on 7/10/17.
  */
 
 
-public class CreateOperationRequest {
+public class Component {
 
-    @JsonProperty("operation")
-    private String operation;
-
-    @JsonProperty("name")
-    private String name;
-
-    @JsonProperty("deviceId")
+    @JsonProperty("DeviceId")
     private String deviceId;
 
-    @JsonProperty("content")
-    private Map<String,String> content;
+    @JsonProperty("Component")
+    private String component;
 
-    public CreateOperationRequest() {}
+    @JsonProperty("Status")
+    private boolean status;
 
-    public String getOperation() {
-        return operation;
-    }
 
-    public void setContent(Map<String,String> content) {
-        this.content = content;
-    }
 
-    public Map<String,String> getContent() {
-        return content;
-    }
-
-    public void setOperation(String operation) {
-        this.operation = operation;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    public Component(){}
 
     public String getDeviceId() {
         return deviceId;
@@ -70,5 +48,21 @@ public class CreateOperationRequest {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public String getComponent() {
+        return component;
+    }
+
+    public void setComponent(String component) {
+        this.component = component;
+    }
+
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

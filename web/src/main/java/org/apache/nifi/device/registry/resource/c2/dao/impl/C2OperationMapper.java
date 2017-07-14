@@ -2,7 +2,10 @@ package org.apache.nifi.device.registry.resource.c2.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
+import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.nifi.device.registry.resource.c2.core.ops.C2Operation;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
@@ -36,9 +39,21 @@ public class C2OperationMapper
         o.setOperationId(resultSet.getLong("OPERATION_ID"));
         o.setName(resultSet.getString("NAME"));
         o.setOperation(resultSet.getString("OPERATION"));
+        String content = resultSet.getString("CONTENT");
+        Map<String,String> contentMap = Maps.newHashMap();
+        if (content != null && !content.isEmpty()) {
+         String [] contentSplit=   StringUtils.split(content, ",");
+         for(String contentStr : contentSplit){
+             String [] keyValue = StringUtils.split(contentStr, ":");
+             if (keyValue.length == 2){
+                 contentMap.put(keyValue[0],keyValue[1]);
+             }
+         }
+        }
+        o.setContent(contentMap);
         o.setAcked(resultSet.getBoolean("ACKED"));
-        o.setLastResponseTimestamp(resultSet.getTimestamp("LAST_RESPONSE_TIMESTAMP"));
-        o.setAckedTimestamp(resultSet.getTimestamp("ACK_TIMESTAMP"));
+        //o.setLastResponseTimestamp(resultSet.getTimestamp("LAST_RESPONSE_TIMESTAMP"));
+//        o.setAckedTimestamp(resultSet.getTimestamp("ACK_TIMESTAMP"));
         return o;
     }
 }

@@ -2,6 +2,7 @@ package org.apache.nifi.device.registry.resource.c2.core.ops;
 
 
 import java.sql.Timestamp;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -45,6 +46,10 @@ public class C2Operation {
     @JsonProperty("ackedTimestamp")
     private Timestamp ackedTimestamp;
 
+    @JsonProperty("content")
+    private Map<String,String> content;
+
+
     public C2Operation() {}
 
     public long getOperationId() {
@@ -53,6 +58,14 @@ public class C2Operation {
 
     public void setOperationId(long operationId) {
         this.operationId = operationId;
+    }
+
+    public void setContent(final Map<String,String> content){
+        this.content = content;
+    }
+
+    public Map<String,String> getContent(){
+        return content;
     }
 
     public String getOperation() {

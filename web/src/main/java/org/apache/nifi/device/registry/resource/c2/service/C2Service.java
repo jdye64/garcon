@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
 import org.apache.nifi.device.registry.resource.c2.core.C2Response;
+import org.apache.nifi.device.registry.resource.c2.core.components.Component;
 import org.apache.nifi.device.registry.resource.c2.core.config.C2DeviceFlowFileConfig;
 import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
 import org.apache.nifi.device.registry.resource.c2.core.metrics.C2QueueMetrics;
@@ -63,6 +64,14 @@ public interface C2Service {
      * @return
      */
     List<C2QueueMetrics> getConnectionsForDevice(String deviceId);
+
+    /**
+     * Gets the connections for a particular device.
+     *
+     * @param deviceId
+     * @return
+     */
+    List<Component> getComponentsForDevice(String deviceId);
 
     /**
      * Gets the latest flowfile configuration for the minifi device.

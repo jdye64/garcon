@@ -3,6 +3,7 @@ package org.apache.nifi.device.registry.resource.c2.dao;
 import java.util.List;
 
 import org.apache.nifi.device.registry.dao.DBConstants;
+import org.apache.nifi.device.registry.resource.c2.core.metrics.C2QueueMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.ops.C2Operation;
 import org.apache.nifi.device.registry.resource.c2.dao.impl.C2OperationMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
@@ -32,7 +33,7 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 @RegisterMapper(C2OperationMapper.class)
 public abstract class C2OperationDAO {
 
-    @SqlQuery("SELECT * FROM " + DBConstants.C2_OPERATIONS + " WHERE DEVICE_ID = :deviceId AND ACKED = 0 AND LAST_RESPONSE_TIMESTAMP < (NOW() - INTERVAL 30 SECOND);")
+    @SqlQuery("SELECT * FROM " + DBConstants.C2_OPERATIONS + " WHERE DEVICE_ID = :deviceId AND ACKED = 0 ")
     public abstract List<C2Operation> getPendingOperationsForDevice(@Bind("deviceId") String deviceId);
 
     @SqlQuery("SELECT * FROM " + DBConstants.C2_OPERATIONS + " WHERE DEVICE_ID = :deviceId")
@@ -41,6 +42,8 @@ public abstract class C2OperationDAO {
     @SqlUpdate("UPDATE " + DBConstants.C2_OPERATIONS + " SET ACKED = 1, ACK_TIMESTAMP = NOW() WHERE OPERATION_ID = :operationId")
     public abstract void ackOperation(@Bind("operationId") long operationId);
 
-    @SqlUpdate("INSERT INTO " + DBConstants.C2_OPERATIONS + " (OPERATION, NAME, DEVICE_ID, ACKED) VALUES(:operation, :name, :deviceId, 0)")
-    public abstract void createOperationForDevice(@Bind("operation") String operation, @Bind("name") String name, @Bind("deviceId") String deviceId);
+    @SqlUpdate("INSERT INTO " + DBConstants.C2_OPERATIONS + " (OPERATION, NAME, DEVICE_ID,CONTENT, ACKED) VALUES(:operation, :name, :deviceId, :content, 0)")
+    public abstract void createOperationForDevice(@Bind("operation") String operation, @Bind("name") String name, @Bind("deviceId") String deviceId, @Bind("content") String content);
+
+
 }
