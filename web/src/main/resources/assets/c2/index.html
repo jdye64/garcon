@@ -5,7 +5,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/jquery.dataTables.min.css">
   <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/datatables.min.js"></script>
   <script src="assets/js/bootstrap.min.js"></script>
   <style>
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
@@ -60,48 +62,82 @@
 	<!--&ndash;&gt;-->
     <!--</div>-->
     <br>
-    
-    <div id="dashboard" class="content col-sm-12">
 
-    	<!-- Devices HUD -->
-    	<div class="row">
-        	<div class="col-sm-12">
-				<div class="well">
-					<h4>MiNiFi C++ HUD</h4>
-        			<p id="minifiCppDevicesWell"></p>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="well">
-                                MiNiFi Devices:
-                                <p id="minifiDevicesHUD"></p>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="well">
-                                # Workflows
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="well">
-                                Slowest Workflows
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="well">
-                                Connection Metrics
-                            </div>
-                        </div>
-                    </div>
-				</div>
-        	</div>
-    	</div>
+      <div id="dashboard" class="content col-sm-12">
+
+          <!-- Devices HUD -->
+          <div class="row">
+              <div class="col-sm-12">
+                  <div class="well">
+                      <h4>MiNiFi C++ HUD</h4>
+                      <p id="minifiCppDevicesWell"></p>
+                      <div class="row">
+                          <div class="col-sm-3">
+                              <div class="well">
+                                  MiNiFi Devices:
+                                  <p id="minifiDevicesHUD"></p>
+                                  <p id="minifiDevicesHUDSelection"></p>
+                              </div>
+                          </div>
+                          <div class="col-sm-3">
+                              <div class="well">
+                                  Operations Input form:
+                                  <form id="operationForm">
+                                      Operation:
+                                      <select id="operationsSel"></select><br>
+                                      <select id="contentoptions"></select><br>
+                                      <select id="option"></select><br>
+                                      <input type="text" id="value" value="Option Value" onfocus="if(this.value=='Option Value') this.value='';">
+                                      <button type="button" id="createOperation">Create Operation</button>
+                                  </form>
+                              </div>
+                          </div>
+
+                          <div class="col-sm-3">
+                              <div class="well">
+                                  Recent Operations
+                                  <table class="display" cellspacing="0" width="100%">
+                                      <thead>
+                                      <tr>
+                                          <th>Operation</th>
+                                          <th>Status</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody id="deviceOps">
+
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+
+                          <div class="col-sm-3">
+                              <div class="well">
+                                  Connection Metrics
+                                  <table class="display" cellspacing="0" width="100%">
+                                      <thead>
+                                      <tr>
+                                          <th>Name</th>
+                                          <th>Bytes</th>
+                                          <th>Queued</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody id="connectMetrics">
+
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
 
         <!-- Devices Table -->
         <div id="devices" class="row">
             <div class="col-sm-12">
                 <div class="well">
                     <h4>Devices</h4>
-                    <table class="table">
+                    <table  id="deviceTable" class="display">
                         <thead>
                         <tr>
                             <th>Device ID</th>
@@ -127,6 +163,7 @@
 </body>
 
 <script src="assets/js/main.js"></script>
+<script src="assets/js/supportedops.js"></script>
 <script src="assets/js/bootstrap-support.js"></script>
 
 </html>

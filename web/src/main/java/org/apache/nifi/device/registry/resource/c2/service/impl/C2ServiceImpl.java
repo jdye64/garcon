@@ -116,25 +116,27 @@ public class C2ServiceImpl
         }
 
         // Inserts or updates the ProcessMetrics.
-        C2ProcessMetrics pm = heartbeatPayload.getMetrics().getProcessMetricss();
-        if (pm != null) {
-            long memoryMaxRSS = 0l;
-            long cpuInvolcs = 0l;
-            if (pm.getMemoryMetrics() != null) {
-                memoryMaxRSS = pm.getMemoryMetrics().getMaxrss();
-            }
-            if (pm.getCpuMetrics() != null) {
-                cpuInvolcs = pm.getCpuMetrics().getInvolcs();
-            }
-            try {
-                this.c2ProcessMetricsDAO.insertProcessMetrics(ni.getDeviceid(), memoryMaxRSS, cpuInvolcs);
-            } catch (Exception ex) {
-                // Update the Process metrics.
-                this.c2ProcessMetricsDAO.updateProcessMetrics(ni.getDeviceid(), memoryMaxRSS, cpuInvolcs);
-            }
-        } else {
-            if (logger.isDebugEnabled()) {
-                logger.debug("No Process Metrics present in JSON payload. Not writing to DB");
+        if (heartbeatPayload.getMetrics() != null) {
+            C2ProcessMetrics pm = heartbeatPayload.getMetrics().getProcessMetricss();
+            if (pm != null) {
+                long memoryMaxRSS = 0l;
+                long cpuInvolcs = 0l;
+                if (pm.getMemoryMetrics() != null) {
+                    memoryMaxRSS = pm.getMemoryMetrics().getMaxrss();
+                }
+                if (pm.getCpuMetrics() != null) {
+                    cpuInvolcs = pm.getCpuMetrics().getInvolcs();
+                }
+                try {
+                    this.c2ProcessMetricsDAO.insertProcessMetrics(ni.getDeviceid(), memoryMaxRSS, cpuInvolcs);
+                } catch (Exception ex) {
+                    // Update the Process metrics.
+                    this.c2ProcessMetricsDAO.updateProcessMetrics(ni.getDeviceid(), memoryMaxRSS, cpuInvolcs);
+                }
+            } else {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("No Process Metrics present in JSON payload. Not writing to DB");
+                }
             }
         }
 
