@@ -6,6 +6,9 @@ var selectedDeviceRecentOps = {};
 var c2ops = {};
 c2ops["HeartBeat Period"] = "c2.agent.heartbeat.period";
 
+var flowOps = {};
+flowOps["HeartBeat Period"] = "c2.agent.heartbeat.period";
+
 
 function setOperationsValues() {
     console.log("Setting opeartion values");
@@ -343,6 +346,12 @@ function getMiNiFiHUD() {
 	}, "json");
 }
 
+function createTables(){
+    console.log("Creating metrics");
+    $('#metrics').DataTable({searching: false, paging: false, "bInfo" : false});
+    $('#opus').DataTable({searching: false, paging: false, "bInfo" : false});
+}
 //onload invocations.
 getMiNiFiHUD();
 getAllDevices();
+createTables();

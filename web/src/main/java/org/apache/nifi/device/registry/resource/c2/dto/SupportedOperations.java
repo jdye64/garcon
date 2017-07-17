@@ -36,6 +36,7 @@ public class SupportedOperations {
         supportedOperations.add("ACKNOWLEDGE");
         supportedOperations.add("START");
         supportedOperations.add("STOP");
+        supportedOperations.add("DESCRIBE");
         supportedOperations.add("RESTART");
         supportedOperations.add("HEARTBEAT");
         supportedOperations.add("UPDATE");

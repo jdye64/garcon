@@ -42,6 +42,6 @@ public abstract class C2HeartbeatDAO {
     public abstract void udpateHeartbeat(@Bind("deviceId") String deviceId, @Bind("operation") String operation, @Bind("running") boolean running,
             @Bind("uptime") long uptime);
 
-    @SqlQuery("SELECT * FROM " + DBConstants.C2_HEARTBEATS)
+    @SqlQuery("SELECT * FROM " + DBConstants.C2_HEARTBEATS + "  GROUP BY DEVICE_ID")
     public abstract List<C2Heartbeat> getLatestDeviceHeartbeat();
 }

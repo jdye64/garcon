@@ -88,7 +88,7 @@
                                       <select id="contentoptions"></select><br>
                                       <select id="option"></select><br>
                                       <input type="text" id="value" value="Option Value" onfocus="if(this.value=='Option Value') this.value='';">
-                                      <button type="button" id="createOperation">Create Operation</button>
+                                      <button type="button" class="btn" id="createOperation">Create Operation</button>
                                   </form>
                               </div>
                           </div>
@@ -96,7 +96,7 @@
                           <div class="col-sm-3">
                               <div class="well">
                                   Recent Operations
-                                  <table class="display" cellspacing="0" width="100%">
+                                  <table id="opus" class="display" cellspacing="0" width="100%">
                                       <thead>
                                       <tr>
                                           <th>Operation</th>
@@ -113,7 +113,7 @@
                           <div class="col-sm-3">
                               <div class="well">
                                   Connection Metrics
-                                  <table class="display" cellspacing="0" width="100%">
+                                  <table id="metrics" class="display" cellspacing="0" width="100%">
                                       <thead>
                                       <tr>
                                           <th>Name</th>
