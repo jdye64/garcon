@@ -18,6 +18,7 @@ import org.apache.nifi.device.registry.GarconConfiguration;
 import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
 import org.apache.nifi.device.registry.resource.c2.core.C2Response;
 import org.apache.nifi.device.registry.resource.c2.core.config.C2DeviceFlowFileConfig;
+import org.apache.nifi.device.registry.resource.c2.core.config.C2DeviceFlowFileConfigMapping;
 import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
 import org.apache.nifi.device.registry.resource.c2.core.device.NetworkInfo;
 import org.apache.nifi.device.registry.resource.c2.core.device.SystemInfo;
@@ -72,10 +73,10 @@ public class C2Resource {
     private C2Service c2Service;
 
     public C2Resource(GarconConfiguration conf, C2DeviceDAO c2DeviceDAO, C2QueueMetricsDAO c2QueueMetricsDAO, C2HeartbeatDAO c2HeartbeatDAO,
-                      C2OperationDAO c2OperationDAO, C2ProcessMetricsDAO c2ProcessMetricsDAO, C2ComponentDAO c2ComponentDAO) {
+                      C2OperationDAO c2OperationDAO, C2ProcessMetricsDAO c2ProcessMetricsDAO, C2ComponentDAO c2ComponentDAO, C2DeviceFlowFileConfigDAO c2DeviceFlowFileConfig, C2DeviceFlowFileConfigMappingDAO c2DeviceFlowFileConfigMapping) {
         this.configuration = conf;
         this.c2Service = new C2ServiceImpl(c2DeviceDAO, c2QueueMetricsDAO,
-                c2HeartbeatDAO, c2OperationDAO, c2ProcessMetricsDAO,c2ComponentDAO);
+                c2HeartbeatDAO, c2OperationDAO, c2ProcessMetricsDAO,c2ComponentDAO,c2DeviceFlowFileConfig,c2DeviceFlowFileConfigMapping);
     }
 
     @POST
@@ -124,7 +125,7 @@ public class C2Resource {
         if (logger.isDebugEnabled()) {
             logger.debug("Creating opeartion for device Id: " + cor.getDeviceId());
         }
-        this.c2Service.createOpearationForDevice(cor);
+        this.c2Service.createOperationForDevice(cor);
         return Response.ok(cor).build();
     }
 
@@ -176,7 +177,18 @@ public class C2Resource {
             logger.debug("Getting latest FlowFile configuration for device: " + deviceId);
         }
         C2DeviceFlowFileConfig ffc = this.c2Service.getDeviceLatestFlowFileConfig(deviceId);
-        return Response.ok(ffc.getConfigFile()).build();
+        return Response.ok(ffc).build();
+    }
+
+    @GET
+    @Timed
+    @Path("/device/configfile/{device_config_id}")
+    public Response getFlowFile(@PathParam("device_config_id") String device_config_id) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Getting latest FlowFile configuration for device: " + device_config_id);
+        }
+        String file_contents = this.c2Service.getDeviceFlowFileConfig(device_config_id);
+        return Response.ok(file_contents).build();
     }
 
     @GET

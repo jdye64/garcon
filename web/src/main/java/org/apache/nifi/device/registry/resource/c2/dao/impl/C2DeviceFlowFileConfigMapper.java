@@ -37,8 +37,8 @@ public class C2DeviceFlowFileConfigMapper
         ffc.setConfigName(resultSet.getString("NAME"));
         ffc.setConfigDescription(resultSet.getString("DESCRIPTION"));
         ffc.setConfigFile(resultSet.getBytes("CONFIG_FILE"));
-        ffc.setCreatedTimestamp(resultSet.getTimestamp("CREATED_TS"));
-        ffc.setUpdatedTimestamp(resultSet.getTimestamp("UPDATED_TS"));
+       // ffc.setCreatedTimestamp(resultSet.getTimestamp("CREATED_TS"));
+        //ffc.setUpdatedTimestamp(resultSet.getTimestamp("UPDATED_TS"));
         return ffc;
     }
 }

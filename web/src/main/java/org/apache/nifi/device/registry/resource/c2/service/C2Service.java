@@ -55,7 +55,7 @@ public interface C2Service {
      *
      * @param cor
      */
-    void createOpearationForDevice(CreateOperationRequest cor);
+    void createOperationForDevice(CreateOperationRequest cor);
 
     /**
      * Gets the connections for a particular device.
@@ -80,6 +80,14 @@ public interface C2Service {
      * @return
      */
     C2DeviceFlowFileConfig getDeviceLatestFlowFileConfig(String deviceId);
+
+    /**
+     * Gets the latest flowfile configuration for the minifi device.
+     *
+     * @param deviceConfigId
+     * @return content of configuratin file
+     */
+    String getDeviceFlowFileConfig(String deviceConfigId);
 
     /**
      * Retrieves the operation history for a particular device. This will include pending operations.

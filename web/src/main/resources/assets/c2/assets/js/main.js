@@ -58,15 +58,15 @@ function getDeviceOperations() {
         }
 
 
-        if (!firstRun){
-            for( var idToFlash in idsToFlash){
-                setTimeout(function() {
-                    if (selectedDeviceRecentOps[idToFlash] == false)
-                    $("#status" + idToFlash ).css("background-color", "yellow");
-                    else
-                    $("#status" + idToFlash ).css("background-color", "green");
-                }, 100);
-            }
+
+        for( var idToFlash in idsToFlash){
+            setTimeout(function() {
+                if (selectedDeviceRecentOps[idToFlash] == false)
+                $("#status" + idToFlash ).css("background-color", "yellow");
+                else
+                $("#status" + idToFlash ).css("background-color", "green");
+            }, 100);
+
         }
     }, "json");
 }
@@ -138,10 +138,48 @@ $("#createOperation").click(function() {
                                 json.content[option] = value;
             }else{
                 json.name = "configuration";
+                json.content = new Object();
+                $.ajax({
+                     async: false,
+                     type: 'GET',
+                     url: "/api/v1/c2/device/config/" + selectedDeviceId ,
+                     success: function(data) {
+
+                          console.log(JSON.stringify(data));
+                          var obj = data;
+
+                              var addy = location.protocol + "//" + location.host;
+                              //if (location.port.length > 0 && ){
+                                //  addy = addy + ":" + location.port;
+                              //}
+                              addy = addy + "/api/v1/c2/device/configfile/" + obj.deviceConfigId;
+                              json.content["location"] = addy;
+
+                     }
+                });
+
+
             }
 
 
             break;
+    case "DESCRIBE":
+                var contentOptionValue = $("#contentoptions option:selected").val();
+                if (contentSel == "Processor Metrics"){
+                    json.name = "metrics";
+                    json.content = new Object();
+                    json.content["metricsClass"] = contentOptionValue;
+                }
+                else if (contentSel == "Configuration"){
+                                         json.name = "configuration";
+                                         json.content = new Object();
+
+                                     }
+
+
+
+
+        break;
     case "CLEAR":
     case "clear":
         console.log("clearing connection");
@@ -256,6 +294,22 @@ $("#operationsSel").ready(function () {
 
 
         }
+        else if (operation == "DESCRIBE"){
+
+                var options = $("#contentoptions");
+                options.empty();
+                options.append($("<option />").val("15").text("Processor Metrics"));
+                options.append($("<option />").val("1").text("Configuration"));
+
+                options.show();
+                operations.hide();
+                $('#value').hide();
+                operations.empty();
+
+
+
+
+                }
      else{
      $('#option').hide();
          $('#value').hide();

@@ -3,8 +3,10 @@ package org.apache.nifi.device.registry.resource.c2.dao;
 import java.util.List;
 
 import org.apache.nifi.device.registry.dao.DBConstants;
+import org.apache.nifi.device.registry.resource.c2.core.config.C2DeviceFlowFileConfigMapping;
 import org.apache.nifi.device.registry.resource.c2.core.ops.C2Operation;
 import org.apache.nifi.device.registry.resource.c2.dao.impl.C2DeviceFlowFileConfigMapper;
+import org.apache.nifi.device.registry.resource.c2.dao.impl.C2DeviceFlowFileConfigMappingMapper;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
@@ -28,9 +30,9 @@ import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
  * Created on 7/12/17.
  */
 
-@RegisterMapper(C2DeviceFlowFileConfigMapper.class)
+@RegisterMapper(C2DeviceFlowFileConfigMappingMapper.class)
 public abstract class C2DeviceFlowFileConfigMappingDAO {
 
-    @SqlQuery("SELECT * FROM " + DBConstants.C2_DEVICE_CONFIG_MAPPING + " WHERE DEVICE_ID = :deviceId")
-    public abstract List<C2Operation> getDeviceFlowFileConfiguration(@Bind("deviceId") String deviceId);
+    @SqlQuery("SELECT * FROM " + DBConstants.C2_DEVICE_CONFIG_MAPPING + " WHERE DEVICE_ID = :deviceId LIMIT 0,1")
+    public abstract C2DeviceFlowFileConfigMapping getDeviceFlowFileConfiguration(@Bind("deviceId") String deviceId);
 }

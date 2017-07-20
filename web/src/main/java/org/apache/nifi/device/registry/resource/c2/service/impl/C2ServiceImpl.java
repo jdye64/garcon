@@ -1,18 +1,20 @@
 package org.apache.nifi.device.registry.resource.c2.service.impl;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import org.apache.nifi.device.registry.resource.c2.core.C2Heartbeat;
 import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
 import org.apache.nifi.device.registry.resource.c2.core.C2Response;
 import org.apache.nifi.device.registry.resource.c2.core.components.Component;
-import org.apache.nifi.device.registry.resource.c2.core.components.Components;
 import org.apache.nifi.device.registry.resource.c2.core.config.C2DeviceFlowFileConfig;
+import org.apache.nifi.device.registry.resource.c2.core.config.C2DeviceFlowFileConfigMapping;
 import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
 import org.apache.nifi.device.registry.resource.c2.core.device.NetworkInfo;
 import org.apache.nifi.device.registry.resource.c2.core.device.SystemInfo;
@@ -63,13 +65,15 @@ public class C2ServiceImpl
 
     public C2ServiceImpl(C2DeviceDAO c2DeviceDAO, C2QueueMetricsDAO c2QueueMetricsDAO,
             C2HeartbeatDAO c2HeartbeatDAO, C2OperationDAO c2OperationDAO,
-            C2ProcessMetricsDAO c2ProcessMetricsDAO, C2ComponentDAO c2componentDAO) {
+            C2ProcessMetricsDAO c2ProcessMetricsDAO, C2ComponentDAO c2componentDAO,C2DeviceFlowFileConfigDAO c2DeviceFlowFileConfig, C2DeviceFlowFileConfigMappingDAO c2DeviceFlowFileConfigMapping) {
         this.c2DeviceDAO = c2DeviceDAO;
         this.c2QueueMetricsDAO = c2QueueMetricsDAO;
         this.c2HeartbeatDAO = c2HeartbeatDAO;
         this.c2OperationDAO = c2OperationDAO;
         this.c2ProcessMetricsDAO = c2ProcessMetricsDAO;
         this.c2componentDAO = c2componentDAO;
+        this.c2DeviceFlowFileConfigDAO = c2DeviceFlowFileConfig;
+        this.c2DeviceFlowFileConfigMappingDAO = c2DeviceFlowFileConfigMapping;
     }
 
     @Transaction
@@ -165,15 +169,33 @@ public class C2ServiceImpl
 
     public C2DeviceFlowFileConfig getDeviceLatestFlowFileConfig(String deviceId) {
         // Get the mapping for this device.
-        //C2DeviceFlowFileConfigMapping mapping = this.c2DeviceFlowFileConfigMappingDAO
+        C2DeviceFlowFileConfigMapping mapping = this.c2DeviceFlowFileConfigMappingDAO.getDeviceFlowFileConfiguration(deviceId);
 
-        // Retrieve the actual configuration
-        //C2DeviceFlowFileConfig ffc = this.c2DeviceFlowFileConfigDAO.getDeviceFlowFileConfiguration();
-
+        if (null != mapping){
+            C2DeviceFlowFileConfig ffc = this.c2DeviceFlowFileConfigDAO.getDeviceFlowFileConfiguration(mapping.getFfConfigMappingId());
+            return ffc;
+        }
         return null;
     }
 
-    public void createOpearationForDevice(CreateOperationRequest cor) {
+    public String getDeviceFlowFileConfig(String deviceConfigId){
+        C2DeviceFlowFileConfig ffc = this.c2DeviceFlowFileConfigDAO.getDeviceFlowFileConfiguration(Long.valueOf(deviceConfigId));
+
+        byte [] configFile = ffc.getConfigFile();
+
+        if (null != configFile){
+            try {
+                String content = new String(Files.readAllBytes(Paths.get(new String(configFile))));
+                return content;
+            }catch(IOException e){
+                logger.debug("Could not find {}", new String(configFile));
+            }
+        }
+        return "";
+
+    }
+
+    public void createOperationForDevice(CreateOperationRequest cor) {
 
         List<String> contentList = Lists.newArrayList();
         if (null != cor.getContent()) {

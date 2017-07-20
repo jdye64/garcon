@@ -36,8 +36,8 @@ public class C2DeviceFlowFileConfigMappingMapper
         ffc.setFfConfigMappingId(resultSet.getLong("DEVICE_CONFIG_MAPPING_ID"));
         ffc.setDeviceId(resultSet.getString("DEVICE_ID"));
         ffc.setFfConfigId(resultSet.getLong("DEVICE_CONFIG_ID"));
-        ffc.setConfiguredTimestamp(resultSet.getTimestamp("CONFIGURED_TS"));
-        ffc.setDeployedTimestamp(resultSet.getTimestamp("DEPLOYED_TS"));
+//        ffc.setConfiguredTimestamp(resultSet.getTimestamp("CONFIGURED_TS"));
+  //      ffc.setDeployedTimestamp(resultSet.getTimestamp("DEPLOYED_TS"));
         return ffc;
     }
 }

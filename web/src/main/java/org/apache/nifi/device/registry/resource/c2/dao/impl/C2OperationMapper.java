@@ -44,9 +44,14 @@ public class C2OperationMapper
         if (content != null && !content.isEmpty()) {
          String [] contentSplit=   StringUtils.split(content, ",");
          for(String contentStr : contentSplit){
-             String [] keyValue = StringUtils.split(contentStr, ":");
-             if (keyValue.length == 2){
-                 contentMap.put(keyValue[0],keyValue[1]);
+             int firstDelimiter = contentStr.indexOf(":");
+             if (firstDelimiter > 0) {
+                 String key = content.substring(0, firstDelimiter);
+
+                if (firstDelimiter+1 < content.length()) {
+                    String value = content.substring(firstDelimiter + 1, content.length() );
+                    contentMap.put(key, value);
+                }
              }
          }
         }
@@ -56,4 +61,5 @@ public class C2OperationMapper
 //        o.setAckedTimestamp(resultSet.getTimestamp("ACK_TIMESTAMP"));
         return o;
     }
+
 }
