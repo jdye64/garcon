@@ -4,7 +4,7 @@ echo "This is the docker entrypoint script for Apache NiFi Device Registry that 
 
 # Set MySQL environment parameters
 export MYSQL_ROOT_PASSWORD=nifidevregistry
-export MYSQL_DATABASE=DEVICE_REGISTRY
+export MYSQL_DATABASE=GARCON
 
 # Start MySQL
 /scripts/mysql.sh mysqld --user=root &
@@ -12,14 +12,14 @@ export MYSQL_DATABASE=DEVICE_REGISTRY
 /opt/nifi/nifi-1.2.0/bin/nifi.sh start
 
 # Let MySQL finish starting
-while ! mysqlshow --user=root --password=nifidevregistry; do
+while ! mysqlshow --user=root --password=${MYSQL_ROOT_PASSWORD}; do
     echo "MySQL not yet started... waiting"
     sleep 2
 done
 
 echo "Starting Device Registry UI"
 
-nohup java -jar $NIFI_DEVICE_REGISTRY_BASE_DIR/nifi-device-registry-web-1.2.0-SNAPSHOT.jar server $NIFI_DEVICE_REGISTRY_BASE_DIR/Garcon.yml &
+nohup java -jar $NIFI_DEVICE_REGISTRY_BASE_DIR/nifi-device-registry-web-1.3.0-SNAPSHOT.jar server $NIFI_DEVICE_REGISTRY_BASE_DIR/Garcon.yml &
 
 while true; do
   sleep 30

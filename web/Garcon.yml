@@ -16,7 +16,7 @@ database:
   user: root
 
   # the dassword
-  password: #@ss4MeT3am
+  password: nifidevregistry
 
   # the JDBC URL
   url: jdbc:mysql://localhost:3306/GARCON
