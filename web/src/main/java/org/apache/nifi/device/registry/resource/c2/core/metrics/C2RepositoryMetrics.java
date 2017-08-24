@@ -1,9 +1,7 @@
 package org.apache.nifi.device.registry.resource.c2.core.metrics;
 
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Map;
-
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -25,34 +23,38 @@ import java.util.Map;
  */
 
 
-public class C2Metrics {
+public class C2RepositoryMetrics {
 
-    @JsonProperty("QueueMetrics")
-    //private List<C2QueueMetrics> queueMetrics;
-    private Map<String, C2QueueMetrics> queueMetrics;
+    @JsonProperty("running")
+    private String running;
 
-    @JsonProperty("RepositoryMetrics")
-    private Map<String, C2RepositoryMetrics> repoMetrics;
+    @JsonProperty("full")
+    private String full;
 
-    @JsonProperty("ProcessMetrics")
-    private C2ProcessMetrics processMetricss;
+    @JsonProperty("size")
+    private long size;
 
-    public C2Metrics() {
+    public String getRunning() {
+        return running;
     }
 
-    public Map<String, C2QueueMetrics> getQueueMetrics() {
-        return queueMetrics;
+    public void setRunning(String running) {
+        this.running = running;
     }
 
-    public void setQueueMetrics(Map<String, C2QueueMetrics> queueMetrics) {
-        this.queueMetrics = queueMetrics;
+    public String getFull() {
+        return full;
     }
 
-    public C2ProcessMetrics getProcessMetricss() {
-        return processMetricss;
+    public void setFull(String full) {
+        this.full = full;
     }
 
-    public void setProcessMetricss(C2ProcessMetrics processMetricss) {
-        this.processMetricss = processMetricss;
+    public long getSize() {
+        return size;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
     }
 }

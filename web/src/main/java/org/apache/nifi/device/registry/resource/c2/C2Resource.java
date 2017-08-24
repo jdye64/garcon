@@ -1,24 +1,13 @@
 package org.apache.nifi.device.registry.resource.c2;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.nifi.device.registry.GarconConfiguration;
 import org.apache.nifi.device.registry.resource.c2.core.C2Payload;
 import org.apache.nifi.device.registry.resource.c2.core.C2Response;
 import org.apache.nifi.device.registry.resource.c2.core.config.C2DeviceFlowFileConfig;
-import org.apache.nifi.device.registry.resource.c2.core.config.C2DeviceFlowFileConfigMapping;
 import org.apache.nifi.device.registry.resource.c2.core.device.DeviceInfo;
 import org.apache.nifi.device.registry.resource.c2.core.device.NetworkInfo;
 import org.apache.nifi.device.registry.resource.c2.core.device.SystemInfo;
@@ -29,7 +18,14 @@ import org.apache.nifi.device.registry.resource.c2.core.metrics.pm.C2CPUMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.metrics.pm.C2MemoryMetrics;
 import org.apache.nifi.device.registry.resource.c2.core.ops.C2Operation;
 import org.apache.nifi.device.registry.resource.c2.core.state.C2State;
-import org.apache.nifi.device.registry.resource.c2.dao.*;
+import org.apache.nifi.device.registry.resource.c2.dao.C2ComponentDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceFlowFileConfigDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2DeviceFlowFileConfigMappingDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2HeartbeatDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2OperationDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2ProcessMetricsDAO;
+import org.apache.nifi.device.registry.resource.c2.dao.C2QueueMetricsDAO;
 import org.apache.nifi.device.registry.resource.c2.dto.CreateOperationRequest;
 import org.apache.nifi.device.registry.resource.c2.dto.SupportedOperations;
 import org.apache.nifi.device.registry.resource.c2.service.C2Service;
@@ -38,9 +34,18 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.codahale.metrics.annotation.Timed;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -69,30 +74,35 @@ public class C2Resource {
     private static final Logger logger = LoggerFactory.getLogger(C2Resource.class);
 
     private GarconConfiguration configuration;
-    private static ObjectMapper mapper = new ObjectMapper();
+    private static ObjectMapper mapper;
     private C2Service c2Service;
 
     public C2Resource(GarconConfiguration conf, C2DeviceDAO c2DeviceDAO, C2QueueMetricsDAO c2QueueMetricsDAO, C2HeartbeatDAO c2HeartbeatDAO,
                       C2OperationDAO c2OperationDAO, C2ProcessMetricsDAO c2ProcessMetricsDAO, C2ComponentDAO c2ComponentDAO, C2DeviceFlowFileConfigDAO c2DeviceFlowFileConfig, C2DeviceFlowFileConfigMappingDAO c2DeviceFlowFileConfigMapping) {
+        mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         this.configuration = conf;
         this.c2Service = new C2ServiceImpl(c2DeviceDAO, c2QueueMetricsDAO,
-                c2HeartbeatDAO, c2OperationDAO, c2ProcessMetricsDAO,c2ComponentDAO,c2DeviceFlowFileConfig,c2DeviceFlowFileConfigMapping);
+                c2HeartbeatDAO, c2OperationDAO, c2ProcessMetricsDAO, c2ComponentDAO, c2DeviceFlowFileConfig, c2DeviceFlowFileConfigMapping);
     }
 
     @POST
     @Timed
     public Response minifiHeartbeat(C2Payload payload) {
         try {
-            if (logger.isDebugEnabled()) {
-                logger.debug("MiNiFi CPP Heartbeat received: " + mapper.writeValueAsString(payload));
-            }
+            logger.error("MiNiFi CPP Heartbeat received: " + mapper.writeValueAsString(payload));
+            System.out.println("MiNiFi CPP Heartbeat received: " + mapper.writeValueAsString(payload));
+
             C2Response response = c2Service.registerHeartBeat(payload);
-            if (logger.isDebugEnabled()) {
-                logger.debug("C2Response: " + mapper.writeValueAsString(response));
-            }
-            return Response.ok(response).build();
+            logger.error("C2Response: " + mapper.writeValueAsString(response));
+            System.out.println("C2Response: " + mapper.writeValueAsString(response));
+            return Response.ok("It's good").build();
         } catch (Exception ex) {
             ex.printStackTrace();
+            logger.error("Could not process payload provided", ex);
+            logger.error("Payload: " + payload.toString());
+
             return Response.serverError().build();
         }
     }
@@ -221,6 +231,7 @@ public class C2Resource {
 
         return Response.ok(c2Service.getDevice(deviceId)).build();
     }
+
     @GET
     @Timed
     @Path("/hud")

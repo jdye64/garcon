@@ -7,6 +7,7 @@ server:
   adminConnectors:
   - type: http
     port: 8889
+  registerDefaultExceptionMappers: false
 
 database:
   # the name of your JDBC driver
@@ -45,3 +46,21 @@ database:
 
   # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
   minIdleTime: 1 minute
+
+logging:
+  level: INFO
+  loggers:
+    "org.apache.nifi.device.registry.resource.c2":
+      level: DEBUG
+      appenders:
+        - type: file
+          currentLogFilename: /var/log/deviceregistry.log
+          threshold: ALL
+          archive: true
+          archivedLogFilenamePattern: /var/log/deviceregistry-%d.log
+          archivedFileCount: 5
+          timeZone: UTC
+          logFormat: # TODO
+        - type: console
+          threshold: ALL
+          target: stderr

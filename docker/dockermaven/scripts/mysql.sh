@@ -1,5 +1,4 @@
-#!/bin/bash
-set -e
+#!/bin/bash -ex
 
 # if command starts with an option, prepend mysqld
 if [ "${1:0:1}" = '-' ]; then
