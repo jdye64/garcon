@@ -97,7 +97,7 @@ public class C2Resource {
             C2Response response = c2Service.registerHeartBeat(payload);
             logger.error("C2Response: " + mapper.writeValueAsString(response));
             System.out.println("C2Response: " + mapper.writeValueAsString(response));
-            return Response.ok("It's good").build();
+            return Response.ok(response).build();
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error("Could not process payload provided", ex);
