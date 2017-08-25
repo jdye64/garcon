@@ -29,7 +29,7 @@ The Garcon UI is a single page HTML5 application that is meant to allow the end 
 the entire organization. Often there are several thousand instances of Apache NiFi, MiNifi, and MiNiFi-C++ running so this allows the user a convenient
 single location to better understand the state of NiFi as well as basic informaiton about the devices NiFi is running on.
 
-The UI can be accessed at: ```http://IP_OF_SERVER:8888/assets/index.html```
+The UI can be accessed at: ```http://IP_OF_SERVER:8888/assets/c2/index.html```
 
 
 ## Running via Docker
